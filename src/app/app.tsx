@@ -1,12 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
 
-import NxWelcome from './nx-welcome';
+import Board from './board';
 
 export function App() {
   return (
     <div>
-      <NxWelcome title="wrd-sld" />
+      <Board />
     </div>
   );
 }
