@@ -7,6 +7,8 @@ interface TileProps {
   letter: string;
 }
 
+// TODO - useSpring for animation here?
+
 const Tile = (props: TileProps) => {
   return (
     <Box sx={{ height: 72, width: 64, margin: 2 }}>
