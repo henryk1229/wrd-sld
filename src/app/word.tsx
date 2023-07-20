@@ -1,10 +1,11 @@
 import Tile from './tile';
 
-interface CurrentWordProps {
+interface WordProps {
   letters: string[];
+  isCurrentWord?: boolean;
 }
 
-const CurrentWord = (props: CurrentWordProps) => {
+const Word = (props: WordProps) => {
   return (
     <>
       {props.letters.map((letter, idx) => (
@@ -14,4 +15,4 @@ const CurrentWord = (props: CurrentWordProps) => {
   );
 };
 
-export default CurrentWord;
+export default Word;
