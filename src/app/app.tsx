@@ -10,8 +10,9 @@ export function App() {
   return (
     <>
       <CssBaseline />
-      <Container className="board" disableGutters maxWidth="xl">
-        <Header />
+      <Header />
+
+      <Container className="board" maxWidth="lg">
         <Board />
       </Container>
     </>
