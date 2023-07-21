@@ -2,15 +2,35 @@ import { useCallback, useState } from 'react';
 import { useWindowListener } from '../hooks/useWindowListener';
 import Word from './word';
 
-const Board: React.FC = () => {
-  // initialize storedWords as stringified empty array
-  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
+interface BoardProps {
+  submittedWords: string[][];
+  rotateBoard: (wordCount: number) => void;
+}
 
-  console.log('stored', storedWords);
-  const submittedWords = JSON.parse(storedWords);
+const spellCheckWord = async (currentWord: string[]) => {
+  // TODO - hook up dictionary
+  if (currentWord.length === 0 || currentWord.includes('h')) {
+    return false;
+  }
+  return true;
+};
 
-  console.log('stored', storedWords, 'submitted', submittedWords);
+const Board: React.FC<BoardProps> = (props) => {
+  const { submittedWords, rotateBoard } = props;
+
   const [currentWord, setCurrentWord] = useState<string[]>([]);
+
+  const handleSubmitWord = useCallback(async () => {
+    // TODO - spellcheck
+    const isValidWord = await spellCheckWord(currentWord);
+    if (isValidWord) {
+      const stringified = JSON.stringify([...submittedWords, currentWord]);
+      localStorage.setItem('submittedWords', stringified);
+      rotateBoard(submittedWords.length + 1);
+    }
+    // TODO - handle invalid word feedback
+    return setCurrentWord([]);
+  }, [currentWord, submittedWords, rotateBoard]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
@@ -20,12 +40,10 @@ const Board: React.FC = () => {
         return setCurrentWord(newWord);
       }
       if (input === 'Enter') {
-        // TODO - spellcheck
-        const stringified = JSON.stringify([...submittedWords, currentWord]);
-        return localStorage.setItem('submittedWords', stringified);
+        return handleSubmitWord();
       }
     },
-    [currentWord, submittedWords]
+    [currentWord, handleSubmitWord]
   );
 
   // handle keyboard input, branch between whitespace and letter input
@@ -55,9 +73,13 @@ const Board: React.FC = () => {
     }
   });
 
+  // TODO - "anchor tile"
+  // first letter of submitted word is included in currentWord component by default
+  // will make it easier to handle shake animation for invalid word feedback
+
   return (
-    <div autoFocus={true}>
-      {submittedWords.map((letters: string[], idx) => (
+    <div autoFocus={true} className="boardWrapper">
+      {submittedWords.map((letters: string[], idx: number) => (
         <Word key={idx} letters={letters} />
       ))}
       <Word letters={currentWord} isCurrentWord={true} />
