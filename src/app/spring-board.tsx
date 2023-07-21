@@ -1,20 +1,37 @@
 import { animated, useSpring } from '@react-spring/web';
+import Board from './board';
+import { useState } from 'react';
 
-interface SpringBoardProps {
-  children: React.ReactElement[];
-}
+// This component rotates board when a word is submitted
+const SpringBoard: React.FC = () => {
+  // TODO - can this be simplified?
+  // keep board orientation in sync with submitted words
+  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
+  const submittedWords: string[][] = JSON.parse(storedWords);
+  const [wordCount, setWordCount] = useState(submittedWords.length);
+  const fromDegree = -90 * (wordCount - 1);
+  const toDegree = -90 * wordCount;
 
-// This component should handle transition when a user enters a word
-const SpringBoard = (props: SpringBoardProps) => {
-  const springs = useSpring({
-    from: { x: 0 },
-    to: { x: 100 },
-  });
+  // TODO - can this dupe be removed?
+  const from = { transform: `rotate(${fromDegree}deg)` };
+
+  const [springs, api] = useSpring(() => ({
+    from,
+  }));
+
+  const rotateBoard = (wordCount: number) => {
+    setWordCount(wordCount);
+    api.start({
+      from,
+      to: {
+        transform: `rotate(${toDegree}deg)`,
+      },
+    });
+  };
 
   const tempStyles = {
-    width: 1024,
-    height: 728,
-    // background: '#ff6d6d',
+    width: 720,
+    height: 600,
     borderStyle: 'solid',
     borderWidth: 0.5,
     borderRadius: 2,
@@ -29,7 +46,7 @@ const SpringBoard = (props: SpringBoardProps) => {
         ...springs,
       }}
     >
-      {props.children}
+      <Board submittedWords={submittedWords} rotateBoard={rotateBoard} />
     </animated.div>
   );
 };
