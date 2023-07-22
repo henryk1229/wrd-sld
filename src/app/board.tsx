@@ -45,7 +45,11 @@ const Board: React.FC = () => {
   const handleWhiteSpaceInput = useCallback(
     (input: string) => {
       if (input === 'Backspace') {
-        const newWord = currentWord.slice(0, currentWord.length - 1);
+        // anchor tile cannot be deleted
+        const newWord =
+          currentWord.length > 1
+            ? currentWord.slice(0, currentWord.length - 1)
+            : currentWord;
         return setCurrentWord(newWord);
       }
       if (input === 'Enter') {
