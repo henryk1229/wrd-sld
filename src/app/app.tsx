@@ -1,7 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
 import Header from './header';
 import SpringBoard from './spring-board';
 
@@ -21,11 +19,8 @@ export function App() {
 
   return (
     <>
-      <CssBaseline />
       <Header />
-      <Container className="board" maxWidth="lg">
-        <SpringBoard />
-      </Container>
+      <SpringBoard />
     </>
   );
 }
