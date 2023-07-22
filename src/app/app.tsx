@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
+import Board from './board';
 import Header from './header';
-import SpringBoard from './spring-board';
 
 const mockInitialWordFetch = () => {
   const submittedWords = localStorage.getItem('submittedWords');
@@ -20,7 +20,7 @@ export function App() {
   return (
     <>
       <Header />
-      <SpringBoard />
+      <Board />
     </>
   );
 }
