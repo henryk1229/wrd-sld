@@ -1,37 +1,19 @@
-import { animated, useSpring } from '@react-spring/web';
-import Board from './board';
-import { useState } from 'react';
+import { animated } from '@react-spring/web';
+import Word from './word';
+import { Springs } from '../hooks/useRotateBoard';
+
+interface SBProps {
+  submittedWords: string[][];
+  springs: Springs;
+}
 
 // This component rotates board when a word is submitted
-const SpringBoard: React.FC = () => {
-  // TODO - can this be simplified?
-  // keep board orientation in sync with submitted words
-  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
-  const submittedWords: string[][] = JSON.parse(storedWords);
-  const [wordCount, setWordCount] = useState(submittedWords.length);
-  const fromDegree = -90 * (wordCount - 1);
-  const toDegree = -90 * wordCount;
-
-  // TODO - can this dupe be removed?
-  const from = { transform: `rotate(${fromDegree}deg)` };
-
-  const [springs, api] = useSpring(() => ({
-    from,
-  }));
-
-  const rotateBoard = (wordCount: number) => {
-    setWordCount(wordCount);
-    api.start({
-      from,
-      to: {
-        transform: `rotate(${toDegree}deg)`,
-      },
-    });
-  };
+const SpringBoard: React.FC<SBProps> = (props) => {
+  const { submittedWords, springs } = props;
 
   const tempStyles = {
-    width: 720,
-    height: 600,
+    // width: 720,
+    // height: 600,
     borderStyle: 'solid',
     borderWidth: 0.5,
     borderRadius: 2,
@@ -46,7 +28,9 @@ const SpringBoard: React.FC = () => {
         ...springs,
       }}
     >
-      <Board submittedWords={submittedWords} rotateBoard={rotateBoard} />
+      {submittedWords.map((letters: string[], idx: number) => (
+        <Word key={idx} letters={letters} />
+      ))}
     </animated.div>
   );
 };
