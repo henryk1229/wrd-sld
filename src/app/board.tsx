@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import CurrentWord from './current-word';
 import SpringBoard from './spring-board';
 import { useRotateBoard } from 'src/hooks/useRotateBoard';
+import { useShakeWord } from 'src/hooks/useShakeWord';
 
 const spellCheckWord = async (currentWord: string[]) => {
   // TODO - hook up dictionary
@@ -23,6 +24,7 @@ const Board: React.FC = () => {
   const [currentWord, setCurrentWord] = useState<string[]>([lastLetter]);
 
   const { springs, rotateBoard } = useRotateBoard(submittedWords.length);
+  const { shakeStyles, shakeWord } = useShakeWord();
 
   console.log('currentWord', currentWord);
 
@@ -38,8 +40,10 @@ const Board: React.FC = () => {
       return setCurrentWord([newAnchorTile]);
     }
     // TODO - handle invalid word feedback
-    return setCurrentWord([]);
-  }, [currentWord, submittedWords, rotateBoard]);
+    shakeWord();
+    const firstLetter = currentWord[0];
+    return setCurrentWord([firstLetter]);
+  }, [currentWord, submittedWords, rotateBoard, shakeWord]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
@@ -84,6 +88,7 @@ const Board: React.FC = () => {
       </div>
       <CurrentWord
         currentWord={currentWord}
+        shakeStyles={shakeStyles}
         handleKeyboardInput={handleKeyboardInput}
       />
     </>
