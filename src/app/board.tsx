@@ -1,11 +1,8 @@
 import { useCallback, useState } from 'react';
-import { useWindowListener } from '../hooks/useWindowListener';
-import Word from './word';
-
-interface BoardProps {
-  submittedWords: string[][];
-  rotateBoard: (wordCount: number) => void;
-}
+import CurrentWord from './current-word';
+import SpringBoard from './spring-board';
+import { useRotateBoard } from 'src/hooks/useRotateBoard';
+import { useShakeWord } from 'src/hooks/useShakeWord';
 
 const spellCheckWord = async (currentWord: string[]) => {
   // TODO - hook up dictionary
@@ -15,10 +12,21 @@ const spellCheckWord = async (currentWord: string[]) => {
   return true;
 };
 
-const Board: React.FC<BoardProps> = (props) => {
-  const { submittedWords, rotateBoard } = props;
+const Board: React.FC = () => {
+  // keep board orientation in sync with submitted words
+  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
+  const submittedWords: string[][] = JSON.parse(storedWords);
 
-  const [currentWord, setCurrentWord] = useState<string[]>([]);
+  // TODO - fix this
+  // currentWord should start with first letter of last submittedWord
+  const lastSubmittedWord = submittedWords[submittedWords.length - 1];
+  const lastLetter = lastSubmittedWord[0];
+  const [currentWord, setCurrentWord] = useState<string[]>([lastLetter]);
+
+  const { springs, rotateBoard } = useRotateBoard(submittedWords.length);
+  const { shakeStyles, shakeWord } = useShakeWord();
+
+  console.log('currentWord', currentWord);
 
   const handleSubmitWord = useCallback(async () => {
     // TODO - spellcheck
@@ -27,16 +35,25 @@ const Board: React.FC<BoardProps> = (props) => {
       const stringified = JSON.stringify([...submittedWords, currentWord]);
       localStorage.setItem('submittedWords', stringified);
       rotateBoard(submittedWords.length + 1);
+      // next word should start with first letter of newly-submitted current word
+      const newAnchorTile = currentWord[0];
+      return setCurrentWord([newAnchorTile]);
     }
     // TODO - handle invalid word feedback
-    return setCurrentWord([]);
-  }, [currentWord, submittedWords, rotateBoard]);
+    shakeWord();
+    const firstLetter = currentWord[0];
+    return setCurrentWord([firstLetter]);
+  }, [currentWord, submittedWords, rotateBoard, shakeWord]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
     (input: string) => {
       if (input === 'Backspace') {
-        const newWord = currentWord.slice(0, currentWord.length - 1);
+        // anchor tile cannot be deleted
+        const newWord =
+          currentWord.length > 1
+            ? currentWord.slice(0, currentWord.length - 1)
+            : currentWord;
         return setCurrentWord(newWord);
       }
       if (input === 'Enter') {
@@ -60,30 +77,21 @@ const Board: React.FC<BoardProps> = (props) => {
     [handleWhiteSpaceInput]
   );
 
-  // listen for keyboard input
-  useWindowListener('keyup', (e: Event) => {
-    if (
-      'code' in e &&
-      'key' in e &&
-      typeof e.code === 'string' &&
-      typeof e.key === 'string'
-    ) {
-      const { code, key } = e;
-      handleKeyboardInput(key, code);
-    }
-  });
-
   // TODO - "anchor tile"
   // first letter of submitted word is included in currentWord component by default
   // will make it easier to handle shake animation for invalid word feedback
 
   return (
-    <div autoFocus={true} className="boardWrapper">
-      {submittedWords.map((letters: string[], idx: number) => (
-        <Word key={idx} letters={letters} />
-      ))}
-      <Word letters={currentWord} isCurrentWord={true} />
-    </div>
+    <>
+      <div autoFocus={true} className="boardWrapper">
+        <SpringBoard submittedWords={submittedWords} springs={springs} />
+      </div>
+      <CurrentWord
+        currentWord={currentWord}
+        shakeStyles={shakeStyles}
+        handleKeyboardInput={handleKeyboardInput}
+      />
+    </>
   );
 };
 
