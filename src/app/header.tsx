@@ -1,7 +1,5 @@
-import AppBar from '@mui/material/AppBar';
-
 const Header: React.FC = () => {
-  return <AppBar position="static">Word Salad</AppBar>;
+  return <div>Word Salad</div>;
 };
 
 export default Header;
