@@ -1,7 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
+import { styled } from '@stitches/react';
 import Board from './board';
 import Header from './header';
+
+const AppContainer = styled('div', {
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#F3EFE0',
+});
 
 const mockInitialWordFetch = () => {
   const submittedWords = localStorage.getItem('submittedWords');
@@ -18,10 +28,10 @@ export function App() {
   mockInitialWordFetch();
 
   return (
-    <>
+    <AppContainer>
       <Header />
       <Board />
-    </>
+    </AppContainer>
   );
 }
 

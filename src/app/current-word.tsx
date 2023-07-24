@@ -1,6 +1,18 @@
+import { styled } from '@stitches/react';
 import { SpringValue, animated } from '@react-spring/web';
 import { useWindowListener } from '../hooks/useWindowListener';
 import Word from './word';
+
+const CurrentWordContainer = styled(animated.div, {
+  height: '84px',
+  width: '720px',
+  display: 'flex',
+  margin: '16px',
+  border: 'solid 1px #1a1a1a',
+  boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19)',
+  borderRadius: '3px',
+  alignItems: 'center',
+});
 
 interface BoardProps {
   currentWord: string[];
@@ -26,27 +38,19 @@ const CurrentWord: React.FC<BoardProps> = (props) => {
     }
   });
 
-  const tempStyles = {
-    display: 'flex',
-    margin: '16px',
-    boxShadow: '10px 10px 5px lightgray',
-    borderRadius: '2px',
-  };
-
   // TODO -
   // - anchor tiles
   // - add empty tile to prompt user to type?
   return (
-    <animated.div
+    <CurrentWordContainer
       autoFocus={true}
       className="currentWord"
       style={{
-        ...tempStyles,
         ...shakeStyles,
       }}
     >
       <Word letters={currentWord} isCurrentWord />
-    </animated.div>
+    </CurrentWordContainer>
   );
 };
 
