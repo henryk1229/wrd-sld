@@ -1,8 +1,14 @@
+import { styled } from '@stitches/react';
 import { useCallback, useState } from 'react';
 import CurrentWord from './current-word';
 import SpringBoard from './spring-board';
 import { useRotateBoard } from 'src/hooks/useRotateBoard';
 import { useShakeWord } from 'src/hooks/useShakeWord';
+
+const BoardContainer = styled('div', {
+  height: '640px',
+  width: '800px',
+});
 
 const spellCheckWord = async (currentWord: string[]) => {
   // TODO - hook up dictionary
@@ -82,7 +88,7 @@ const Board: React.FC = () => {
   // will make it easier to handle shake animation for invalid word feedback
 
   return (
-    <>
+    <BoardContainer className="boardWrapper">
       <div autoFocus={true} className="boardWrapper">
         <SpringBoard submittedWords={submittedWords} springs={springs} />
       </div>
@@ -91,7 +97,7 @@ const Board: React.FC = () => {
         shakeStyles={shakeStyles}
         handleKeyboardInput={handleKeyboardInput}
       />
-    </>
+    </BoardContainer>
   );
 };
 
