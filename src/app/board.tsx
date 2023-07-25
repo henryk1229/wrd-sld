@@ -18,21 +18,26 @@ const spellCheckWord = async (currentWord: string[]) => {
   return true;
 };
 
+// currentWord should start with first letter of last submittedWord
+const determineFirstLetter = (submittedWords: string[][]) => {
+  const lastSubmittedWord = submittedWords[submittedWords.length - 1];
+  const letter =
+    submittedWords.length < 1
+      ? lastSubmittedWord[0]
+      : lastSubmittedWord[lastSubmittedWord.length - 1];
+  return letter;
+};
+
 const Board: React.FC = () => {
   // keep board orientation in sync with submitted words
   const storedWords = localStorage.getItem('submittedWords') ?? '[]';
   const submittedWords: string[][] = JSON.parse(storedWords);
 
-  // TODO - fix this
-  // currentWord should start with first letter of last submittedWord
-  const lastSubmittedWord = submittedWords[submittedWords.length - 1];
-  const lastLetter = lastSubmittedWord[0];
-  const [currentWord, setCurrentWord] = useState<string[]>([lastLetter]);
+  const firstLetter = determineFirstLetter(submittedWords);
+  const [currentWord, setCurrentWord] = useState<string[]>([firstLetter]);
 
   const { spring, rotateBoard } = useRotateBoard(submittedWords.length);
   const { shakeStyles, shakeWord } = useShakeWord();
-
-  console.log('currentWord', currentWord);
 
   const handleSubmitWord = useCallback(async () => {
     // TODO - spellcheck
@@ -42,10 +47,12 @@ const Board: React.FC = () => {
       localStorage.setItem('submittedWords', stringified);
       rotateBoard(submittedWords.length + 1);
       // next word should start with first letter of newly-submitted current word
-      const newAnchorTile = currentWord[0];
-      return setCurrentWord([newAnchorTile]);
+      const firstLetter = determineFirstLetter([
+        ...submittedWords,
+        currentWord,
+      ]);
+      return setCurrentWord([firstLetter]);
     }
-    // TODO - handle invalid word feedback
     shakeWord();
     const firstLetter = currentWord[0];
     return setCurrentWord([firstLetter]);
@@ -82,10 +89,6 @@ const Board: React.FC = () => {
     },
     [handleWhiteSpaceInput]
   );
-
-  // TODO - "anchor tile"
-  // first letter of submitted word is included in currentWord component by default
-  // will make it easier to handle shake animation for invalid word feedback
 
   return (
     <BoardContainer className="boardWrapper">
