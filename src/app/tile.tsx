@@ -1,6 +1,6 @@
 import { animated } from '@react-spring/web';
 import { styled } from '@stitches/react';
-import { Springs } from 'src/hooks/useRotateBoard';
+import { Spring } from 'src/hooks/useRotateBoard';
 
 const sharedStyles = {
   inset: 0,
@@ -35,14 +35,25 @@ const SpringBoardTile = styled(animated.div, {
 interface TileProps {
   letter: string;
   isCurrentWord: boolean;
-  style?: Springs;
+  isAnchorTile: boolean;
+  spring?: Spring;
 }
 
 const Tile = (props: TileProps) => {
-  const { letter, isCurrentWord, style } = props;
-  console.log('style', style);
+  const { letter, isCurrentWord, spring, isAnchorTile } = props;
   return isCurrentWord ? (
-    <CurrentWordTile style={style}>{letter?.toUpperCase()}</CurrentWordTile>
+    <CurrentWordTile
+      style={{
+        ...spring,
+        ...(isAnchorTile
+          ? { color: '#FFCC00' }
+          : {
+              color: '#fafafa',
+            }),
+      }}
+    >
+      {letter?.toUpperCase()}
+    </CurrentWordTile>
   ) : (
     <SpringBoardTile>{letter.toUpperCase()}</SpringBoardTile>
   );

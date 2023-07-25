@@ -29,7 +29,7 @@ const Board: React.FC = () => {
   const lastLetter = lastSubmittedWord[0];
   const [currentWord, setCurrentWord] = useState<string[]>([lastLetter]);
 
-  const { springs, rotateBoard } = useRotateBoard(submittedWords.length);
+  const { spring, rotateBoard } = useRotateBoard(submittedWords.length);
   const { shakeStyles, shakeWord } = useShakeWord();
 
   console.log('currentWord', currentWord);
@@ -90,7 +90,7 @@ const Board: React.FC = () => {
   return (
     <BoardContainer className="boardWrapper">
       <div autoFocus={true} className="boardWrapper">
-        <SpringBoard submittedWords={submittedWords} springs={springs} />
+        <SpringBoard submittedWords={submittedWords} spring={spring} />
       </div>
       <CurrentWord
         currentWord={currentWord}

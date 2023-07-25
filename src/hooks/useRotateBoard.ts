@@ -1,7 +1,7 @@
 import { SpringValue, useSpring } from '@react-spring/web';
 import { useState } from 'react';
 
-export interface Springs {
+export interface Spring {
   transform: SpringValue<string>;
 }
 
@@ -13,7 +13,7 @@ export const useRotateBoard = (submittedWordsLength: number) => {
   // TODO - can this dupe be removed?
   const from = { transform: `rotate(${fromDegree}deg)` };
 
-  const [springs, api] = useSpring(() => ({
+  const [spring, api] = useSpring(() => ({
     from,
   }));
 
@@ -26,5 +26,5 @@ export const useRotateBoard = (submittedWordsLength: number) => {
       },
     });
   };
-  return { springs, rotateBoard };
+  return { spring, rotateBoard };
 };
