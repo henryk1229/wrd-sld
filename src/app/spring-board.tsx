@@ -1,7 +1,7 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
-import Word from './word';
 import { Spring } from '../hooks/useRotateBoard';
+import WordMatrix from './word-matrix';
 
 const SpringBoardContainer = styled('div', {
   position: 'relative',
@@ -13,8 +13,6 @@ const SpringBoardContainer = styled('div', {
 });
 
 const SB = styled(animated.div, {
-  height: '400 px',
-  width: '400 px',
   border: 'solid 1px #1a1a1a',
   boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19)',
   borderRadius: '3px',
@@ -34,11 +32,7 @@ const SpringBoard: React.FC<SBProps> = (props) => {
   return (
     <SpringBoardContainer>
       <SB style={spring}>
-        {submittedWords.map((letters: string[], idx: number) => (
-          <div key={idx}>
-            <Word letters={letters} isCurrentWord={false} />
-          </div>
-        ))}
+        <WordMatrix submittedWords={submittedWords} spring={spring} />
       </SB>
     </SpringBoardContainer>
   );

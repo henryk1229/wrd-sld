@@ -22,7 +22,7 @@ const spellCheckWord = async (currentWord: string[]) => {
 const determineFirstLetter = (submittedWords: string[][]) => {
   const lastSubmittedWord = submittedWords[submittedWords.length - 1];
   const letter =
-    submittedWords.length < 1
+    submittedWords.length <= 1
       ? lastSubmittedWord[0]
       : lastSubmittedWord[lastSubmittedWord.length - 1];
   return letter;
