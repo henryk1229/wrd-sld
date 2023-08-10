@@ -20,15 +20,17 @@ const Word = (props: WordProps) => {
       duration: DURATION,
     },
   });
+
   return isCurrentWord ? (
     <>
-      {trails.map((style, idx) => {
+      {trails.map((spring, idx) => {
         return (
           <Tile
             key={idx}
             letter={letters[idx]}
             isCurrentWord={isCurrentWord}
-            style={style}
+            spring={spring}
+            isAnchorTile={idx === 0}
           />
         );
       })}
@@ -36,7 +38,12 @@ const Word = (props: WordProps) => {
   ) : (
     <>
       {letters.map((letter, idx) => (
-        <Tile key={idx} letter={letter} isCurrentWord={props.isCurrentWord} />
+        <Tile
+          key={idx}
+          letter={letter}
+          isCurrentWord={isCurrentWord}
+          isAnchorTile={idx === 0}
+        />
       ))}
     </>
   );
