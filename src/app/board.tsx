@@ -5,6 +5,8 @@ import SpringBoard from './spring-board';
 import { useShakeWord } from '../hooks/useShakeWord';
 import axios from 'axios';
 
+const WORD_LENGTH = 5;
+
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
@@ -41,22 +43,22 @@ const Board: React.FC = () => {
   const firstLetter = determineFirstLetter(submittedWords);
   const [currentWord, setCurrentWord] = useState<string[]>([firstLetter]);
 
-  // const { spring, rotateBoard } = useRotateBoard(submittedWords.length);
   const { shakeStyles, shakeWord } = useShakeWord();
 
   const handleSubmitWord = useCallback(async () => {
-    // TODO - spellcheck
-    const isValidWord = await spellCheckWord(currentWord);
-    if (isValidWord) {
-      const stringified = JSON.stringify([...submittedWords, currentWord]);
-      localStorage.setItem('submittedWords', stringified);
-      // rotateBoard(submittedWords.length + 1);
-      // next word should start with first letter of newly-submitted current word
-      const firstLetter = determineFirstLetter([
-        ...submittedWords,
-        currentWord,
-      ]);
-      return setCurrentWord([firstLetter]);
+    if (currentWord.length === WORD_LENGTH) {
+      const isValidWord = await spellCheckWord(currentWord);
+      if (isValidWord) {
+        const stringified = JSON.stringify([...submittedWords, currentWord]);
+        localStorage.setItem('submittedWords', stringified);
+        // rotateBoard(submittedWords.length + 1);
+        // next word should start with first letter of newly-submitted current word
+        const firstLetter = determineFirstLetter([
+          ...submittedWords,
+          currentWord,
+        ]);
+        return setCurrentWord([firstLetter]);
+      }
     }
     shakeWord();
     const firstLetter = currentWord[0];
@@ -89,10 +91,12 @@ const Board: React.FC = () => {
       if (!isLetterInput) {
         return handleWhiteSpaceInput(keyValue);
       }
-      // add the letter to the array
-      return setCurrentWord((currentWord) => currentWord.concat(keyValue));
+      if (currentWord.length < 5) {
+        // add the letter to the array
+        return setCurrentWord((currentWord) => currentWord.concat(keyValue));
+      }
     },
-    [handleWhiteSpaceInput]
+    [handleWhiteSpaceInput, currentWord]
   );
 
   return (
