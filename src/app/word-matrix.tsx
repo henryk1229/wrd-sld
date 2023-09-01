@@ -3,7 +3,6 @@ import { Spring } from '../hooks/useRotateBoard';
 
 interface SBProps {
   submittedWords: string[][];
-  spring: Spring;
 }
 
 const makeWordMatrix = (submittedWords: string[][]) => {
