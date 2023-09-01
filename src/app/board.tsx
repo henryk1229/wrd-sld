@@ -5,8 +5,6 @@ import SpringBoard from './spring-board';
 import { useShakeWord } from '../hooks/useShakeWord';
 import axios from 'axios';
 
-const WORD_LENGTH = 5;
-
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
@@ -47,7 +45,7 @@ const Board: React.FC = () => {
   const { shakeStyles, shakeWord } = useShakeWord();
 
   const handleSubmitWord = useCallback(async () => {
-    if (currentWord.length === WORD_LENGTH) {
+    if (!currentWord.find((el) => !el)) {
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
         const stringified = JSON.stringify([...submittedWords, currentWord]);
@@ -70,11 +68,18 @@ const Board: React.FC = () => {
   const handleWhiteSpaceInput = useCallback(
     (input: string) => {
       if (input === 'Backspace') {
+        // find idx of first empty string
+        const idx = currentWord.findIndex((el) => !el);
+        const newWord = currentWord.slice();
         // anchor tile cannot be deleted
-        const newWord =
-          currentWord.length > 1
-            ? currentWord.slice(0, currentWord.length - 1)
-            : currentWord;
+        if (idx > 1) {
+          // replace last letter with empty string to "delete" item from array
+          newWord[idx - 1] = '';
+        }
+        // we're deleting the last item in the array
+        if (idx === -1) {
+          newWord[newWord.length - 1] = '';
+        }
         return setCurrentWord(newWord);
       }
       if (input === 'Enter') {
