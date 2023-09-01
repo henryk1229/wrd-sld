@@ -1,5 +1,5 @@
 import { useTrail } from '@react-spring/web';
-import Tile from './tile';
+import WordCaddyTile from './word-caddy-tile';
 
 const DURATION = 100;
 
@@ -22,10 +22,9 @@ const WordCaddy: React.FC<WordCaddyProps> = ({ currentWord }) => {
     <div style={{ display: 'flex' }}>
       {trails.map((spring, idx) => {
         return (
-          <Tile
+          <WordCaddyTile
             key={idx}
             letter={currentWord[idx]}
-            isCurrentWord
             spring={spring}
             isAnchorTile={idx === 0}
           />
