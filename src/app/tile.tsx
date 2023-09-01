@@ -1,6 +1,5 @@
-import { animated } from '@react-spring/web';
+import { SpringValue, animated } from '@react-spring/web';
 import { styled } from '@stitches/react';
-import { Spring } from 'src/hooks/useRotateBoard';
 
 const sharedStyles = {
   inset: 0,
@@ -47,7 +46,9 @@ interface TileProps {
   letter: string;
   isCurrentWord: boolean;
   isAnchorTile: boolean;
-  spring?: Spring;
+  spring?: {
+    transform: SpringValue<string>;
+  };
 }
 
 const Tile = (props: TileProps) => {

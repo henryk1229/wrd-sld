@@ -41,7 +41,8 @@ const Board: React.FC = () => {
   const submittedWords: string[][] = JSON.parse(storedWords);
 
   const firstLetter = determineFirstLetter(submittedWords);
-  const [currentWord, setCurrentWord] = useState<string[]>([firstLetter]);
+  const initialWord = [firstLetter, '', '', '', ''];
+  const [currentWord, setCurrentWord] = useState<string[]>(initialWord);
 
   const { shakeStyles, shakeWord } = useShakeWord();
 
@@ -57,12 +58,12 @@ const Board: React.FC = () => {
           ...submittedWords,
           currentWord,
         ]);
-        return setCurrentWord([firstLetter]);
+        return setCurrentWord([firstLetter, '', '', '', '']);
       }
     }
     shakeWord();
     const firstLetter = currentWord[0];
-    return setCurrentWord([firstLetter]);
+    return setCurrentWord([firstLetter, '', '', '', '']);
   }, [currentWord, submittedWords, shakeWord]);
 
   // handle non-letter input
@@ -91,9 +92,14 @@ const Board: React.FC = () => {
       if (!isLetterInput) {
         return handleWhiteSpaceInput(keyValue);
       }
-      if (currentWord.length < 5) {
+      if (currentWord.length <= 5) {
         // add the letter to the array
-        return setCurrentWord((currentWord) => currentWord.concat(keyValue));
+        return setCurrentWord((currentWord) => {
+          const idx = currentWord.findIndex((el) => !el);
+          const newWord = currentWord.slice();
+          newWord[idx] = keyValue;
+          return newWord;
+        });
       }
     },
     [handleWhiteSpaceInput, currentWord]
