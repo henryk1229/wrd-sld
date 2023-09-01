@@ -2,8 +2,7 @@ import { styled } from '@stitches/react';
 import { useCallback, useState } from 'react';
 import CurrentWord from './current-word';
 import SpringBoard from './spring-board';
-import { useRotateBoard } from 'src/hooks/useRotateBoard';
-import { useShakeWord } from 'src/hooks/useShakeWord';
+import { useShakeWord } from '../hooks/useShakeWord';
 import axios from 'axios';
 
 const URL = 'http://localhost:3000/spellcheck';
@@ -42,7 +41,7 @@ const Board: React.FC = () => {
   const firstLetter = determineFirstLetter(submittedWords);
   const [currentWord, setCurrentWord] = useState<string[]>([firstLetter]);
 
-  const { spring, rotateBoard } = useRotateBoard(submittedWords.length);
+  // const { spring, rotateBoard } = useRotateBoard(submittedWords.length);
   const { shakeStyles, shakeWord } = useShakeWord();
 
   const handleSubmitWord = useCallback(async () => {
@@ -51,7 +50,7 @@ const Board: React.FC = () => {
     if (isValidWord) {
       const stringified = JSON.stringify([...submittedWords, currentWord]);
       localStorage.setItem('submittedWords', stringified);
-      rotateBoard(submittedWords.length + 1);
+      // rotateBoard(submittedWords.length + 1);
       // next word should start with first letter of newly-submitted current word
       const firstLetter = determineFirstLetter([
         ...submittedWords,
@@ -62,7 +61,7 @@ const Board: React.FC = () => {
     shakeWord();
     const firstLetter = currentWord[0];
     return setCurrentWord([firstLetter]);
-  }, [currentWord, submittedWords, rotateBoard, shakeWord]);
+  }, [currentWord, submittedWords, shakeWord]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
@@ -99,7 +98,7 @@ const Board: React.FC = () => {
   return (
     <BoardContainer className="boardWrapper">
       <div autoFocus={true} className="boardWrapper">
-        <SpringBoard submittedWords={submittedWords} spring={spring} />
+        <SpringBoard submittedWords={submittedWords} />
       </div>
       <CurrentWord
         currentWord={currentWord}
