@@ -2,6 +2,10 @@
 import { styled } from '@stitches/react';
 import Board from './board';
 import Header from './header';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+const URL = 'http://localhost:3000/';
 
 const AppContainer = styled('div', {
   width: '100%',
@@ -13,24 +17,38 @@ const AppContainer = styled('div', {
   backgroundColor: '#F3EFE0',
 });
 
-const mockInitialWordFetch = () => {
+const setWordInStorage = (initialWord: string[]) => {
   const submittedWords = localStorage.getItem('submittedWords');
-  if (!submittedWords) {
-    // words are an array of letters
-    const dummyWord = ['m', 'e', 'r', 'i', 't'];
+  if (!submittedWords && initialWord.length > 0) {
     // submitted words is an array of word arrays
-    localStorage.setItem('submittedWords', JSON.stringify([dummyWord]));
+    localStorage.setItem('submittedWords', JSON.stringify([initialWord]));
   }
 };
 
+const fetchInitialWord = async () => {
+  return await axios({
+    method: 'get',
+    url: URL,
+  }).then((result) => result.data.randomWord);
+};
+
 export function App() {
-  // TODO - generate + serve first word
-  mockInitialWordFetch();
+  // TODO - keep initial word and fetched word in sync
+  const [initialWord, setInitialWord] = useState<string[]>([]);
+  setWordInStorage(initialWord);
+
+  useEffect(() => {
+    fetchInitialWord().then((word) => {
+      setInitialWord(word);
+    });
+  }, []);
+
+  const shouldMountBoard = initialWord.length > 0;
 
   return (
     <AppContainer>
       <Header />
-      <Board />
+      {shouldMountBoard && <Board />}
     </AppContainer>
   );
 }
