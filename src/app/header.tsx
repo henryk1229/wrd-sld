@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
-import Word from './word';
+import WordCaddy from './word-caddy';
 
 const APP_NAME = ['w', 'o', 'r', 'd', 's', 'a', 'l', 'a', 'd'];
 
@@ -27,9 +27,7 @@ const Chip = styled('div', {
 
 const Header: React.FC = () => (
   <HeaderContainer className="header">
-    <div style={{ display: 'flex' }}>
-      <Word letters={APP_NAME} isCurrentWord />
-    </div>
+    <WordCaddy currentWord={APP_NAME} />
     <Chip>by hhk</Chip>
   </HeaderContainer>
 );
