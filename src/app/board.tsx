@@ -4,18 +4,24 @@ import CurrentWord from './current-word';
 import SpringBoard from './spring-board';
 import { useRotateBoard } from 'src/hooks/useRotateBoard';
 import { useShakeWord } from 'src/hooks/useShakeWord';
+import axios from 'axios';
+
+const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
   height: '640px',
   width: '800px',
 });
 
-const spellCheckWord = async (currentWord: string[]) => {
-  // TODO - hook up dictionary
-  if (currentWord.length === 0 || currentWord.includes('h')) {
-    return false;
-  }
-  return true;
+const spellCheckWord = async (wordArray: string[]) => {
+  const submittedWord = wordArray.join('');
+  return await axios({
+    method: 'POST',
+    url: URL,
+    data: {
+      submittedWord,
+    },
+  }).then((result) => result.data.valid);
 };
 
 // currentWord should start with first letter of last submittedWord
