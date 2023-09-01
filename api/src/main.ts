@@ -18,7 +18,6 @@ app.get('/', (_req, res) => {
 });
 
 app.post('/spellcheck', (req, res) => {
-  console.log('REQQQQQQ', req.body);
   const submittedWord = req.body.submittedWord;
   const isValidWord = spellcheckWord(submittedWord);
   res.send({ valid: isValidWord });
