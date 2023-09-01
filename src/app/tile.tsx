@@ -15,18 +15,10 @@ const sharedStyles = {
 };
 
 const sharedSpringboardStyles = {
-  width: '24px',
-  height: '32px',
+  width: '32px',
+  height: '40px',
   margin: '8px',
 };
-
-const CurrentWordTile = styled(animated.div, {
-  ...sharedStyles,
-  width: '48px',
-  height: '56px',
-  margin: '8px',
-  backgroundColor: '#9A3334',
-});
 
 const SpringBoardTile = styled(animated.div, {
   ...sharedStyles,
@@ -52,21 +44,8 @@ interface TileProps {
 }
 
 const Tile = (props: TileProps) => {
-  const { letter, isCurrentWord, spring, isAnchorTile } = props;
-  return isCurrentWord ? (
-    <CurrentWordTile
-      style={{
-        ...spring,
-        ...(isAnchorTile
-          ? { color: '#FFCC00' }
-          : {
-              color: '#fafafa',
-            }),
-      }}
-    >
-      {letter?.toUpperCase()}
-    </CurrentWordTile>
-  ) : letter ? (
+  const { letter } = props;
+  return letter ? (
     <SpringBoardTile>{letter.toUpperCase()}</SpringBoardTile>
   ) : (
     <EmptyTile />

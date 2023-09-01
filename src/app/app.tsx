@@ -12,7 +12,6 @@ const AppContainer = styled('div', {
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: '#F3EFE0',
 });

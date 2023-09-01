@@ -10,7 +10,7 @@ const WORD_LENGTH = 5;
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
-  height: '640px',
+  height: '560px',
   width: '800px',
 });
 
@@ -106,8 +106,11 @@ const Board: React.FC = () => {
   );
 
   return (
-    <BoardContainer className="boardWrapper">
-      <div autoFocus={true} className="boardWrapper">
+    <BoardContainer className="boardContainer">
+      <div
+        className="boardWrapper"
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
         <SpringBoard submittedWords={submittedWords} />
       </div>
       <CurrentWord

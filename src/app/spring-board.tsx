@@ -3,17 +3,18 @@ import { animated } from '@react-spring/web';
 import WordMatrix from './word-matrix';
 
 const SpringBoardContainer = styled('div', {
-  position: 'relative',
-  height: '460px',
-  width: '720px',
+  height: '360px',
+  width: '360px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
 });
 
 const SB = styled(animated.div, {
-  border: 'solid 1px #1a1a1a',
-  boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19)',
+  // border: 'solid 1px #1a1a1a',
+
+  boxShadow:
+    '2px 4px 2px 4px rgba(0, 0, 0, 0.2), 2px 4px 2px 4px rgba(0, 0, 0, 0.19)',
   borderRadius: '3px',
   padding: 4,
   margin: 4,
