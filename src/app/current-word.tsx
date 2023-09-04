@@ -1,17 +1,18 @@
 import { styled } from '@stitches/react';
 import { SpringValue, animated } from '@react-spring/web';
 import { useWindowListener } from '../hooks/useWindowListener';
-import Word from './word';
+import WordCaddy from './word-caddy';
 
 const CurrentWordContainer = styled(animated.div, {
   height: '84px',
-  width: '720px',
+  width: '400px',
   display: 'flex',
   margin: '16px',
-  border: 'solid 1px #1a1a1a',
-  boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19)',
+  boxShadow:
+    '2px 4px 2px 4px rgba(0, 0, 0, 0.2), 2px 4px 2px 4px rgba(0, 0, 0, 0.19)',
   borderRadius: '3px',
   alignItems: 'center',
+  justifyContent: 'space-evenly',
 });
 
 interface BoardProps {
@@ -22,9 +23,11 @@ interface BoardProps {
   handleKeyboardInput: (key: string, code: string) => void;
 }
 
-const CurrentWord: React.FC<BoardProps> = (props) => {
-  const { handleKeyboardInput, currentWord, shakeStyles } = props;
-
+const CurrentWord: React.FC<BoardProps> = ({
+  currentWord,
+  shakeStyles,
+  handleKeyboardInput,
+}) => {
   // listen for keyboard input
   useWindowListener('keyup', (e: Event) => {
     if (
@@ -38,19 +41,18 @@ const CurrentWord: React.FC<BoardProps> = (props) => {
     }
   });
 
-  // TODO -
-  // - anchor tiles
-  // - add empty tile to prompt user to type?
   return (
-    <CurrentWordContainer
-      autoFocus={true}
-      className="currentWord"
-      style={{
-        ...shakeStyles,
-      }}
-    >
-      <Word letters={currentWord} isCurrentWord />
-    </CurrentWordContainer>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <CurrentWordContainer
+        autoFocus={true}
+        className="currentWord"
+        style={{
+          ...shakeStyles,
+        }}
+      >
+        <WordCaddy currentWord={currentWord} />
+      </CurrentWordContainer>
+    </div>
   );
 };
 

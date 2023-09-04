@@ -8,7 +8,7 @@ import axios from 'axios';
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
-  height: '640px',
+  height: '560px',
   width: '800px',
 });
 
@@ -39,39 +39,47 @@ const Board: React.FC = () => {
   const submittedWords: string[][] = JSON.parse(storedWords);
 
   const firstLetter = determineFirstLetter(submittedWords);
-  const [currentWord, setCurrentWord] = useState<string[]>([firstLetter]);
+  const initialWord = [firstLetter, '', '', '', ''];
+  const [currentWord, setCurrentWord] = useState<string[]>(initialWord);
 
-  // const { spring, rotateBoard } = useRotateBoard(submittedWords.length);
   const { shakeStyles, shakeWord } = useShakeWord();
 
   const handleSubmitWord = useCallback(async () => {
-    // TODO - spellcheck
-    const isValidWord = await spellCheckWord(currentWord);
-    if (isValidWord) {
-      const stringified = JSON.stringify([...submittedWords, currentWord]);
-      localStorage.setItem('submittedWords', stringified);
-      // rotateBoard(submittedWords.length + 1);
-      // next word should start with first letter of newly-submitted current word
-      const firstLetter = determineFirstLetter([
-        ...submittedWords,
-        currentWord,
-      ]);
-      return setCurrentWord([firstLetter]);
+    const blankTileIdx = currentWord.findIndex((el) => !el);
+    if (blankTileIdx === -1) {
+      const isValidWord = await spellCheckWord(currentWord);
+      if (isValidWord) {
+        const stringified = JSON.stringify([...submittedWords, currentWord]);
+        localStorage.setItem('submittedWords', stringified);
+        // next word should start with first letter of newly-submitted current word
+        const firstLetter = determineFirstLetter([
+          ...submittedWords,
+          currentWord,
+        ]);
+        return setCurrentWord([firstLetter, '', '', '', '']);
+      }
     }
     shakeWord();
     const firstLetter = currentWord[0];
-    return setCurrentWord([firstLetter]);
+    return setCurrentWord([firstLetter, '', '', '', '']);
   }, [currentWord, submittedWords, shakeWord]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
     (input: string) => {
       if (input === 'Backspace') {
+        // find idx of first empty string
+        const idx = currentWord.findIndex((el) => !el);
+        const newWord = currentWord.slice();
         // anchor tile cannot be deleted
-        const newWord =
-          currentWord.length > 1
-            ? currentWord.slice(0, currentWord.length - 1)
-            : currentWord;
+        if (idx > 1) {
+          // replace last letter with empty string to "delete" item from array
+          newWord[idx - 1] = '';
+        }
+        // we're deleting the last item in the array
+        if (idx === -1) {
+          newWord[newWord.length - 1] = '';
+        }
         return setCurrentWord(newWord);
       }
       if (input === 'Enter') {
@@ -89,15 +97,25 @@ const Board: React.FC = () => {
       if (!isLetterInput) {
         return handleWhiteSpaceInput(keyValue);
       }
-      // add the letter to the array
-      return setCurrentWord((currentWord) => currentWord.concat(keyValue));
+      if (currentWord.length <= 5) {
+        // add the letter to the array
+        return setCurrentWord((currentWord) => {
+          const idx = currentWord.findIndex((el) => !el);
+          const newWord = currentWord.slice();
+          newWord[idx] = keyValue;
+          return newWord;
+        });
+      }
     },
-    [handleWhiteSpaceInput]
+    [handleWhiteSpaceInput, currentWord]
   );
 
   return (
-    <BoardContainer className="boardWrapper">
-      <div autoFocus={true} className="boardWrapper">
+    <BoardContainer className="boardContainer">
+      <div
+        className="boardWrapper"
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
         <SpringBoard submittedWords={submittedWords} />
       </div>
       <CurrentWord

@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
-import Word from './word';
+import WordCaddy from './word-caddy';
 
 const APP_NAME = ['w', 'o', 'r', 'd', 's', 'a', 'l', 'a', 'd'];
 
@@ -9,8 +9,9 @@ const HeaderContainer = styled(animated.div, {
   width: '960px',
   display: 'flex',
   margin: '16px',
-  border: 'solid 1px #1a1a1a',
-  boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19)',
+  // border: 'solid 1px #1a1a1a',
+  boxShadow:
+    '2px 4px 2px 4px rgba(0, 0, 0, 0.2), 2px 4px 2px 4px rgba(0, 0, 0, 0.19)',
   borderRadius: '3px',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -27,9 +28,7 @@ const Chip = styled('div', {
 
 const Header: React.FC = () => (
   <HeaderContainer className="header">
-    <div style={{ display: 'flex' }}>
-      <Word letters={APP_NAME} isCurrentWord />
-    </div>
+    <WordCaddy currentWord={APP_NAME} />
     <Chip>by hhk</Chip>
   </HeaderContainer>
 );

@@ -1,5 +1,4 @@
 import Word from './word';
-import { Spring } from '../hooks/useRotateBoard';
 
 interface SBProps {
   submittedWords: string[][];
