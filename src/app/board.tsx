@@ -45,12 +45,12 @@ const Board: React.FC = () => {
   const { shakeStyles, shakeWord } = useShakeWord();
 
   const handleSubmitWord = useCallback(async () => {
-    if (!currentWord.find((el) => !el)) {
+    const blankTileIdx = currentWord.findIndex((el) => !el);
+    if (blankTileIdx === -1) {
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
         const stringified = JSON.stringify([...submittedWords, currentWord]);
         localStorage.setItem('submittedWords', stringified);
-        // rotateBoard(submittedWords.length + 1);
         // next word should start with first letter of newly-submitted current word
         const firstLetter = determineFirstLetter([
           ...submittedWords,

@@ -5,7 +5,7 @@ import WordCaddy from './word-caddy';
 
 const CurrentWordContainer = styled(animated.div, {
   height: '84px',
-  width: '560px',
+  width: '400px',
   display: 'flex',
   margin: '16px',
   boxShadow:
