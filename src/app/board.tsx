@@ -4,12 +4,13 @@ import CurrentWord from './current-word';
 import SpringBoard from './spring-board';
 import { useShakeWord } from '../hooks/useShakeWord';
 import axios from 'axios';
+import LettersBank from './letters-bank';
 
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
   height: '560px',
-  width: '800px',
+  width: '1000px',
 });
 
 const spellCheckWord = async (wordArray: string[]) => {
@@ -34,9 +35,9 @@ const determineFirstLetter = (submittedWords: string[][]) => {
 };
 
 const Board: React.FC = () => {
-  // keep board orientation in sync with submitted words
   const storedWords = localStorage.getItem('submittedWords') ?? '[]';
   const submittedWords: string[][] = JSON.parse(storedWords);
+  const usedLetters = submittedWords.flat();
 
   const firstLetter = determineFirstLetter(submittedWords);
   const initialWord = [firstLetter, '', '', '', ''];
@@ -46,7 +47,11 @@ const Board: React.FC = () => {
 
   const handleSubmitWord = useCallback(async () => {
     const blankTileIdx = currentWord.findIndex((el) => !el);
-    if (blankTileIdx === -1) {
+    // check that the current word contains unique letters
+    const nonUniqueLetters = currentWord.map((letter, idx) =>
+      idx === 0 ? false : usedLetters.includes(letter)
+    );
+    if (blankTileIdx === -1 && !nonUniqueLetters.includes(true)) {
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
         const stringified = JSON.stringify([...submittedWords, currentWord]);
@@ -62,7 +67,7 @@ const Board: React.FC = () => {
     shakeWord();
     const firstLetter = currentWord[0];
     return setCurrentWord([firstLetter, '', '', '', '']);
-  }, [currentWord, submittedWords, shakeWord]);
+  }, [currentWord, submittedWords, usedLetters, shakeWord]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
@@ -114,9 +119,11 @@ const Board: React.FC = () => {
     <BoardContainer className="boardContainer">
       <div
         className="boardWrapper"
-        style={{ display: 'flex', justifyContent: 'center' }}
+        style={{ display: 'flex', justifyContent: 'space-evenly' }}
       >
+        <LettersBank usedLetters={usedLetters} />
         <SpringBoard submittedWords={submittedWords} />
+        <div style={{ width: '320px' }} />
       </div>
       <CurrentWord
         currentWord={currentWord}
