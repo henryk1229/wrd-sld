@@ -34,6 +34,8 @@ const determineFirstLetter = (submittedWords: string[][]) => {
   return letter;
 };
 
+// TODO - useContext hook for used letters
+
 const Board: React.FC = () => {
   const storedWords = localStorage.getItem('submittedWords') ?? '[]';
   const submittedWords: string[][] = JSON.parse(storedWords);
