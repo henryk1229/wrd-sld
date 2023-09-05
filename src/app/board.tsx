@@ -39,7 +39,7 @@ const determineFirstLetter = (submittedWords: string[][]) => {
 const Board: React.FC = () => {
   const storedWords = localStorage.getItem('submittedWords') ?? '[]';
   const submittedWords: string[][] = JSON.parse(storedWords);
-  const usedLetters = submittedWords.flat();
+  const submittedLetters = submittedWords.flat();
 
   const firstLetter = determineFirstLetter(submittedWords);
   const initialWord = [firstLetter, '', '', '', ''];
@@ -49,11 +49,18 @@ const Board: React.FC = () => {
 
   const handleSubmitWord = useCallback(async () => {
     const blankTileIdx = currentWord.findIndex((el) => !el);
-    // check that the current word contains unique letters
+    // check that letters in current word haven't been used
     const nonUniqueLetters = currentWord.map((letter, idx) =>
-      idx === 0 ? false : usedLetters.includes(letter)
+      idx === 0 ? false : submittedLetters.includes(letter)
     );
-    if (blankTileIdx === -1 && !nonUniqueLetters.includes(true)) {
+    // check that current word has unique letters
+    const currentWordRepeatsLetters =
+      new Set(currentWord).size !== currentWord.length;
+    if (
+      blankTileIdx === -1 &&
+      !nonUniqueLetters.includes(true) &&
+      !currentWordRepeatsLetters
+    ) {
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
         const stringified = JSON.stringify([...submittedWords, currentWord]);
@@ -69,7 +76,7 @@ const Board: React.FC = () => {
     shakeWord();
     const firstLetter = currentWord[0];
     return setCurrentWord([firstLetter, '', '', '', '']);
-  }, [currentWord, submittedWords, usedLetters, shakeWord]);
+  }, [currentWord, submittedWords, submittedLetters, shakeWord]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
@@ -116,6 +123,8 @@ const Board: React.FC = () => {
     },
     [handleWhiteSpaceInput, currentWord]
   );
+
+  const usedLetters = submittedLetters.concat(currentWord.flat());
 
   return (
     <BoardContainer className="boardContainer">
