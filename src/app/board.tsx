@@ -4,12 +4,13 @@ import CurrentWord from './current-word';
 import SpringBoard from './spring-board';
 import { useShakeWord } from '../hooks/useShakeWord';
 import axios from 'axios';
+import LettersBank from './letters-bank';
 
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
   height: '560px',
-  width: '800px',
+  width: '1000px',
 });
 
 const spellCheckWord = async (wordArray: string[]) => {
@@ -33,10 +34,12 @@ const determineFirstLetter = (submittedWords: string[][]) => {
   return letter;
 };
 
+// TODO - useContext hook for used letters
+
 const Board: React.FC = () => {
-  // keep board orientation in sync with submitted words
   const storedWords = localStorage.getItem('submittedWords') ?? '[]';
   const submittedWords: string[][] = JSON.parse(storedWords);
+  const submittedLetters = submittedWords.flat();
 
   const firstLetter = determineFirstLetter(submittedWords);
   const initialWord = [firstLetter, '', '', '', ''];
@@ -46,7 +49,18 @@ const Board: React.FC = () => {
 
   const handleSubmitWord = useCallback(async () => {
     const blankTileIdx = currentWord.findIndex((el) => !el);
-    if (blankTileIdx === -1) {
+    // check that letters in current word haven't been used
+    const nonUniqueLetters = currentWord.some((letter, idx) =>
+      idx === 0 ? false : submittedLetters.includes(letter)
+    );
+    // check that current word has unique letters
+    const currentWordRepeatsLetters =
+      new Set(currentWord).size !== currentWord.length;
+    if (
+      blankTileIdx === -1 &&
+      !nonUniqueLetters &&
+      !currentWordRepeatsLetters
+    ) {
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
         const stringified = JSON.stringify([...submittedWords, currentWord]);
@@ -62,7 +76,7 @@ const Board: React.FC = () => {
     shakeWord();
     const firstLetter = currentWord[0];
     return setCurrentWord([firstLetter, '', '', '', '']);
-  }, [currentWord, submittedWords, shakeWord]);
+  }, [currentWord, submittedWords, submittedLetters, shakeWord]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
@@ -110,13 +124,17 @@ const Board: React.FC = () => {
     [handleWhiteSpaceInput, currentWord]
   );
 
+  const usedLetters = submittedLetters.concat(currentWord.flat());
+
   return (
     <BoardContainer className="boardContainer">
       <div
         className="boardWrapper"
-        style={{ display: 'flex', justifyContent: 'center' }}
+        style={{ display: 'flex', justifyContent: 'space-evenly' }}
       >
+        <LettersBank usedLetters={usedLetters} />
         <SpringBoard submittedWords={submittedWords} />
+        <div style={{ width: '320px' }} />
       </div>
       <CurrentWord
         currentWord={currentWord}
