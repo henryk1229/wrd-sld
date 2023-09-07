@@ -50,7 +50,7 @@ const Board: React.FC = () => {
   const handleSubmitWord = useCallback(async () => {
     const blankTileIdx = currentWord.findIndex((el) => !el);
     // check that letters in current word haven't been used
-    const nonUniqueLetters = currentWord.map((letter, idx) =>
+    const nonUniqueLetters = currentWord.some((letter, idx) =>
       idx === 0 ? false : submittedLetters.includes(letter)
     );
     // check that current word has unique letters
@@ -58,7 +58,7 @@ const Board: React.FC = () => {
       new Set(currentWord).size !== currentWord.length;
     if (
       blankTileIdx === -1 &&
-      !nonUniqueLetters.includes(true) &&
+      !nonUniqueLetters &&
       !currentWordRepeatsLetters
     ) {
       const isValidWord = await spellCheckWord(currentWord);

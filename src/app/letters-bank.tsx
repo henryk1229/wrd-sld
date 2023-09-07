@@ -29,37 +29,51 @@ const makeVowelsMatrix = () => {
   return ['a', 'e', 'i', 'o', 'u'];
 };
 
-// This component rotates board when a word is submitted
 const LettersBank: React.FC<Props> = ({ usedLetters }) => {
   const groupedConsonants = useMemo(() => makeConsonantsMatrix(), []);
   const vowels = useMemo(() => makeVowelsMatrix(), []);
+  const availableConsonants = groupedConsonants.map((group) =>
+    group.filter((letter) => !usedLetters.includes(letter))
+  );
+  const availableVowels = vowels.filter(
+    (vowel) => !usedLetters.includes(vowel)
+  );
   return (
     <LettersBankContainer>
-      <div style={{ display: 'flex', margin: '8px' }}>
-        {vowels.map((vowel) => (
-          <LettersBankTile
-            key={`letter-${vowel}`}
-            letter={vowel}
-            isUsedLetter={usedLetters.includes(vowel)}
-          />
-        ))}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '8px',
+          width: '180px',
+        }}
+      >
+        <div style={{ display: 'flex', margin: '2px' }}>
+          {availableVowels.map((vowel) => (
+            <LettersBankTile
+              key={`letter-${vowel}`}
+              letter={vowel}
+              isUsedLetter={usedLetters.includes(vowel)}
+            />
+          ))}
+        </div>
+        {availableConsonants.map((consonants) => {
+          return (
+            <div
+              style={{ display: 'flex', margin: '2px' }}
+              key={`array-${consonants[0]}`}
+            >
+              {consonants.map((letter) => (
+                <LettersBankTile
+                  key={`letter-${letter}`}
+                  letter={letter}
+                  isUsedLetter={usedLetters.includes(letter)}
+                />
+              ))}
+            </div>
+          );
+        })}
       </div>
-      {groupedConsonants.map((consonants) => {
-        return (
-          <div
-            style={{ display: 'flex', margin: '2px' }}
-            key={`array-${consonants[0]}`}
-          >
-            {consonants.map((letter) => (
-              <LettersBankTile
-                key={`letter-${letter}`}
-                letter={letter}
-                isUsedLetter={usedLetters.includes(letter)}
-              />
-            ))}
-          </div>
-        );
-      })}
     </LettersBankContainer>
   );
 };
