@@ -48,17 +48,19 @@ const makeWordMatrix = (submittedWords: string[][]) => {
   return [upperBound, ...innerArrays, lowerBound];
 };
 
-// This component rotates board when a word is submitted
+// This component translates the submittedWords[][] prop into a square game board
 const WordMatrix: React.FC<SBProps> = ({ submittedWords }) => {
   const wordMatrix = makeWordMatrix(submittedWords);
 
   return (
     <>
       {wordMatrix.map((array: string[], wordIdx: number) => {
+        // first and last words in array will be upper and lower bounds of board
         const isUpperOrLowerBound = [0, 4].includes(wordIdx);
         return (
           <div style={{ display: 'flex' }} key={wordIdx}>
             {array.map((letter, idx) => {
+              // first and last letters in array will be right and left bounds of board
               const isBorderTile = isUpperOrLowerBound || [0, 4].includes(idx);
               return (
                 <Tile
