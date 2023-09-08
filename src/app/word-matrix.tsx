@@ -62,12 +62,13 @@ const WordMatrix: React.FC<SBProps> = ({ submittedWords }) => {
             {array.map((letter, idx) => {
               // first and last letters in array will be right and left bounds of board
               const isBorderTile = isUpperOrLowerBound || [0, 4].includes(idx);
+              const isAnchorTile = isUpperOrLowerBound && [0, 4].includes(idx);
               return (
                 <Tile
                   key={idx}
                   letter={letter}
                   isBorderTile={isBorderTile}
-                  isAnchorTile={idx === 0}
+                  isAnchorTile={isAnchorTile}
                 />
               );
             })}

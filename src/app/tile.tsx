@@ -46,9 +46,19 @@ interface Props {
   };
 }
 
-const Tile: React.FC<Props> = ({ letter, isBorderTile }) => {
+const Tile: React.FC<Props> = ({ letter, isBorderTile, isAnchorTile }) => {
   return letter ? (
-    <SpringBoardTile>{letter.toUpperCase()}</SpringBoardTile>
+    <SpringBoardTile
+      style={{
+        ...(isAnchorTile
+          ? { color: '#FFCC00' }
+          : {
+              color: '#fafafa',
+            }),
+      }}
+    >
+      {letter.toUpperCase()}
+    </SpringBoardTile>
   ) : isBorderTile ? (
     <BorderTile />
   ) : (
