@@ -1,4 +1,4 @@
-import Word from './word';
+import Tile from './tile';
 
 interface SBProps {
   submittedWords: string[][];
@@ -49,18 +49,29 @@ const makeWordMatrix = (submittedWords: string[][]) => {
 };
 
 // This component rotates board when a word is submitted
-const WordMatrix: React.FC<SBProps> = (props) => {
-  const { submittedWords } = props;
-
+const WordMatrix: React.FC<SBProps> = ({ submittedWords }) => {
   const wordMatrix = makeWordMatrix(submittedWords);
 
   return (
     <>
-      {wordMatrix.map((array: string[], idx: number) => (
-        <div style={{ display: 'flex' }} key={idx}>
-          <Word letters={array} isCurrentWord={false} />
-        </div>
-      ))}
+      {wordMatrix.map((array: string[], wordIdx: number) => {
+        const isUpperOrLowerBound = [0, 4].includes(wordIdx);
+        return (
+          <div style={{ display: 'flex' }} key={wordIdx}>
+            {array.map((letter, idx) => {
+              const isBorderTile = isUpperOrLowerBound || [0, 4].includes(idx);
+              return (
+                <Tile
+                  key={idx}
+                  letter={letter}
+                  isBorderTile={isBorderTile}
+                  isAnchorTile={idx === 0}
+                />
+              );
+            })}
+          </div>
+        );
+      })}
     </>
   );
 };
