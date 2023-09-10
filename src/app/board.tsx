@@ -5,6 +5,7 @@ import SpringBoard from './spring-board';
 import { useShakeWord } from '../hooks/useShakeWord';
 import axios from 'axios';
 import LettersBank from './letters-bank';
+import EndGameModal from './end-game-modal';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -164,7 +165,10 @@ const Board: React.FC = () => {
       if (!isLetterInput) {
         return handleWhiteSpaceInput(keyValue);
       }
-      if (currentWord.length <= 5 && !submittedLetters.includes(keyValue)) {
+      if (submittedLetters.includes(keyValue)) {
+        return shakeWord();
+      }
+      if (currentWord.length <= 5) {
         // add the letter to the array
         return setCurrentWord((currentWord) => {
           const idx = currentWord.findIndex((el) => !el);
@@ -174,7 +178,7 @@ const Board: React.FC = () => {
         });
       }
     },
-    [handleWhiteSpaceInput, currentWord, submittedLetters]
+    [handleWhiteSpaceInput, currentWord, submittedLetters, shakeWord]
   );
 
   const usedLetters = submittedLetters.concat(currentWord.flat());
@@ -192,7 +196,12 @@ const Board: React.FC = () => {
       <CurrentWord
         currentWord={currentWord}
         shakeStyles={shakeStyles}
+        isLastWord={isLastTurn}
         handleKeyboardInput={handleKeyboardInput}
+      />
+      <EndGameModal
+        open={shouldEndGame}
+        onClose={() => setShouldEndGame(false)}
       />
     </BoardContainer>
   );
