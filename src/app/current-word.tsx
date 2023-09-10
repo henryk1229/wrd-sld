@@ -20,12 +20,14 @@ interface BoardProps {
   shakeStyles: {
     x: SpringValue<number>;
   };
+  isLastWord: boolean;
   handleKeyboardInput: (key: string, code: string) => void;
 }
 
 const CurrentWord: React.FC<BoardProps> = ({
   currentWord,
   shakeStyles,
+  isLastWord,
   handleKeyboardInput,
 }) => {
   // listen for keyboard input
@@ -50,7 +52,7 @@ const CurrentWord: React.FC<BoardProps> = ({
           ...shakeStyles,
         }}
       >
-        <WordCaddy currentWord={currentWord} />
+        <WordCaddy currentWord={currentWord} isLastWord={isLastWord} />
       </CurrentWordContainer>
     </div>
   );
