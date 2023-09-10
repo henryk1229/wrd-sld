@@ -28,6 +28,9 @@ const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
 // currentWord should start with first letter of last submittedWord
 const determineFirstLetter = (submittedWords: string[][]) => {
   const lastSubmittedWord = submittedWords[submittedWords.length - 1];
+  if (!lastSubmittedWord) {
+    return '';
+  }
   const letter =
     submittedWords.length <= 1
       ? lastSubmittedWord[0]
@@ -77,9 +80,12 @@ const checkSubmitConditions = ({
   };
 };
 
-// TODO - useContext hook for used letters
+interface Props {
+  rootWord: string[];
+}
 
-const Board: React.FC = () => {
+// TODO - submittedWords = [rootWord, storedWords]
+const Board: React.FC<Props> = ({ rootWord }) => {
   // handle end game logic
   const [shouldEndGame, setShouldEndGame] = useState<boolean>(false);
 
@@ -90,11 +96,18 @@ const Board: React.FC = () => {
 
   const isLastTurn = submittedWords.length === 3;
 
+  console.log({
+    rootWord,
+    submittedWords,
+  });
+
   // initialize currentWord from storedWords
   const firstLetter = determineFirstLetter(submittedWords);
   const lastLetter = isLastTurn ? submittedWords[0][4] : '';
   const initialWord = [firstLetter, '', '', '', lastLetter];
   const [currentWord, setCurrentWord] = useState<string[]>(initialWord);
+
+  console.log('currWord', currentWord, 'submitted', submittedWords);
 
   // springs for animations
   const { shakeStyles, shakeWord } = useShakeWord();

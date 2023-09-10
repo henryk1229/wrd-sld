@@ -16,9 +16,10 @@ const AppContainer = styled('div', {
   backgroundColor: '#F3EFE0',
 });
 
+// TODO - rm after db is set up
 const setWordInStorage = (initialWord: string[]) => {
-  const submittedWords = localStorage.getItem('submittedWords');
-  if (!submittedWords && initialWord.length > 0) {
+  // const submittedWords = localStorage.getItem('submittedWords');
+  if (initialWord.length > 0) {
     // submitted words is an array of word arrays
     localStorage.setItem('submittedWords', JSON.stringify([initialWord]));
   }
@@ -42,12 +43,10 @@ export function App() {
     });
   }, []);
 
-  const shouldMountBoard = initialWord.length > 0;
-
   return (
     <AppContainer>
       <Header />
-      {shouldMountBoard && <Board />}
+      <Board rootWord={initialWord} />
     </AppContainer>
   );
 }

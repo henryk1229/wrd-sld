@@ -7,6 +7,17 @@ interface SBProps {
 const makeWordMatrix = (submittedWords: string[][]) => {
   const [firstWord, secondWord, thirdWord, fourthWord] = submittedWords;
 
+  // we haven't fetched first word yet
+  if (!firstWord) {
+    return [
+      ['', '', '', '', ''],
+      ['', '', '', '', ''],
+      ['', '', '', '', ''],
+      ['', '', '', '', ''],
+      ['', '', '', '', ''],
+    ];
+  }
+
   const upperBound = secondWord
     ? secondWord
     : Array.from(firstWord, (v, i) => (i === 0 ? v : ''));
