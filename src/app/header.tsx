@@ -28,7 +28,7 @@ const Chip = styled('div', {
 
 const Header: React.FC = () => (
   <HeaderContainer className="header">
-    <WordCaddy currentWord={APP_NAME} />
+    <WordCaddy currentWord={APP_NAME} isLastWord={true} />
     <Chip>by hhk</Chip>
   </HeaderContainer>
 );
