@@ -1,5 +1,4 @@
 import express from 'express';
-import { wordGenerator } from './word-generator';
 import cors from 'cors';
 import config from './config';
 import { spellcheckWord } from './spellchecker';
