@@ -22,9 +22,9 @@ app.use(express.json());
 
 // TODO - handle fetching errors
 app.get('/', async (_req, res) => {
+  // salads.date column is a postgres current_date fn, which formats dates as 'YYYY-MM-DD 00:00:00'
   const current_date = new Date();
   const yyyyMmDd = current_date.toISOString().split('T')[0];
-  // salads.date = postgres current_date fn
   const formatted = `${yyyyMmDd} 00:00:00`;
   const { rows } = await query({
     text: 'select * from salads where salads.date = $1',
