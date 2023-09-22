@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { styled } from '@stitches/react';
-import Board from './board';
+import Board from './GameBoard';
 import Header from './header';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
