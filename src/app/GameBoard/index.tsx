@@ -36,18 +36,19 @@ const Board: React.FC<Props> = ({ dailySalad }) => {
   // handle end game logic
   const [shouldEndGame, setShouldEndGame] = useState<boolean>(false);
 
-  //
+  // create rootWord[] from daily initialWord
   const { initialWord } = dailySalad;
   const rootWord = initialWord.split('');
 
   // track stored words in localStorage
-  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
+  const storedWords = localStorage.getItem('submittedWords') ?? '[[]]';
   const submittedWords: string[][] = JSON.parse(storedWords);
 
+  // aggregate root word and submitted words into one array
   const playedWords = useMemo(
     () =>
       rootWord
-        ? submittedWords.length > 0
+        ? submittedWords[0].length > 0
           ? [rootWord, ...submittedWords]
           : [rootWord]
         : [[]],
