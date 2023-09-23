@@ -19,18 +19,18 @@ const SB = styled(animated.div, {
   margin: 4,
 });
 
-interface SBProps {
-  submittedWords: string[][];
+interface Props {
+  playedWords: string[][];
 }
 
 // This component rotates board when a word is submitted
-const SpringBoard: React.FC<SBProps> = (props) => {
-  const { submittedWords } = props;
+const SpringBoard: React.FC<Props> = (props) => {
+  const { playedWords } = props;
 
   return (
     <SpringBoardContainer>
       <SB>
-        <WordMatrix submittedWords={submittedWords} />
+        <WordMatrix playedWords={playedWords} />
       </SB>
     </SpringBoardContainer>
   );

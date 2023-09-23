@@ -1,11 +1,11 @@
 import Tile from './tile';
 
-interface SBProps {
-  submittedWords: string[][];
+interface Props {
+  playedWords: string[][];
 }
 
-const makeWordMatrix = (submittedWords: string[][]) => {
-  const [firstWord, secondWord, thirdWord, fourthWord] = submittedWords;
+const makeWordMatrix = (playedWords: string[][]) => {
+  const [firstWord, secondWord, thirdWord, fourthWord] = playedWords;
 
   const upperBound = secondWord
     ? secondWord
@@ -33,10 +33,10 @@ const makeWordMatrix = (submittedWords: string[][]) => {
     const array = [];
     for (let innerI = 0; innerI < upperBound.length; innerI++) {
       if (innerI === 0) {
-        const letter = submittedWords[innerI][i];
+        const letter = playedWords[innerI][i];
         array.push(letter);
       } else if (innerI === upperBound.length - 1) {
-        const letter = submittedWords[2] ? submittedWords[2][i] : '';
+        const letter = playedWords[2] ? playedWords[2][i] : '';
         array.push(letter);
       } else {
         array.push('');
@@ -48,9 +48,9 @@ const makeWordMatrix = (submittedWords: string[][]) => {
   return [upperBound, ...innerArrays, lowerBound];
 };
 
-// This component translates the submittedWords[][] prop into a square game board
-const WordMatrix: React.FC<SBProps> = ({ submittedWords }) => {
-  const wordMatrix = makeWordMatrix(submittedWords);
+// This component translates the playedWords[][] prop into a square game board
+const WordMatrix: React.FC<Props> = ({ playedWords }) => {
+  const wordMatrix = makeWordMatrix(playedWords);
 
   return (
     <>
