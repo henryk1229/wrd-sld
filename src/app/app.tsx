@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { styled } from '@stitches/react';
-import Board from './GameBoard';
+import GameBoard from './GameBoard';
 import Header from './header';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -74,7 +74,7 @@ export function App() {
   return (
     <AppContainer>
       <Header />
-      {dailySalad ? <Board dailySalad={dailySalad} /> : null}
+      {dailySalad ? <GameBoard dailySalad={dailySalad} /> : null}
     </AppContainer>
   );
 }
