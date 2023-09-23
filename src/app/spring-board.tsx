@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
-import WordMatrix from './word-matrix';
+import WordMatrix from './WordMatrix';
 
 const SpringBoardContainer = styled('div', {
   height: '360px',

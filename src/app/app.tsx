@@ -1,9 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { styled } from '@stitches/react';
-import Board from './board';
+import GameBoard from './GameBoard';
 import Header from './header';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { camelCase } from 'change-case';
 
 const URL = 'http://localhost:3000/';
 
@@ -16,38 +17,64 @@ const AppContainer = styled('div', {
   backgroundColor: '#F3EFE0',
 });
 
-const setWordInStorage = (initialWord: string[]) => {
-  const submittedWords = localStorage.getItem('submittedWords');
-  if (!submittedWords && initialWord.length > 0) {
-    // submitted words is an array of word arrays
-    localStorage.setItem('submittedWords', JSON.stringify([initialWord]));
+export type DailySalad = {
+  id: string;
+  date: string;
+  initialWord: string;
+  par: number;
+  saladNumber: number;
+};
+
+// TODO - refactor localStorage strategy
+const setSaladInStorage = (dailySalad: DailySalad | null) => {
+  if (dailySalad) {
+    // const current_date = new Date();
+    // const yyyyMmDd = current_date.toISOString().split('T')[0];
+    // const rowDate = dailySalad.date.split('T')[0];
+    // const gameInPlay = localStorage.getItem(`${yyyyMmDd}`);
+    // track submitted words, scoped to game
+    // localStorage.setItem(`${rowDate}`, JSON.stringify([]));
   }
 };
 
-const fetchInitialWord = async () => {
+// TODO - error handling
+const fetchDailySalad = async () => {
   return await axios({
     method: 'get',
     url: URL,
-  }).then((result) => result.data.randomWord);
+  }).then((result) => {
+    const { dailySalad } = result.data;
+    const camelCased: DailySalad = Object.keys(dailySalad).reduce(
+      (acc, key) => ({
+        ...acc,
+        [camelCase(key)]: dailySalad[key],
+      }),
+      {
+        id: '',
+        date: '',
+        initialWord: '',
+        par: 0,
+        saladNumber: 0,
+      }
+    );
+    return camelCased;
+  });
 };
 
 export function App() {
-  // TODO - keep initial word and fetched word in sync
-  const [initialWord, setInitialWord] = useState<string[]>([]);
-  setWordInStorage(initialWord);
+  const [dailySalad, setSalad] = useState<DailySalad | null>(null);
+  setSaladInStorage(dailySalad);
 
   useEffect(() => {
-    fetchInitialWord().then((word) => {
-      setInitialWord(word);
+    fetchDailySalad().then((salad: DailySalad) => {
+      setSalad(salad);
     });
   }, []);
-
-  const shouldMountBoard = initialWord.length > 0;
 
   return (
     <AppContainer>
       <Header />
-      {shouldMountBoard && <Board />}
+      {dailySalad ? <GameBoard dailySalad={dailySalad} /> : null}
     </AppContainer>
   );
 }
