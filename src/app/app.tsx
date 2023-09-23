@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { styled } from '@stitches/react';
 import Header from './header';
 import axios from 'axios';
