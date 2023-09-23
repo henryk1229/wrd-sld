@@ -31,8 +31,7 @@ interface Props {
   dailySalad: DailySalad;
 }
 
-// TODO - submittedWords = [rootWord, storedWords]
-const Board: React.FC<Props> = ({ dailySalad }) => {
+const GameBoard: React.FC<Props> = ({ dailySalad }) => {
   // handle end game logic
   const [shouldEndGame, setShouldEndGame] = useState<boolean>(false);
 
@@ -184,4 +183,4 @@ const Board: React.FC<Props> = ({ dailySalad }) => {
   );
 };
 
-export default Board;
+export default GameBoard;
