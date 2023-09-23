@@ -7,27 +7,23 @@ const DisplayContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-evenly',
 });
 
 const DisplayContent = styled('div', {
+  display: 'flex',
   margin: '8px',
   fontFamily: 'Helvetica',
   fontWeight: 'bold',
 });
 
 interface Props {
-  dailySalad: DailySalad;
+  par: number;
   attempts: number;
   restartGame: () => void;
 }
 
-const StatsDisplay: React.FC<Props> = ({
-  dailySalad,
-  attempts,
-  restartGame,
-}) => {
-  const { par } = dailySalad;
+const StatsDisplay: React.FC<Props> = ({ par, attempts, restartGame }) => {
   return (
     <DisplayContainer>
       <DisplayContent>

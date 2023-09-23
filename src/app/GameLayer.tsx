@@ -59,7 +59,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   return (
     <>
       <GameBoard
-        dailySalad={dailySalad}
+        par={par}
         playedWords={playedWords}
         attempts={attempts}
         playNewWord={playNewWord}
@@ -72,8 +72,8 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
           saladNumber,
           par,
           initialWord,
-          // TODO
           attempts,
+          // TODO
           ranking: 'Good',
         }}
         open={shouldEndGame}

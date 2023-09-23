@@ -5,7 +5,6 @@ import SpringBoard from '../SpringBoard';
 import { useShakeWord } from '../../hooks/useShakeWord';
 import axios from 'axios';
 import LettersBank from '../letters-bank';
-import { DailySalad } from '../app';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
 import StatsDisplay from '../StatsDisplay';
 
@@ -28,7 +27,7 @@ const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
 };
 
 interface Props {
-  dailySalad: DailySalad;
+  par: number;
   playedWords: string[][];
   attempts: number;
   playNewWord: (word: string[]) => void;
@@ -37,7 +36,7 @@ interface Props {
 }
 
 const GameBoard: React.FC<Props> = ({
-  dailySalad,
+  par,
   playedWords,
   attempts,
   playNewWord,
@@ -155,11 +154,7 @@ const GameBoard: React.FC<Props> = ({
       >
         <LettersBank usedLetters={usedLetters} />
         <SpringBoard playedWords={playedWords} />
-        <StatsDisplay
-          dailySalad={dailySalad}
-          attempts={attempts}
-          restartGame={restartGame}
-        />
+        <StatsDisplay par={par} attempts={attempts} restartGame={restartGame} />
       </div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <CurrentWord
