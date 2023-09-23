@@ -5,7 +5,6 @@ import SpringBoard from '../SpringBoard';
 import { useShakeWord } from '../../hooks/useShakeWord';
 import axios from 'axios';
 import LettersBank from '../letters-bank';
-import EndGameModal from '../end-game-modal';
 import { DailySalad } from '../app';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
 
@@ -29,12 +28,10 @@ const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
 
 interface Props {
   dailySalad: DailySalad;
+  setShouldEndGame: (bool: boolean) => void;
 }
 
-const GameBoard: React.FC<Props> = ({ dailySalad }) => {
-  // handle end game logic
-  const [shouldEndGame, setShouldEndGame] = useState<boolean>(false);
-
+const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
   // create rootWord[] from daily initialWord
   const { initialWord } = dailySalad;
   const rootWord = initialWord.split('');
@@ -104,6 +101,7 @@ const GameBoard: React.FC<Props> = ({ dailySalad }) => {
     submittedLetters,
     isLastTurn,
     shakeWord,
+    setShouldEndGame,
   ]);
 
   // handle non-letter input
@@ -174,10 +172,6 @@ const GameBoard: React.FC<Props> = ({ dailySalad }) => {
         shakeStyles={shakeStyles}
         isLastWord={isLastTurn}
         handleKeyboardInput={handleKeyboardInput}
-      />
-      <EndGameModal
-        open={shouldEndGame}
-        onClose={() => setShouldEndGame(false)}
       />
     </BoardContainer>
   );

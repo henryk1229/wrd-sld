@@ -1,10 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { styled } from '@stitches/react';
-import GameBoard from './GameBoard';
 import Header from './header';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { camelCase } from 'change-case';
+import GameLayer from './GameLayer';
 
 const URL = 'http://localhost:3000/';
 
@@ -23,18 +23,6 @@ export type DailySalad = {
   initialWord: string;
   par: number;
   saladNumber: number;
-};
-
-// TODO - refactor localStorage strategy
-const setSaladInStorage = (dailySalad: DailySalad | null) => {
-  if (dailySalad) {
-    // const current_date = new Date();
-    // const yyyyMmDd = current_date.toISOString().split('T')[0];
-    // const rowDate = dailySalad.date.split('T')[0];
-    // const gameInPlay = localStorage.getItem(`${yyyyMmDd}`);
-    // track submitted words, scoped to game
-    // localStorage.setItem(`${rowDate}`, JSON.stringify([]));
-  }
 };
 
 // TODO - error handling
@@ -63,7 +51,6 @@ const fetchDailySalad = async () => {
 
 export function App() {
   const [dailySalad, setSalad] = useState<DailySalad | null>(null);
-  setSaladInStorage(dailySalad);
 
   useEffect(() => {
     fetchDailySalad().then((salad: DailySalad) => {
@@ -74,7 +61,7 @@ export function App() {
   return (
     <AppContainer>
       <Header />
-      {dailySalad ? <GameBoard dailySalad={dailySalad} /> : null}
+      {dailySalad ? <GameLayer dailySalad={dailySalad} /> : null}
     </AppContainer>
   );
 }
