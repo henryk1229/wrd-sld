@@ -1,5 +1,5 @@
 import { styled } from '@stitches/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import CurrentWord from '../current-word';
 import SpringBoard from '../SpringBoard';
 import { useShakeWord } from '../../hooks/useShakeWord';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import LettersBank from '../letters-bank';
 import { DailySalad } from '../app';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
+import StatsDisplay from '../StatsDisplay';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -28,42 +29,32 @@ const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
 
 interface Props {
   dailySalad: DailySalad;
+  playedWords: string[][];
+  attempts: number;
+  playNewWord: (word: string[]) => void;
+  restartGame: () => void;
   setShouldEndGame: (bool: boolean) => void;
 }
 
-const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
-  // create rootWord[] from daily initialWord
-  const { initialWord } = dailySalad;
-  const rootWord = initialWord.split('');
-
-  // track stored words in localStorage
-  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
-  const submittedWords: string[][] | [] = JSON.parse(storedWords);
-
-  // aggregate root word and submitted words into one array
-  const playedWords = useMemo(
-    () =>
-      rootWord
-        ? submittedWords.length > 0
-          ? [rootWord, ...submittedWords]
-          : [rootWord]
-        : [[]],
-    [rootWord, submittedWords]
-  );
-
-  const submittedLetters = playedWords.flat();
-
+const GameBoard: React.FC<Props> = ({
+  dailySalad,
+  playedWords,
+  attempts,
+  playNewWord,
+  restartGame,
+  setShouldEndGame,
+}) => {
   const isLastTurn = playedWords.length === 3;
-
   const initialCurrentWord = makeCurrentWord({
     playedWords,
     isLastTurn,
   });
-
   const [currentWord, setCurrentWord] = useState<string[]>(initialCurrentWord);
 
   // springs for animations
   const { shakeStyles, shakeWord } = useShakeWord();
+
+  const submittedLetters = playedWords.flat();
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
@@ -75,8 +66,6 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
     if (shouldAllowSubmit) {
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
-        const stringified = JSON.stringify([...submittedWords, currentWord]);
-        localStorage.setItem('submittedWords', stringified);
         if (isLastTurn) {
           return setShouldEndGame(true);
         }
@@ -85,7 +74,8 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
           playedWords: [...playedWords, currentWord],
           isLastTurn: playedWords.length === 2,
         });
-        return setCurrentWord(nextWord);
+        setCurrentWord(nextWord);
+        return playNewWord(currentWord);
       }
     }
     shakeWord();
@@ -97,9 +87,9 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
   }, [
     currentWord,
     playedWords,
-    submittedWords,
     submittedLetters,
     isLastTurn,
+    playNewWord,
     shakeWord,
     setShouldEndGame,
   ]);
@@ -165,14 +155,20 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
       >
         <LettersBank usedLetters={usedLetters} />
         <SpringBoard playedWords={playedWords} />
-        <div style={{ width: '320px' }} />
+        <StatsDisplay
+          dailySalad={dailySalad}
+          attempts={attempts}
+          restartGame={restartGame}
+        />
       </div>
-      <CurrentWord
-        currentWord={currentWord}
-        shakeStyles={shakeStyles}
-        isLastWord={isLastTurn}
-        handleKeyboardInput={handleKeyboardInput}
-      />
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <CurrentWord
+          currentWord={currentWord}
+          shakeStyles={shakeStyles}
+          isLastWord={isLastTurn}
+          handleKeyboardInput={handleKeyboardInput}
+        />
+      </div>
     </BoardContainer>
   );
 };
