@@ -1,7 +1,7 @@
 import { styled } from '@stitches/react';
 import { useCallback, useMemo, useState } from 'react';
 import CurrentWord from '../current-word';
-import SpringBoard from '../spring-board';
+import SpringBoard from '../SpringBoard';
 import { useShakeWord } from '../../hooks/useShakeWord';
 import axios from 'axios';
 import LettersBank from '../letters-bank';
@@ -40,14 +40,14 @@ const GameBoard: React.FC<Props> = ({ dailySalad }) => {
   const rootWord = initialWord.split('');
 
   // track stored words in localStorage
-  const storedWords = localStorage.getItem('submittedWords') ?? '[[]]';
-  const submittedWords: string[][] = JSON.parse(storedWords);
+  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
+  const submittedWords: string[][] | [] = JSON.parse(storedWords);
 
   // aggregate root word and submitted words into one array
   const playedWords = useMemo(
     () =>
       rootWord
-        ? submittedWords[0].length > 0
+        ? submittedWords.length > 0
           ? [rootWord, ...submittedWords]
           : [rootWord]
         : [[]],
@@ -166,7 +166,7 @@ const GameBoard: React.FC<Props> = ({ dailySalad }) => {
         style={{ display: 'flex', justifyContent: 'space-evenly' }}
       >
         <LettersBank usedLetters={usedLetters} />
-        <SpringBoard submittedWords={playedWords} />
+        <SpringBoard playedWords={playedWords} />
         <div style={{ width: '320px' }} />
       </div>
       <CurrentWord
