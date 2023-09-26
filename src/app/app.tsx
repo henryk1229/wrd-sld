@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { styled } from '@stitches/react';
 import Header from './header';
 import axios from 'axios';
@@ -31,11 +30,11 @@ const fetchDailySalad = async () => {
     method: 'get',
     url: URL,
   }).then((result) => {
-    const { dailySalad } = result.data;
-    const camelCased: DailySalad = Object.keys(dailySalad).reduce(
+    const { salad } = result.data;
+    const camelCased: DailySalad = Object.keys(salad).reduce(
       (acc, key) => ({
         ...acc,
-        [camelCase(key)]: dailySalad[key],
+        [camelCase(key)]: salad[key],
       }),
       {
         id: '',

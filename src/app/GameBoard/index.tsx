@@ -1,12 +1,13 @@
 import { styled } from '@stitches/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import CurrentWord from '../current-word';
 import SpringBoard from '../SpringBoard';
 import { useShakeWord } from '../../hooks/useShakeWord';
 import axios from 'axios';
 import LettersBank from '../letters-bank';
-import { DailySalad } from '../app';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
+import StatsDisplay from '../StatsDisplay';
+import RestartButton from '../RestartButton';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -27,43 +28,35 @@ const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
 };
 
 interface Props {
-  dailySalad: DailySalad;
+  par: number;
+  playedWords: string[][];
+  attempts: number;
+  playNewWord: (word: string[]) => void;
+  restartGame: () => void;
   setShouldEndGame: (bool: boolean) => void;
 }
 
-const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
-  // create rootWord[] from daily initialWord
-  const { initialWord } = dailySalad;
-  const rootWord = initialWord.split('');
-
-  // track stored words in localStorage
-  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
-  const submittedWords: string[][] | [] = JSON.parse(storedWords);
-
-  // aggregate root word and submitted words into one array
-  const playedWords = useMemo(
-    () =>
-      rootWord
-        ? submittedWords.length > 0
-          ? [rootWord, ...submittedWords]
-          : [rootWord]
-        : [[]],
-    [rootWord, submittedWords]
-  );
-
-  const submittedLetters = playedWords.flat();
-
+const GameBoard: React.FC<Props> = ({
+  par,
+  playedWords,
+  attempts,
+  playNewWord,
+  restartGame,
+  setShouldEndGame,
+}) => {
   const isLastTurn = playedWords.length === 3;
 
-  const initialCurrentWord = makeCurrentWord({
-    playedWords,
-    isLastTurn,
-  });
-
-  const [currentWord, setCurrentWord] = useState<string[]>(initialCurrentWord);
+  const [currentWord, setCurrentWord] = useState<string[]>(
+    makeCurrentWord({
+      playedWords,
+      isLastTurn,
+    })
+  );
 
   // springs for animations
   const { shakeStyles, shakeWord } = useShakeWord();
+
+  const submittedLetters = playedWords.flat();
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
@@ -75,8 +68,6 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
     if (shouldAllowSubmit) {
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
-        const stringified = JSON.stringify([...submittedWords, currentWord]);
-        localStorage.setItem('submittedWords', stringified);
         if (isLastTurn) {
           return setShouldEndGame(true);
         }
@@ -85,7 +76,8 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
           playedWords: [...playedWords, currentWord],
           isLastTurn: playedWords.length === 2,
         });
-        return setCurrentWord(nextWord);
+        setCurrentWord(nextWord);
+        return playNewWord(currentWord);
       }
     }
     shakeWord();
@@ -97,9 +89,9 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
   }, [
     currentWord,
     playedWords,
-    submittedWords,
     submittedLetters,
     isLastTurn,
+    playNewWord,
     shakeWord,
     setShouldEndGame,
   ]);
@@ -157,6 +149,8 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
 
   const usedLetters = submittedLetters.concat(currentWord.flat());
 
+  console.log({ playedWords });
+
   return (
     <BoardContainer className="boardContainer">
       <div
@@ -165,14 +159,26 @@ const GameBoard: React.FC<Props> = ({ dailySalad, setShouldEndGame }) => {
       >
         <LettersBank usedLetters={usedLetters} />
         <SpringBoard playedWords={playedWords} />
-        <div style={{ width: '320px' }} />
+        <StatsDisplay par={par} attempts={attempts} />
       </div>
-      <CurrentWord
-        currentWord={currentWord}
-        shakeStyles={shakeStyles}
-        isLastWord={isLastTurn}
-        handleKeyboardInput={handleKeyboardInput}
-      />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <CurrentWord
+          currentWord={currentWord}
+          shakeStyles={shakeStyles}
+          isLastWord={isLastTurn}
+          handleKeyboardInput={handleKeyboardInput}
+        />
+        <RestartButton
+          restartGame={restartGame}
+          disabled={playedWords.length === 1}
+        />
+      </div>
     </BoardContainer>
   );
 };

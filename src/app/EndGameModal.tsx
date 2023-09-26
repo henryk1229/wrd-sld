@@ -34,9 +34,6 @@ interface Props {
 
 const EndGameModal: React.FC<Props> = ({ stats, open, onClose }) => {
   const { date, saladNumber, par, attempts, ranking, initialWord } = stats;
-  console.log({
-    stats,
-  });
   const dateObj = new Date(date);
   return (
     <Modal

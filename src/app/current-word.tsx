@@ -44,17 +44,15 @@ const CurrentWord: React.FC<BoardProps> = ({
   });
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <CurrentWordContainer
-        autoFocus={true}
-        className="currentWord"
-        style={{
-          ...shakeStyles,
-        }}
-      >
-        <WordCaddy currentWord={currentWord} isLastWord={isLastWord} />
-      </CurrentWordContainer>
-    </div>
+    <CurrentWordContainer
+      autoFocus={true}
+      className="currentWord"
+      style={{
+        ...shakeStyles,
+      }}
+    >
+      <WordCaddy currentWord={currentWord} isLastWord={isLastWord} />
+    </CurrentWordContainer>
   );
 };
 
