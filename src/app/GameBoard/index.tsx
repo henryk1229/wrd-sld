@@ -149,8 +149,6 @@ const GameBoard: React.FC<Props> = ({
 
   const usedLetters = submittedLetters.concat(currentWord.flat());
 
-  console.log({ playedWords });
-
   return (
     <BoardContainer className="boardContainer">
       <div
