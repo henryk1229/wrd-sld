@@ -1,5 +1,5 @@
 import { styled } from '@stitches/react';
-import RestartButton from './RestartButton';
+import LettersBankTile from './letters-bank-tile';
 
 const DisplayContainer = styled('div', {
   width: '320px',
@@ -7,12 +7,10 @@ const DisplayContainer = styled('div', {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'space-evenly',
-  padding: '16px',
 });
 
 const DisplayContent = styled('div', {
   display: 'flex',
-  margin: '8px',
   fontFamily: 'Helvetica',
   fontWeight: 'bold',
 });
@@ -20,10 +18,9 @@ const DisplayContent = styled('div', {
 interface Props {
   par: number;
   attempts: number;
-  restartGame: () => void;
 }
 
-const StatsDisplay: React.FC<Props> = ({ par, attempts, restartGame }) => {
+const StatsDisplay: React.FC<Props> = ({ par, attempts }) => {
   return (
     <DisplayContainer>
       <DisplayContent>
@@ -33,15 +30,21 @@ const StatsDisplay: React.FC<Props> = ({ par, attempts, restartGame }) => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              margin: '16px',
             }}
           >
             <div
               style={{
+                display: 'flex',
                 margin: '8px',
               }}
             >
-              Stats
+              {'STATS'.split('').map((letter, idx) => (
+                <LettersBankTile
+                  key={`letter-${letter}-${idx}`}
+                  letter={letter}
+                  isUsedLetter={false}
+                />
+              ))}
             </div>
             <div
               style={{
@@ -97,7 +100,6 @@ const StatsDisplay: React.FC<Props> = ({ par, attempts, restartGame }) => {
           </div>
         </div>
       </DisplayContent>
-      <RestartButton restartGame={restartGame} />
     </DisplayContainer>
   );
 };
