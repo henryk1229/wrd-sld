@@ -46,7 +46,8 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
     // clear submitted words
     localStorage.removeItem('submittedWords');
     // trigger refresh
-    setPlayedWords([rootWord]);
+    const newRoot = [...rootWord];
+    setPlayedWords([newRoot]);
   };
 
   // this fn sets word in local storage, and set played word state
@@ -59,6 +60,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   return (
     <>
       <GameBoard
+        key={attempts}
         par={par}
         playedWords={playedWords}
         attempts={attempts}

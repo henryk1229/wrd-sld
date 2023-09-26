@@ -30,11 +30,11 @@ const fetchDailySalad = async () => {
     method: 'get',
     url: URL,
   }).then((result) => {
-    const { dailySalad } = result.data;
-    const camelCased: DailySalad = Object.keys(dailySalad).reduce(
+    const { salad } = result.data;
+    const camelCased: DailySalad = Object.keys(salad).reduce(
       (acc, key) => ({
         ...acc,
-        [camelCase(key)]: dailySalad[key],
+        [camelCase(key)]: salad[key],
       }),
       {
         id: '',

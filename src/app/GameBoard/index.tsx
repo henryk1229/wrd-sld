@@ -44,11 +44,13 @@ const GameBoard: React.FC<Props> = ({
   setShouldEndGame,
 }) => {
   const isLastTurn = playedWords.length === 3;
-  const initialCurrentWord = makeCurrentWord({
-    playedWords,
-    isLastTurn,
-  });
-  const [currentWord, setCurrentWord] = useState<string[]>(initialCurrentWord);
+
+  const [currentWord, setCurrentWord] = useState<string[]>(
+    makeCurrentWord({
+      playedWords,
+      isLastTurn,
+    })
+  );
 
   // springs for animations
   const { shakeStyles, shakeWord } = useShakeWord();
