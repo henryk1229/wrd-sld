@@ -7,6 +7,7 @@ import axios from 'axios';
 import LettersBank from '../letters-bank';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
 import StatsDisplay from '../StatsDisplay';
+import RestartButton from '../RestartButton';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -148,6 +149,8 @@ const GameBoard: React.FC<Props> = ({
 
   const usedLetters = submittedLetters.concat(currentWord.flat());
 
+  console.log({ playedWords });
+
   return (
     <BoardContainer className="boardContainer">
       <div
@@ -156,14 +159,24 @@ const GameBoard: React.FC<Props> = ({
       >
         <LettersBank usedLetters={usedLetters} />
         <SpringBoard playedWords={playedWords} />
-        <StatsDisplay par={par} attempts={attempts} restartGame={restartGame} />
+        <StatsDisplay par={par} attempts={attempts} />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         <CurrentWord
           currentWord={currentWord}
           shakeStyles={shakeStyles}
           isLastWord={isLastTurn}
           handleKeyboardInput={handleKeyboardInput}
+        />
+        <RestartButton
+          restartGame={restartGame}
+          disabled={playedWords.length === 1}
         />
       </div>
     </BoardContainer>

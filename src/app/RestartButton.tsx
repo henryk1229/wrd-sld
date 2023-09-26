@@ -1,36 +1,40 @@
 import { styled } from '@stitches/react';
-
-const ButtonContainer = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-evenly',
-});
+import LettersBankTile from './letters-bank-tile';
 
 const StyledButton = styled('button', {
-  boxShadow: '0.5px 0.5px black',
-  borderRadius: '3px',
-  // width: '64px',
-  height: '64px',
-  margin: '8px',
-  backgroundColor: '#9A3334',
+  border: 'none',
+  display: 'flex',
   alignItems: 'center',
-  color: '#FFCC00',
+  backgroundColor: '#F3EFE0',
   '&:hover': {
     opacity: 0.85,
     cursor: 'pointer',
   },
-  fontFamily: 'Helvetica',
-  fontWeight: 600,
 });
 
 interface Props {
+  disabled: boolean;
   restartGame: () => void;
 }
 
-const RetryButton: React.FC<Props> = ({ restartGame }) => (
-  <ButtonContainer>
-    <StyledButton onClick={restartGame}>RESTART</StyledButton>
-  </ButtonContainer>
+// renders a stylized restart button
+const RestartButton: React.FC<Props> = ({ disabled, restartGame }) => (
+  <StyledButton onClick={restartGame} disabled={disabled}>
+    {'START'.split('').map((letter, idx) => (
+      <LettersBankTile
+        key={`letter-${letter}-${idx}`}
+        letter={letter}
+        isUsedLetter={false}
+      />
+    ))}
+    {' OVER'.split('').map((letter, idx) => (
+      <LettersBankTile
+        key={`letter-${letter}-${idx}`}
+        letter={letter}
+        isUsedLetter={idx === 0}
+      />
+    ))}
+  </StyledButton>
 );
 
-export default RetryButton;
+export default RestartButton;
