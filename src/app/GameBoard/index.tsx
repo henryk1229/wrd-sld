@@ -1,10 +1,5 @@
 import { styled } from '@stitches/react';
-import {
-  BaseSyntheticEvent,
-  SyntheticEvent,
-  useCallback,
-  useState,
-} from 'react';
+import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from '../current-word';
 import SpringBoard from '../SpringBoard';
 import { useShakeWord } from '../../hooks/useShakeWord';
