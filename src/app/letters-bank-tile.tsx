@@ -16,6 +16,10 @@ const sharedStyles = {
   height: '32px',
   margin: '4px',
   backgroundColor: '#9A3334',
+  '&:hover': {
+    opacity: 0.75,
+    cursor: 'pointer',
+  },
 };
 
 const AvailableLetterTile = styled('div', {
