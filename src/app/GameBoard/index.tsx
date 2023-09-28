@@ -194,9 +194,9 @@ const GameBoard: React.FC<Props> = ({
           justifyContent: 'center',
         }}
       >
-        <DeleteButton
-          disabled={!currentWord[1]}
-          onClick={clearLetterFromCurrentWord}
+        <EnterButton
+          disabled={isLastTurn ? !currentWord[3] : !currentWord[4]}
+          onClick={handleSubmitWord}
         />
         <CurrentWord
           currentWord={currentWord}
@@ -204,7 +204,10 @@ const GameBoard: React.FC<Props> = ({
           isLastWord={isLastTurn}
           handleKeyboardInput={handleKeyboardInput}
         />
-        <EnterButton disabled={!currentWord[4]} onClick={handleSubmitWord} />
+        <DeleteButton
+          disabled={!currentWord[1]}
+          onClick={clearLetterFromCurrentWord}
+        />
       </div>
     </BoardContainer>
   );

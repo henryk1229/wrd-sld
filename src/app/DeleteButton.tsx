@@ -26,11 +26,11 @@ const DeleteButton: React.FC<Props> = ({ disabled, onClick }) => (
       ...(disabled ? { opacity: 0.5, cursor: 'not-allowed' } : null),
     }}
   >
-    <Delete />
+    <DeleteIcon />
   </StyledButton>
 );
 
-const Delete = () => (
+const DeleteIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={32}
