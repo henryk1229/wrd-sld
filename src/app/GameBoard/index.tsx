@@ -7,7 +7,8 @@ import axios from 'axios';
 import LettersBank from '../LettersBank';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
 import StatsDisplay from '../StatsDisplay';
-import RestartButton from '../RestartButton';
+import DeleteButton from '../DeleteButton';
+import EnterButton from '../EnterButton';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -58,6 +59,7 @@ const GameBoard: React.FC<Props> = ({
 
   const submittedLetters = playedWords.flat();
   const usedLetters = submittedLetters.concat(currentWord.flat());
+  const disableReset = playedWords.length === 1;
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
@@ -97,31 +99,35 @@ const GameBoard: React.FC<Props> = ({
     setShouldEndGame,
   ]);
 
+  const clearLetterFromCurrentWord = useCallback(() => {
+    // find idx of first empty string
+    const idx = currentWord.findIndex((el) => !el);
+    const newWord = currentWord.slice();
+    // anchor tile cannot be deleted
+    if (idx > 1) {
+      // replace last letter with empty string to "delete" item from array
+      newWord[idx - 1] = '';
+    }
+    // we're deleting the last item in the array
+    if (idx === -1) {
+      isLastTurn
+        ? (newWord[newWord.length - 2] = '')
+        : (newWord[newWord.length - 1] = '');
+    }
+    return setCurrentWord(newWord);
+  }, [currentWord, isLastTurn]);
+
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
     (input: string) => {
       if (input === 'Backspace') {
-        // find idx of first empty string
-        const idx = currentWord.findIndex((el) => !el);
-        const newWord = currentWord.slice();
-        // anchor tile cannot be deleted
-        if (idx > 1) {
-          // replace last letter with empty string to "delete" item from array
-          newWord[idx - 1] = '';
-        }
-        // we're deleting the last item in the array
-        if (idx === -1) {
-          isLastTurn
-            ? (newWord[newWord.length - 2] = '')
-            : (newWord[newWord.length - 1] = '');
-        }
-        return setCurrentWord(newWord);
+        clearLetterFromCurrentWord();
       }
       if (input === 'Enter') {
         return handleSubmitWord();
       }
     },
-    [currentWord, isLastTurn, handleSubmitWord]
+    [handleSubmitWord, clearLetterFromCurrentWord]
   );
 
   // handle keyboard input, branch between whitespace and letter input
@@ -153,6 +159,11 @@ const GameBoard: React.FC<Props> = ({
       // letters are lower case until formatted in the Tile component
       const letter = ev.target?.innerText?.toLowerCase();
 
+      // guard against click on wrapper div
+      if (letter.length > 1) {
+        return;
+      }
+
       if (currentWord.length <= 5 && !usedLetters.includes(letter)) {
         // add the letter to the array
         return setCurrentWord((currentWord) => {
@@ -174,24 +185,33 @@ const GameBoard: React.FC<Props> = ({
       >
         <LettersBank usedLetters={usedLetters} onClick={handleClick} />
         <SpringBoard playedWords={playedWords} />
-        <StatsDisplay par={par} attempts={attempts} />
+        <StatsDisplay
+          par={par}
+          attempts={attempts}
+          startOverDisabled={disableReset}
+          restartGame={restartGame}
+        />
       </div>
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
+        <EnterButton
+          disabled={isLastTurn ? !currentWord[3] : !currentWord[4]}
+          onClick={handleSubmitWord}
+        />
         <CurrentWord
           currentWord={currentWord}
           shakeStyles={shakeStyles}
           isLastWord={isLastTurn}
           handleKeyboardInput={handleKeyboardInput}
         />
-        <RestartButton
-          restartGame={restartGame}
-          disabled={playedWords.length === 1}
+        <DeleteButton
+          disabled={!currentWord[1]}
+          onClick={clearLetterFromCurrentWord}
         />
       </div>
     </BoardContainer>

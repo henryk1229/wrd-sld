@@ -4,6 +4,7 @@ import LettersBankTile from './LettersBankTile';
 const StyledButton = styled('button', {
   border: 'none',
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   backgroundColor: '#F3EFE0',
   '&:hover': {
@@ -26,22 +27,26 @@ const RestartButton: React.FC<Props> = ({ disabled, restartGame }) => (
       ...(disabled ? { opacity: 0.5, cursor: 'not-allowed' } : null),
     }}
   >
-    {'START'.split('').map((letter, idx) => (
-      <LettersBankTile
-        key={`letter-${letter}-${idx}`}
-        letter={letter}
-        isUsedLetter={false}
-        isStatsDisplay={true}
-      />
-    ))}
-    {' OVER'.split('').map((letter, idx) => (
-      <LettersBankTile
-        key={`letter-${letter}-${idx}`}
-        letter={letter}
-        isUsedLetter={idx === 0}
-        isStatsDisplay={true}
-      />
-    ))}
+    <div style={{ display: 'flex' }}>
+      {'START'.split('').map((letter, idx) => (
+        <LettersBankTile
+          key={`letter-${letter}-${idx}`}
+          letter={letter}
+          isUsedLetter={false}
+          isStatsDisplay={true}
+        />
+      ))}
+    </div>
+    <div style={{ display: 'flex' }}>
+      {'OVER'.split('').map((letter, idx) => (
+        <LettersBankTile
+          key={`letter-${letter}-${idx}`}
+          letter={letter}
+          isUsedLetter={idx === 0}
+          isStatsDisplay={true}
+        />
+      ))}
+    </div>
   </StyledButton>
 );
 
