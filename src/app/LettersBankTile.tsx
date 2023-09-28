@@ -14,7 +14,7 @@ const sharedStyles = {
   color: '#fafafa',
   width: '24px',
   height: '32px',
-  margin: '4px',
+  margin: '4px 2px',
   backgroundColor: '#9A3334',
   '&:hover': {
     opacity: 0.75,
@@ -44,7 +44,7 @@ const StatsDisplayTile = styled('div', {
   color: '#fafafa',
   width: '24px',
   height: '32px',
-  margin: '4px',
+  margin: '4px 2px',
   backgroundColor: '#9A3334',
 });
 
