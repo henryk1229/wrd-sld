@@ -174,7 +174,12 @@ const GameBoard: React.FC<Props> = ({
       >
         <LettersBank usedLetters={usedLetters} onClick={handleClick} />
         <SpringBoard playedWords={playedWords} />
-        <StatsDisplay par={par} attempts={attempts} />
+        <StatsDisplay
+          par={par}
+          attempts={attempts}
+          startOverDisabled={playedWords.length === 1}
+          restartGame={restartGame}
+        />
       </div>
       <div
         style={{
@@ -188,10 +193,6 @@ const GameBoard: React.FC<Props> = ({
           shakeStyles={shakeStyles}
           isLastWord={isLastTurn}
           handleKeyboardInput={handleKeyboardInput}
-        />
-        <RestartButton
-          restartGame={restartGame}
-          disabled={playedWords.length === 1}
         />
       </div>
     </BoardContainer>
