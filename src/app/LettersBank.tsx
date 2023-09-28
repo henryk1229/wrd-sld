@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
 import { useMemo } from 'react';
-import LettersBankTile from './letters-bank-tile';
+import LettersBankTile from './LettersBankTile';
 
 const LettersBankContainer = styled('div', {
   width: '320px',
@@ -41,6 +41,7 @@ const LettersBank: React.FC<Props> = ({ usedLetters, onClick }) => {
                 key={`letter-${letter}`}
                 letter={letter}
                 isUsedLetter={usedLetters.includes(letter)}
+                isStatsDisplay={false}
               />
             ))}
           </div>

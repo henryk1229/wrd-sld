@@ -4,7 +4,7 @@ import CurrentWord from '../current-word';
 import SpringBoard from '../SpringBoard';
 import { useShakeWord } from '../../hooks/useShakeWord';
 import axios from 'axios';
-import LettersBank from '../letters-bank';
+import LettersBank from '../LettersBank';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
 import StatsDisplay from '../StatsDisplay';
 import RestartButton from '../RestartButton';
