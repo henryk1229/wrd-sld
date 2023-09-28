@@ -1,5 +1,5 @@
 import { styled } from '@stitches/react';
-import LettersBankTile from './letters-bank-tile';
+import LettersBankTile from './LettersBankTile';
 
 const DisplayContainer = styled('div', {
   width: '320px',
@@ -37,6 +37,7 @@ const StatsDisplay: React.FC<Props> = ({ par, attempts }) => {
                 key={`letter-${letter}-${idx}`}
                 letter={letter}
                 isUsedLetter={false}
+                isStatsDisplay={true}
               />
             ))}
           </div>

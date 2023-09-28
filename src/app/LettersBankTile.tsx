@@ -16,6 +16,10 @@ const sharedStyles = {
   height: '32px',
   margin: '4px',
   backgroundColor: '#9A3334',
+  '&:hover': {
+    opacity: 0.75,
+    cursor: 'pointer',
+  },
 };
 
 const AvailableLetterTile = styled('div', {
@@ -27,15 +31,40 @@ const UsedLetterTile = styled('div', {
   opacity: 0.15,
 });
 
+// TODO - dedicated stats display tile?
+const StatsDisplayTile = styled('div', {
+  inset: 0,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontFamily: 'Helvetica',
+  fontWeight: 800,
+  borderRadius: '3px',
+  boxShadow: '1px 1px black',
+  color: '#fafafa',
+  width: '24px',
+  height: '32px',
+  margin: '4px',
+  backgroundColor: '#9A3334',
+});
+
 interface Props {
   letter: string;
   isUsedLetter: boolean;
+  isStatsDisplay: boolean;
   spring?: {
     transform: SpringValue<string>;
   };
 }
 
-const LettersBankTile: React.FC<Props> = ({ letter, isUsedLetter }) => {
+const LettersBankTile: React.FC<Props> = ({
+  letter,
+  isUsedLetter,
+  isStatsDisplay,
+}) => {
+  if (isStatsDisplay) {
+    return <StatsDisplayTile>{letter.toUpperCase()}</StatsDisplayTile>;
+  }
   return !isUsedLetter ? (
     <AvailableLetterTile>{letter.toUpperCase()}</AvailableLetterTile>
   ) : (

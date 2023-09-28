@@ -1,5 +1,5 @@
 import { styled } from '@stitches/react';
-import LettersBankTile from './letters-bank-tile';
+import LettersBankTile from './LettersBankTile';
 
 const StyledButton = styled('button', {
   border: 'none',
@@ -31,6 +31,7 @@ const RestartButton: React.FC<Props> = ({ disabled, restartGame }) => (
         key={`letter-${letter}-${idx}`}
         letter={letter}
         isUsedLetter={false}
+        isStatsDisplay={true}
       />
     ))}
     {' OVER'.split('').map((letter, idx) => (
@@ -38,6 +39,7 @@ const RestartButton: React.FC<Props> = ({ disabled, restartGame }) => (
         key={`letter-${letter}-${idx}`}
         letter={letter}
         isUsedLetter={idx === 0}
+        isStatsDisplay={true}
       />
     ))}
   </StyledButton>

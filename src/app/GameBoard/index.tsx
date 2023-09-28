@@ -1,10 +1,10 @@
 import { styled } from '@stitches/react';
-import { useCallback, useState } from 'react';
+import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from '../current-word';
 import SpringBoard from '../SpringBoard';
 import { useShakeWord } from '../../hooks/useShakeWord';
 import axios from 'axios';
-import LettersBank from '../letters-bank';
+import LettersBank from '../LettersBank';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
 import StatsDisplay from '../StatsDisplay';
 import RestartButton from '../RestartButton';
@@ -57,6 +57,7 @@ const GameBoard: React.FC<Props> = ({
   const { shakeStyles, shakeWord } = useShakeWord();
 
   const submittedLetters = playedWords.flat();
+  const usedLetters = submittedLetters.concat(currentWord.flat());
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
@@ -147,7 +148,23 @@ const GameBoard: React.FC<Props> = ({
     [handleWhiteSpaceInput, currentWord, submittedLetters, shakeWord]
   );
 
-  const usedLetters = submittedLetters.concat(currentWord.flat());
+  const handleClick = useCallback(
+    (ev: BaseSyntheticEvent) => {
+      // letters are lower case until formatted in the Tile component
+      const letter = ev.target?.innerText?.toLowerCase();
+
+      if (currentWord.length <= 5 && !usedLetters.includes(letter)) {
+        // add the letter to the array
+        return setCurrentWord((currentWord) => {
+          const idx = currentWord.findIndex((el) => !el);
+          const newWord = currentWord.slice();
+          newWord[idx] = letter;
+          return newWord;
+        });
+      }
+    },
+    [currentWord.length, usedLetters]
+  );
 
   return (
     <BoardContainer className="boardContainer">
@@ -155,7 +172,7 @@ const GameBoard: React.FC<Props> = ({
         className="boardWrapper"
         style={{ display: 'flex', justifyContent: 'space-evenly' }}
       >
-        <LettersBank usedLetters={usedLetters} />
+        <LettersBank usedLetters={usedLetters} onClick={handleClick} />
         <SpringBoard playedWords={playedWords} />
         <StatsDisplay par={par} attempts={attempts} />
       </div>

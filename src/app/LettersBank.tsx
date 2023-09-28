@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
 import { useMemo } from 'react';
-import LettersBankTile from './letters-bank-tile';
+import LettersBankTile from './LettersBankTile';
 
 const LettersBankContainer = styled('div', {
   width: '320px',
@@ -12,6 +12,7 @@ const LettersBankContainer = styled('div', {
 
 interface Props {
   usedLetters: string[];
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
 // an array of array of letters grouped by standard keyboard layout
@@ -19,7 +20,7 @@ const makeLettersMatrix = () => {
   return ['qwertyuiop'.split(''), 'asdfghjkl'.split(''), 'zxcvbnm'.split('')];
 };
 
-const LettersBank: React.FC<Props> = ({ usedLetters }) => {
+const LettersBank: React.FC<Props> = ({ usedLetters, onClick }) => {
   const groupedLetters = useMemo(() => makeLettersMatrix(), []);
 
   return (
@@ -33,12 +34,14 @@ const LettersBank: React.FC<Props> = ({ usedLetters }) => {
               justifyContent: 'center',
             }}
             key={`array-${letters[0]}`}
+            onClick={onClick}
           >
             {letters.map((letter) => (
               <LettersBankTile
                 key={`letter-${letter}`}
                 letter={letter}
                 isUsedLetter={usedLetters.includes(letter)}
+                isStatsDisplay={false}
               />
             ))}
           </div>
