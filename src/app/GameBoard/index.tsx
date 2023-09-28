@@ -159,6 +159,11 @@ const GameBoard: React.FC<Props> = ({
       // letters are lower case until formatted in the Tile component
       const letter = ev.target?.innerText?.toLowerCase();
 
+      // guard against click on wrapper div
+      if (letter.length > 1) {
+        return;
+      }
+
       if (currentWord.length <= 5 && !usedLetters.includes(letter)) {
         // add the letter to the array
         return setCurrentWord((currentWord) => {
