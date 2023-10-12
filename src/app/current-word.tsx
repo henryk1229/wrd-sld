@@ -8,8 +8,6 @@ const CurrentWordContainer = styled(animated.div, {
   width: '400px',
   display: 'flex',
   margin: '16px',
-  boxShadow:
-    '2px 4px 2px 4px rgba(0, 0, 0, 0.2), 2px 4px 2px 4px rgba(0, 0, 0, 0.19)',
   borderRadius: '3px',
   alignItems: 'center',
   justifyContent: 'space-evenly',
