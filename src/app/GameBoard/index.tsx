@@ -195,6 +195,8 @@ const GameBoard: React.FC<Props> = ({
           justifyContent: 'center',
         }}
       >
+        {/* TODO - rm empty div for spacing  */}
+        <div style={{ width: '40px', height: '40px' }} />
         <EnterButton
           disabled={isLastTurn ? !currentWord[3] : !currentWord[4]}
           onClick={handleSubmitWord}
