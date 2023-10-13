@@ -10,8 +10,8 @@ const sharedStyles = {
   fontWeight: 800,
   borderRadius: '3px',
   color: '#fafafa',
-  width: '32px',
-  height: '40px',
+  width: '40px',
+  height: '48px',
   margin: '4px',
 };
 
