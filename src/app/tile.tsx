@@ -8,32 +8,31 @@ const sharedStyles = {
   alignItems: 'center',
   fontFamily: 'Helvetica',
   fontWeight: 800,
-  border: 'solid 2px #1a1a1a',
   borderRadius: '3px',
-  boxShadow: '1px 1px',
   color: '#fafafa',
   width: '32px',
   height: '40px',
-  margin: '8px',
+  margin: '4px',
 };
 
 const SpringBoardTile = styled(animated.div, {
   ...sharedStyles,
   backgroundColor: '#217C7E',
-  border: 'solid 2px #217C7E',
+  border: 'solid 1px #046466',
+  boxShadow: '1px 1px #751213',
 });
 
 const EmptyTile = styled('div', {
   ...sharedStyles,
-  border: 'solid 2px #F3EFE0',
-  boxShadow: 'none',
+  border: 'solid 1px rgba(0,0,0,0.15)',
+  boxShadow: '1px 1px rgba(0,0,0,0.15)',
 });
 
 const BorderTile = styled('div', {
   ...sharedStyles,
-  border: 'solid 2px #1a1a1a',
   backgroundColor: '#217C7E',
-  boxShadow: 'none',
+  border: 'solid 1px #046466',
+  boxShadow: '1px 1px #046466',
   opacity: 0.15,
 });
 
