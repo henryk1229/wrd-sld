@@ -1,7 +1,7 @@
 import { styled } from '@stitches/react';
 import { SpringValue, animated } from '@react-spring/web';
 import { useWindowListener } from '../hooks/useWindowListener';
-import WordCaddy from './word-caddy';
+import WordCaddy from './WordCaddy';
 
 const CurrentWordContainer = styled(animated.div, {
   height: '84px',

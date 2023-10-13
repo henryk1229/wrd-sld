@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
-import WordCaddy from './word-caddy';
+import WordCaddy from './WordCaddy';
 
 const APP_NAME = ['w', 'o', 'r', 'd', 's', 'a', 'l', 'a', 'd'];
 
