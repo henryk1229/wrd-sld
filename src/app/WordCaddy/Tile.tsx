@@ -15,7 +15,7 @@ const sharedStyles = {
   color: '#fafafa',
   width: '56px',
   height: '64px',
-  margin: '8px',
+  margin: '6px',
   backgroundColor: '#9A3334',
 };
 

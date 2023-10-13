@@ -7,7 +7,6 @@ const CurrentWordContainer = styled(animated.div, {
   height: '84px',
   width: '400px',
   display: 'flex',
-  margin: '16px',
   borderRadius: '3px',
   alignItems: 'center',
   justifyContent: 'space-evenly',
