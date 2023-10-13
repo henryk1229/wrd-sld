@@ -1,6 +1,5 @@
 import { styled } from '@stitches/react';
 import LettersBankTile from './LettersBankTile';
-import RestartButton from './RestartButton';
 
 const DisplayContainer = styled('div', {
   width: '320px',
@@ -19,16 +18,9 @@ const DisplayContent = styled('div', {
 interface Props {
   par: number;
   attempts: number;
-  startOverDisabled: boolean;
-  restartGame: () => void;
 }
 
-const StatsDisplay: React.FC<Props> = ({
-  par,
-  attempts,
-  startOverDisabled,
-  restartGame,
-}) => {
+const StatsDisplay: React.FC<Props> = ({ par, attempts }) => {
   return (
     <DisplayContainer>
       <DisplayContent>
@@ -59,7 +51,6 @@ const StatsDisplay: React.FC<Props> = ({
         <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
           <div style={{ margin: '4px' }}>Genius: {par - 4}</div>
         </div>
-        <RestartButton restartGame={restartGame} disabled={startOverDisabled} />
       </DisplayContent>
     </DisplayContainer>
   );

@@ -9,6 +9,7 @@ import { checkSubmitConditions, makeCurrentWord } from './utils';
 import StatsDisplay from '../StatsDisplay';
 import DeleteButton from '../DeleteButton';
 import EnterButton from '../EnterButton';
+import RestartButton from '../RestartButton';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -185,12 +186,7 @@ const GameBoard: React.FC<Props> = ({
       >
         <LettersBank usedLetters={usedLetters} onClick={handleClick} />
         <SpringBoard playedWords={playedWords} />
-        <StatsDisplay
-          par={par}
-          attempts={attempts}
-          startOverDisabled={disableReset}
-          restartGame={restartGame}
-        />
+        <StatsDisplay par={par} attempts={attempts} />
       </div>
       <div
         style={{
@@ -213,6 +209,7 @@ const GameBoard: React.FC<Props> = ({
           disabled={!currentWord[1]}
           onClick={clearLetterFromCurrentWord}
         />
+        <RestartButton restartGame={restartGame} disabled={disableReset} />
       </div>
     </BoardContainer>
   );

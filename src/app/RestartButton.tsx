@@ -1,5 +1,4 @@
 import { styled } from '@stitches/react';
-import LettersBankTile from './LettersBankTile';
 
 const StyledButton = styled('button', {
   border: 'none',
@@ -27,27 +26,26 @@ const RestartButton: React.FC<Props> = ({ disabled, restartGame }) => (
       ...(disabled ? { opacity: 0.5, cursor: 'not-allowed' } : null),
     }}
   >
-    <div style={{ display: 'flex' }}>
-      {'START'.split('').map((letter, idx) => (
-        <LettersBankTile
-          key={`letter-${letter}-${idx}`}
-          letter={letter}
-          isUsedLetter={false}
-          isStatsDisplay={true}
-        />
-      ))}
-    </div>
-    <div style={{ display: 'flex' }}>
-      {'OVER'.split('').map((letter, idx) => (
-        <LettersBankTile
-          key={`letter-${letter}-${idx}`}
-          letter={letter}
-          isUsedLetter={idx === 0}
-          isStatsDisplay={true}
-        />
-      ))}
+    <div style={{ marginLeft: '4px' }}>
+      <RestartIcon />
     </div>
   </StyledButton>
+);
+
+const RestartIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={32}
+    height={32}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#9A3334"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38" />
+  </svg>
 );
 
 export default RestartButton;
