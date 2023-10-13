@@ -1,5 +1,5 @@
 import { useTrail } from '@react-spring/web';
-import WordCaddyTile from './word-caddy-tile';
+import WordCaddyTile from './Tile';
 
 const DURATION = 100;
 
