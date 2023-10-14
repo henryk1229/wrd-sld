@@ -60,6 +60,9 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   return (
     <>
       <GameBoard
+        date={date}
+        saladNumber={saladNumber}
+        ranking="Good"
         key={attempts}
         par={par}
         playedWords={playedWords}
