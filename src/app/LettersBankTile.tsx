@@ -53,20 +53,12 @@ const StatsDisplayTile = styled('div', {
 interface Props {
   letter: string;
   isUsedLetter: boolean;
-  isStatsDisplay: boolean;
   spring?: {
     transform: SpringValue<string>;
   };
 }
 
-const LettersBankTile: React.FC<Props> = ({
-  letter,
-  isUsedLetter,
-  isStatsDisplay,
-}) => {
-  if (isStatsDisplay) {
-    return <StatsDisplayTile>{letter.toUpperCase()}</StatsDisplayTile>;
-  }
+const LettersBankTile: React.FC<Props> = ({ letter, isUsedLetter }) => {
   return !isUsedLetter ? (
     <AvailableLetterTile>{letter.toUpperCase()}</AvailableLetterTile>
   ) : (
