@@ -54,7 +54,7 @@ const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
         <div style={{ margin: '4px' }}>Par: {par}</div>
         <div style={{ margin: '4px' }}>Good: {par - 1}</div>
         <div style={{ margin: '4px' }}>Great: {par - 2}</div>
-        <div style={{ margin: '4px' }}>Genius: {par - 4}</div>
+        <div style={{ margin: '4px' }}>Perfect: {par - 4}</div>
         <div style={{ margin: '16px 4px 4px' }}>Current Rank: {ranking}</div>
       </ModalContent>
     </Modal>
