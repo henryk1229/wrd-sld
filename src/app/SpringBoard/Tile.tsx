@@ -19,7 +19,7 @@ const SpringBoardTile = styled(animated.div, {
   ...sharedStyles,
   backgroundColor: '#217C7E',
   border: 'solid 1px #046466',
-  boxShadow: '2px 2px #751213',
+  boxShadow: '2px 2px #046466',
 });
 
 const EmptyTile = styled('div', {
