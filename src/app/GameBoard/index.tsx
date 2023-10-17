@@ -1,7 +1,7 @@
 import { styled } from '@stitches/react';
 import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from '../CurrentWord';
-import SpringBoard from '../SpringBoard';
+import WordsGrid from '../WordsGrid';
 import { useShakeWord } from '../../hooks/useShakeWord';
 import axios from 'axios';
 import LettersBank from '../LettersBank';
@@ -191,7 +191,7 @@ const GameBoard: React.FC<Props> = ({
         style={{ display: 'flex', justifyContent: 'space-evenly' }}
       >
         <LettersBank usedLetters={usedLetters} onClick={handleClick} />
-        <SpringBoard playedWords={playedWords} />
+        <WordsGrid playedWords={playedWords} />
         <StatsDisplay
           stats={{
             date,

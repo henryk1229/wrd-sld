@@ -2,7 +2,7 @@ import { styled } from '@stitches/react';
 import WordMatrix from './WordMatrix';
 import Tile from './Tile';
 
-const SpringBoardContainer = styled('div', {
+const WordsGridContainer = styled('div', {
   height: '360px',
   width: '360px',
   display: 'flex',
@@ -15,39 +15,31 @@ interface Props {
   playedWords: string[][];
 }
 
-// TODO - do while loop?
+// TODO - investigate looping conventions for this edgecase
 const makeWordsGrid = (playedWords: string[][]): string[][] => {
-  const wordsGrid = ['', '', '', ''];
-  return wordsGrid.map((position, idx) => {
-    if (playedWords[idx]) {
-      return playedWords[idx];
-    }
-    const precedingWord = playedWords[idx - 1];
-    const firstLetter = precedingWord
-      ? precedingWord[precedingWord.length - 1]
-      : '';
-    // TODO - playedWords or idx here?
-    const lastLetter = playedWords.length === 3 ? playedWords[0][0] : '';
-    return [firstLetter, '', '', '', lastLetter];
-  });
+  const wordsGrid = playedWords.slice();
+  let numToAdd = 4 - playedWords.length;
+  const emptyGrid = ['', '', '', '', ''];
+  do {
+    numToAdd -= 1;
+    wordsGrid.push(emptyGrid);
+  } while (numToAdd > 0);
+  return wordsGrid;
 };
 
-// This component rotates board when a word is submitted
-const SpringBoard: React.FC<Props> = ({ playedWords }) => {
+// TODO - rename component
+const WordsGrid: React.FC<Props> = ({ playedWords }) => {
   const wordsGrid = makeWordsGrid(playedWords);
 
+  // TODO - styling for grid? make it more intuitive?
   return (
-    <SpringBoardContainer>
+    <WordsGridContainer>
       {wordsGrid.map((word: string[], wordIdx: number) => {
+        const isBorderTile = !!word[0] && !wordsGrid[wordIdx + 1][0];
         return (
           <div style={{ display: 'flex' }} key={wordIdx}>
             {word.map((letter, letterIdx) => {
               // first and last letters in array will be right and left bounds of board
-              const isBorderTile =
-                [0, 4].includes(letterIdx) &&
-                !word[1] &&
-                !!playedWords[wordIdx - 1] &&
-                !!letter;
               const isAnchorTile = [0, 4].includes(letterIdx);
               return (
                 <Tile
@@ -61,8 +53,8 @@ const SpringBoard: React.FC<Props> = ({ playedWords }) => {
           </div>
         );
       })}
-    </SpringBoardContainer>
+    </WordsGridContainer>
   );
 };
 
-export default SpringBoard;
+export default WordsGrid;
