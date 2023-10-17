@@ -4,39 +4,41 @@ interface Props {
   playedWords: string[][];
 }
 
+const makeLowerBound = (
+  secondWord: string[],
+  thirdWord: string[]
+): string[] => {
+  // there's a third word, reverse and return it
+  if (thirdWord) {
+    const reversed = thirdWord.slice().reverse();
+    return reversed;
+  }
+  // initialize empty bound
+  const lowerBound = ['', '', '', '', ''];
+  // if there's a second word, the last letter should be in the bound
+  if (secondWord) {
+    lowerBound[lowerBound.length - 1] = secondWord[secondWord.length - 1];
+  }
+
+  return lowerBound;
+};
+
 const makeWordMatrix = (playedWords: string[][]) => {
   const [firstWord, secondWord, thirdWord, fourthWord] = playedWords;
 
-  const upperBound = secondWord
-    ? secondWord
-    : Array.from(firstWord, (v, i) => (i === 0 ? v : ''));
-
-  const lowerBound = fourthWord
-    ? fourthWord
-    : Array.from(firstWord, (v, i) => {
-        if (i === 0 && firstWord[firstWord.length - 1]) {
-          return firstWord[firstWord.length - 1];
-        }
-        if (
-          i === firstWord.length - 1 &&
-          thirdWord &&
-          thirdWord[firstWord.length - 1]
-        ) {
-          return thirdWord[firstWord.length - 1];
-        }
-        return '';
-      });
+  const lowerBound = makeLowerBound(secondWord, thirdWord);
 
   const innerArrays = [];
 
-  for (let i = 1; i < upperBound.length - 1; i++) {
+  for (let i = 1; i < firstWord.length - 1; i++) {
     const array = [];
-    for (let innerI = 0; innerI < upperBound.length; innerI++) {
+    for (let innerI = 0; innerI < firstWord.length; innerI++) {
       if (innerI === 0) {
-        const letter = playedWords[innerI][i];
+        // TODO - check this branch
+        const letter = fourthWord ? fourthWord[i] : '';
         array.push(letter);
-      } else if (innerI === upperBound.length - 1) {
-        const letter = playedWords[2] ? playedWords[2][i] : '';
+      } else if (innerI === firstWord.length - 1) {
+        const letter = playedWords[1] ? playedWords[1][i] : '';
         array.push(letter);
       } else {
         array.push('');
@@ -45,7 +47,7 @@ const makeWordMatrix = (playedWords: string[][]) => {
     innerArrays.push(array);
   }
 
-  return [upperBound, ...innerArrays, lowerBound];
+  return [firstWord, ...innerArrays, lowerBound];
 };
 
 // This component translates the playedWords[][] prop into a square game board
