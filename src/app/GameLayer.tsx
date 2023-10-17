@@ -2,6 +2,7 @@ import GameBoard from './GameBoard';
 import { useState } from 'react';
 import EndGameModal from './EndGameModal';
 import { DailySalad } from './app';
+import HowToPlayModal from './HowToPlayModal';
 
 // // TODO - set salad details in local storage for streak tracking?
 // const setSaladInStorage = (dailySalad: DailySalad | null) => {
@@ -49,6 +50,8 @@ interface Props {
 const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   // handle end game logic
   const [shouldEndGame, setShouldEndGame] = useState<boolean>(false);
+
+  const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(true);
 
   // create rootWord[] from daily initialWord
   const { date, saladNumber, par, initialWord } = dailySalad;
@@ -111,6 +114,10 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
         }}
         open={shouldEndGame}
         onClose={() => setShouldEndGame(false)}
+      />
+      <HowToPlayModal
+        open={howToPlayModalOpen}
+        onClose={() => setHTPModalOpen(false)}
       />
     </>
   );
