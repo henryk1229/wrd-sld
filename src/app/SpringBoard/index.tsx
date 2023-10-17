@@ -1,6 +1,7 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
 import WordMatrix from './WordMatrix';
+import { Spring } from '../../hooks/useRotateBoard';
 
 const SpringBoardContainer = styled('div', {
   height: '360px',
@@ -18,15 +19,14 @@ const SB = styled(animated.div, {
 
 interface Props {
   playedWords: string[][];
+  spring: Spring;
 }
 
 // This component rotates board when a word is submitted
-const SpringBoard: React.FC<Props> = (props) => {
-  const { playedWords } = props;
-
+const SpringBoard: React.FC<Props> = ({ playedWords, spring }) => {
   return (
     <SpringBoardContainer>
-      <SB>
+      <SB style={spring}>
         <WordMatrix playedWords={playedWords} />
       </SB>
     </SpringBoardContainer>

@@ -10,6 +10,7 @@ import StatsDisplay from '../StatsDisplay';
 import DeleteButton from '../DeleteButton';
 import EnterButton from '../EnterButton';
 import RestartButton from '../RestartButton';
+import { useRotateBoard } from '../../hooks/useRotateBoard';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -63,6 +64,7 @@ const GameBoard: React.FC<Props> = ({
 
   // springs for animations
   const { shakeStyles, shakeWord } = useShakeWord();
+  const { spring, rotateBoard } = useRotateBoard(playedWords.length);
 
   const submittedLetters = playedWords.flat();
   const usedLetters = submittedLetters.concat(currentWord.flat());
@@ -81,6 +83,7 @@ const GameBoard: React.FC<Props> = ({
         if (isLastTurn) {
           return setShouldEndGame(true);
         }
+        rotateBoard(playedWords.length + 1);
         // next word should start with first letter of newly-submitted current word
         const nextWord = makeCurrentWord({
           playedWords: [...playedWords, currentWord],
@@ -104,6 +107,7 @@ const GameBoard: React.FC<Props> = ({
     playNewWord,
     shakeWord,
     setShouldEndGame,
+    rotateBoard,
   ]);
 
   const clearLetterFromCurrentWord = useCallback(() => {
@@ -191,7 +195,7 @@ const GameBoard: React.FC<Props> = ({
         style={{ display: 'flex', justifyContent: 'space-evenly' }}
       >
         <LettersBank usedLetters={usedLetters} onClick={handleClick} />
-        <SpringBoard playedWords={playedWords} />
+        <SpringBoard playedWords={playedWords} spring={spring} />
         <StatsDisplay
           stats={{
             date,
