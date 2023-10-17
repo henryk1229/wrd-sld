@@ -41,7 +41,6 @@ const LettersBank: React.FC<Props> = ({ usedLetters, onClick }) => {
                 key={`letter-${letter}`}
                 letter={letter}
                 isUsedLetter={usedLetters.includes(letter)}
-                isStatsDisplay={false}
               />
             ))}
           </div>

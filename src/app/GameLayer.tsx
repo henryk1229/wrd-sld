@@ -15,6 +15,33 @@ import { DailySalad } from './app';
 //   }
 // };
 
+export const makeRankingsObject = (par: number) => {
+  return {
+    [par - 1]: 'Good',
+    [par - 2]: 'Great',
+    [par - 4]: 'Genius',
+  };
+};
+
+export const getRanking = ({
+  attempts,
+  par,
+}: {
+  attempts: number;
+  par: number;
+}) => {
+  if (attempts <= par - 4) {
+    return 'Perfect';
+  }
+  if (attempts <= par - 2) {
+    return 'Great';
+  }
+  if (attempts <= par - 1) {
+    return 'Good';
+  }
+  return 'Normal';
+};
+
 interface Props {
   dailySalad: DailySalad;
 }
@@ -39,6 +66,8 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   const storedAttempts = localStorage.getItem('attempts') ?? '1';
   const attempts = parseInt(storedAttempts, 10);
 
+  const ranking = getRanking({ attempts, par });
+
   const restartGame = () => {
     // tally restart
     const newAttempts = attempts + 1;
@@ -60,6 +89,9 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   return (
     <>
       <GameBoard
+        date={date}
+        saladNumber={saladNumber}
+        ranking={ranking}
         key={attempts}
         par={par}
         playedWords={playedWords}
@@ -75,8 +107,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
           par,
           initialWord,
           attempts,
-          // TODO
-          ranking: 'Good',
+          ranking,
         }}
         open={shouldEndGame}
         onClose={() => setShouldEndGame(false)}

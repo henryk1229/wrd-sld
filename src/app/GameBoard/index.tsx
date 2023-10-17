@@ -30,15 +30,21 @@ const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
 };
 
 interface Props {
+  date: string;
+  saladNumber: number;
   par: number;
   playedWords: string[][];
   attempts: number;
+  ranking: string;
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
   setShouldEndGame: (bool: boolean) => void;
 }
 
 const GameBoard: React.FC<Props> = ({
+  date,
+  saladNumber,
+  ranking,
   par,
   playedWords,
   attempts,
@@ -186,7 +192,15 @@ const GameBoard: React.FC<Props> = ({
       >
         <LettersBank usedLetters={usedLetters} onClick={handleClick} />
         <SpringBoard playedWords={playedWords} />
-        <StatsDisplay par={par} attempts={attempts} />
+        <StatsDisplay
+          stats={{
+            date,
+            saladNumber,
+            par,
+            attempts,
+            ranking,
+          }}
+        />
       </div>
       <div
         style={{
