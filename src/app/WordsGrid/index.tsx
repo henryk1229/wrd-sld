@@ -1,5 +1,4 @@
 import { styled } from '@stitches/react';
-import WordMatrix from './WordMatrix';
 import Tile from './Tile';
 
 const WordsGridContainer = styled('div', {
