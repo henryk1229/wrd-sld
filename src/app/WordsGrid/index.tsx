@@ -1,5 +1,6 @@
 import { styled } from '@stitches/react';
 import Tile from './Tile';
+import GuideLine from './GuideLine';
 
 const WordsGridContainer = styled('div', {
   height: '360px',
@@ -35,27 +36,41 @@ const makeWordsGrid = (playedWords: string[][]): string[][] => {
   return wordsGrid;
 };
 
-// TODO - rename component
 const WordsGrid: React.FC<Props> = ({ playedWords }) => {
-  const wordsGrid = makeWordsGrid(playedWords);
+  const grid = makeWordsGrid(playedWords);
   return (
     <WordsGridContainer>
-      {wordsGrid.map((word: string[], wordIdx: number) => {
+      {grid.map((word: string[], wordIdx: number) => {
         const isPendingWord = !!word[0] && !word[1];
         return (
-          <div style={{ display: 'flex', margin: '8px' }} key={wordIdx}>
-            {word.map((letter, letterIdx) => {
-              // first and last letters in array will be right and left bounds of board
-              const isAnchorTile = [0, 4].includes(letterIdx);
-              return (
-                <Tile
-                  key={letterIdx}
-                  letter={letter}
-                  isPendingWord={isPendingWord}
-                  isAnchorTile={isAnchorTile}
-                />
-              );
-            })}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            key={wordIdx}
+          >
+            <div
+              style={{
+                display: 'flex',
+                margin: '12px 0px 0px',
+                justifyContent: 'center',
+              }}
+            >
+              {word.map((letter, letterIdx) => {
+                // first and last letters in array will be right and left bounds of board
+                const isAnchorTile = [0, 4].includes(letterIdx);
+                return (
+                  <Tile
+                    key={letterIdx}
+                    letter={letter}
+                    isPendingWord={isPendingWord}
+                    isAnchorTile={isAnchorTile}
+                  />
+                );
+              })}
+            </div>
+            {wordIdx !== 3 && <GuideLine />}
           </div>
         );
       })}
