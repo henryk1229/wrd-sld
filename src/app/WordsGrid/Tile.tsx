@@ -24,42 +24,42 @@ const SpringBoardTile = styled(animated.div, {
 
 const EmptyTile = styled('div', {
   ...sharedStyles,
-  border: 'solid 1px rgba(0,0,0,0.15)',
-  boxShadow: '2px 2px rgba(0,0,0,0.15)',
-});
-
-const BorderTile = styled('div', {
-  ...sharedStyles,
   backgroundColor: '#217C7E',
   border: 'solid 1px #046466',
   boxShadow: '2px 2px #046466',
   opacity: 0.15,
 });
 
+const PendingWordTile = styled('div', {
+  ...sharedStyles,
+  backgroundColor: '#217C7E',
+  border: 'solid 1px #046466',
+  boxShadow: '2px 2px #046466',
+  opacity: 0.6,
+});
+
 interface Props {
   letter: string;
-  isBorderTile: boolean;
+  isPendingWord: boolean;
   isAnchorTile: boolean;
   spring?: {
     transform: SpringValue<string>;
   };
 }
 
-const Tile: React.FC<Props> = ({ letter, isBorderTile, isAnchorTile }) => {
+const Tile: React.FC<Props> = ({ letter, isPendingWord, isAnchorTile }) => {
+  const color = isAnchorTile
+    ? { color: '#FFCC00' }
+    : {
+        color: '#fafafa',
+      };
+  if (isPendingWord) {
+    return (
+      <PendingWordTile style={color}>{letter?.toUpperCase()}</PendingWordTile>
+    );
+  }
   return letter ? (
-    <SpringBoardTile
-      style={{
-        ...(isAnchorTile
-          ? { color: '#FFCC00' }
-          : {
-              color: '#fafafa',
-            }),
-      }}
-    >
-      {letter.toUpperCase()}
-    </SpringBoardTile>
-  ) : isBorderTile ? (
-    <BorderTile />
+    <SpringBoardTile style={color}>{letter.toUpperCase()}</SpringBoardTile>
   ) : (
     <EmptyTile />
   );
