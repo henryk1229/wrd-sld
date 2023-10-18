@@ -23,20 +23,27 @@ const makeWordsGrid = (playedWords: string[][]): string[][] => {
     numToAdd -= 1;
     wordsGrid.push(emptyGrid);
   } while (numToAdd > 0);
+
+  const insertIdx = playedWords.length;
+  const firstLetter = playedWords[playedWords.length - 1][4];
+  const grid = [firstLetter, '', '', '', ''];
+  if (insertIdx === 3) {
+    const lastLetter = playedWords[0][0];
+    grid[4] = lastLetter;
+  }
+  wordsGrid[insertIdx] = grid;
   return wordsGrid;
 };
 
 // TODO - rename component
 const WordsGrid: React.FC<Props> = ({ playedWords }) => {
   const wordsGrid = makeWordsGrid(playedWords);
-
-  // TODO - styling for grid? make it more intuitive?
   return (
     <WordsGridContainer>
       {wordsGrid.map((word: string[], wordIdx: number) => {
-        const isBorderTile = !!word[0] && !wordsGrid[wordIdx + 1][0];
+        const isPendingWord = !!word[0] && !word[1];
         return (
-          <div style={{ display: 'flex' }} key={wordIdx}>
+          <div style={{ display: 'flex', margin: '8px' }} key={wordIdx}>
             {word.map((letter, letterIdx) => {
               // first and last letters in array will be right and left bounds of board
               const isAnchorTile = [0, 4].includes(letterIdx);
@@ -44,7 +51,7 @@ const WordsGrid: React.FC<Props> = ({ playedWords }) => {
                 <Tile
                   key={letterIdx}
                   letter={letter}
-                  isBorderTile={isBorderTile}
+                  isPendingWord={isPendingWord}
                   isAnchorTile={isAnchorTile}
                 />
               );
