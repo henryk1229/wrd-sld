@@ -35,7 +35,7 @@ const PendingWordTile = styled('div', {
   backgroundColor: '#217C7E',
   border: 'solid 1px #046466',
   boxShadow: '2px 2px #046466',
-  opacity: 0.4,
+  opacity: 0.6,
 });
 
 interface Props {

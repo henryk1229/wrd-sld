@@ -27,11 +27,11 @@ const makeWordsGrid = (playedWords: string[][]): string[][] => {
 
   const insertIdx = playedWords.length;
   const firstLetter = playedWords[playedWords.length - 1][4];
-  const grid = [firstLetter, '', '', '', ''];
-  if (insertIdx === 3) {
-    const lastLetter = playedWords[0][0];
-    grid[4] = lastLetter;
-  }
+  const lastLetterFourthWord = playedWords[0][0];
+  const grid =
+    insertIdx === 3
+      ? [firstLetter, '', '', '', lastLetterFourthWord]
+      : [firstLetter, '', '', '', ''];
   wordsGrid[insertIdx] = grid;
   return wordsGrid;
 };
