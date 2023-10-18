@@ -48,21 +48,18 @@ interface Props {
 }
 
 const Tile: React.FC<Props> = ({ letter, isPendingWord, isAnchorTile }) => {
+  const color = isAnchorTile
+    ? { color: '#FFCC00' }
+    : {
+        color: '#fafafa',
+      };
   if (isPendingWord) {
-    return <PendingWordTile>{letter?.toUpperCase()}</PendingWordTile>;
+    return (
+      <PendingWordTile style={color}>{letter?.toUpperCase()}</PendingWordTile>
+    );
   }
   return letter ? (
-    <SpringBoardTile
-      style={{
-        ...(isAnchorTile
-          ? { color: '#FFCC00' }
-          : {
-              color: '#fafafa',
-            }),
-      }}
-    >
-      {letter.toUpperCase()}
-    </SpringBoardTile>
+    <SpringBoardTile style={color}>{letter.toUpperCase()}</SpringBoardTile>
   ) : (
     <EmptyTile />
   );
