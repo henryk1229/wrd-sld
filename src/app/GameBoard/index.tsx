@@ -36,9 +36,11 @@ interface Props {
   playedWords: string[][];
   attempts: number;
   ranking: string;
+  statsModalOpen: boolean;
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
-  setShouldEndGame: (bool: boolean) => void;
+  setStatsModalOpen: (bool: boolean) => void;
+  setHTPModalOpen: (bool: boolean) => void;
 }
 
 const GameBoard: React.FC<Props> = ({
@@ -48,9 +50,11 @@ const GameBoard: React.FC<Props> = ({
   par,
   playedWords,
   attempts,
+  statsModalOpen,
   playNewWord,
   restartGame,
-  setShouldEndGame,
+  setStatsModalOpen,
+  setHTPModalOpen,
 }) => {
   const isLastTurn = playedWords.length === 3;
 
@@ -79,7 +83,8 @@ const GameBoard: React.FC<Props> = ({
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
         if (isLastTurn) {
-          return setShouldEndGame(true);
+          // display stats modal on finish
+          return setStatsModalOpen(true);
         }
         // next word should start with first letter of newly-submitted current word
         const nextWord = makeCurrentWord({
@@ -103,7 +108,7 @@ const GameBoard: React.FC<Props> = ({
     isLastTurn,
     playNewWord,
     shakeWord,
-    setShouldEndGame,
+    setStatsModalOpen,
   ]);
 
   const clearLetterFromCurrentWord = useCallback(() => {
@@ -200,6 +205,9 @@ const GameBoard: React.FC<Props> = ({
             attempts,
             ranking,
           }}
+          statsModalOpen={statsModalOpen}
+          setStatsModalOpen={setStatsModalOpen}
+          setHTPModalOpen={setHTPModalOpen}
         />
       </div>
       <div

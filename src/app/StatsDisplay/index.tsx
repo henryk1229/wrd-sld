@@ -1,8 +1,6 @@
 import { styled } from '@stitches/react';
-import { useState } from 'react';
 import StatsModal, { Stats } from './StatsModal';
 import HelpButton from '../HelpButton';
-import HowToPlayModal from '../HowToPlayModal';
 
 const DisplayContainer = styled('div', {
   width: '320px',
@@ -21,13 +19,18 @@ const DisplayContent = styled('div', {
 
 interface Props {
   stats: Stats;
+  statsModalOpen: boolean;
+  setStatsModalOpen: (bool: boolean) => void;
+  setHTPModalOpen: (bool: boolean) => void;
 }
 
-const StatsDisplay: React.FC<Props> = ({ stats }) => {
+const StatsDisplay: React.FC<Props> = ({
+  stats,
+  statsModalOpen,
+  setStatsModalOpen,
+  setHTPModalOpen,
+}) => {
   const { attempts, ranking, par } = stats;
-  const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
-  const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(false);
-
   return (
     <DisplayContainer>
       <DisplayContent>
@@ -47,10 +50,6 @@ const StatsDisplay: React.FC<Props> = ({ stats }) => {
         stats={stats}
         open={statsModalOpen}
         onClose={() => setStatsModalOpen(false)}
-      />
-      <HowToPlayModal
-        open={howToPlayModalOpen}
-        onClose={() => setHTPModalOpen(false)}
       />
     </DisplayContainer>
   );
