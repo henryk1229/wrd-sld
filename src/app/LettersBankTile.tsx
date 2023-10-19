@@ -2,7 +2,7 @@ import { SpringValue } from '@react-spring/web';
 import { styled } from '@stitches/react';
 import React from 'react';
 
-const sharedStyles = {
+const AvailableLetterTile = styled('div', {
   inset: 0,
   display: 'flex',
   justifyContent: 'center',
@@ -21,33 +21,10 @@ const sharedStyles = {
     opacity: 0.75,
     cursor: 'pointer',
   },
-};
-
-const AvailableLetterTile = styled('div', {
-  ...sharedStyles,
 });
 
-const UsedLetterTile = styled('div', {
-  ...sharedStyles,
+const UsedLetterTile = styled(AvailableLetterTile, {
   opacity: 0.15,
-});
-
-// TODO - dedicated stats display tile?
-const StatsDisplayTile = styled('div', {
-  inset: 0,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontFamily: 'Helvetica',
-  fontWeight: 800,
-  borderRadius: '3px',
-  boxShadow: '1px 1px #751213',
-  border: 'solid 1px #751213',
-  color: '#fafafa',
-  width: '24px',
-  height: '32px',
-  margin: '4px 2px',
-  backgroundColor: '#9A3334',
 });
 
 interface Props {
