@@ -27,6 +27,25 @@ const ModalContent = styled('div', {
   fontSize: '16px',
 });
 
+const ModalTile = styled('div', {
+  inset: 0,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontFamily: 'Helvetica',
+  fontWeight: 800,
+  borderRadius: '3px',
+  boxShadow: '1px 1px #751213',
+  border: 'solid 1px',
+  borderColor: '#9A3334 #751213 #751213 #9A3334',
+  color: '#fafafa',
+  width: '28px',
+  height: '36px',
+  margin: '4px 2px',
+  // fontSize: '20px',
+  backgroundColor: '#9A3334',
+});
+
 export type Stats = Omit<GameStats, 'initialWord'>;
 
 interface Props {
@@ -100,12 +119,8 @@ const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
       focusTrapped={false}
     >
       <ModalHeader>
-        {`salad ${saladNumber}`.split('').map((letter, idx) => (
-          <LettersBankTile
-            key={`${letter}-${idx}`}
-            letter={letter}
-            isUsedLetter={!letter}
-          />
+        {`SALAD ${saladNumber}`.split('').map((letter, idx) => (
+          <ModalTile key={`${letter}-${idx}`}>{letter}</ModalTile>
         ))}
       </ModalHeader>
       <ModalSubHeader>
