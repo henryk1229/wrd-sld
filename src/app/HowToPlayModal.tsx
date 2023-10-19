@@ -90,18 +90,62 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
       <ModalSubHeader>Examples</ModalSubHeader>
       <ModalContent>
         <ul style={{ padding: '0px 0px 0px 16px', margin: '0px' }}>
-          <li style={{ margin: '8px', fontWeight: 600, letterSpacing: '2px' }}>
-            <span style={{ textDecoration: 'underline' }}>a</span>bcd
-            <span style={{ textDecoration: 'underline' }}>e</span>,{' '}
-            <span style={{ textDecoration: 'underline' }}>e</span>
-            fgh
-            <span style={{ textDecoration: 'underline' }}>i</span>,{' '}
-            <span style={{ textDecoration: 'underline' }}>i</span>
-            jkl
-            <span style={{ textDecoration: 'underline' }}>m</span>,{' '}
-            <span style={{ textDecoration: 'underline' }}>m</span>
-            lno
-            <span style={{ textDecoration: 'underline' }}>a</span>
+          <li
+            style={{
+              margin: '12px 8px',
+              fontWeight: 600,
+              letterSpacing: '1px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>A</span>BCD
+            <span style={{ textDecoration: 'underline' }}>E</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>E</span>
+            FGH
+            <span style={{ textDecoration: 'underline' }}>I</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>I</span>
+            JKL
+            <span style={{ textDecoration: 'underline' }}>M</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>M</span>
+            LNO
+            <span style={{ textDecoration: 'underline' }}>A</span>
+          </li>
+          <li
+            style={{
+              margin: '12px 8px',
+              fontWeight: 600,
+              letterSpacing: '1px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>C</span>DEF
+            <span style={{ textDecoration: 'underline' }}>G</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>G</span>
+            HIJ
+            <span style={{ textDecoration: 'underline' }}>K</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>K</span>
+            LMN
+            <span style={{ textDecoration: 'underline' }}>O</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>O</span>
+            PQR
+            <span style={{ textDecoration: 'underline' }}>C</span>
+          </li>
+          <li
+            style={{
+              margin: '12px 8px',
+              fontWeight: 600,
+              letterSpacing: '1px',
+            }}
+          >
+            <span style={{ textDecoration: 'underline' }}>E</span>FGH
+            <span style={{ textDecoration: 'underline' }}>I</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>I</span>
+            JKL
+            <span style={{ textDecoration: 'underline' }}>M</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>M</span>
+            NOP
+            <span style={{ textDecoration: 'underline' }}>Q</span>,{' '}
+            <span style={{ textDecoration: 'underline' }}>Q</span>
+            RST
+            <span style={{ textDecoration: 'underline' }}>E</span>
           </li>
         </ul>
       </ModalContent>
