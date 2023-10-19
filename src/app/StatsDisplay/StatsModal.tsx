@@ -81,7 +81,6 @@ const formatDate = (date: string) => {
 const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
   const { date, saladNumber, par, ranking } = stats;
   const formattedDate = formatDate(date);
-  console.log({ formattedDate });
   return (
     <Modal
       open={open}
