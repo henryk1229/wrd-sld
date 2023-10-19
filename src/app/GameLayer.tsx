@@ -1,6 +1,5 @@
 import GameBoard from './GameBoard';
 import { useState } from 'react';
-import EndGameModal from './EndGameModal';
 import { DailySalad } from './app';
 import HowToPlayModal from './HowToPlayModal';
 
@@ -48,10 +47,9 @@ interface Props {
 }
 
 const GameLayer: React.FC<Props> = ({ dailySalad }) => {
-  // handle end game logic
-  const [shouldEndGame, setShouldEndGame] = useState<boolean>(false);
-
+  // control display of modals
   const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(true);
+  const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
 
   // create rootWord[] from daily initialWord
   const { date, saladNumber, par, initialWord } = dailySalad;
@@ -99,21 +97,11 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
         par={par}
         playedWords={playedWords}
         attempts={attempts}
+        statsModalOpen={statsModalOpen}
         playNewWord={playNewWord}
         restartGame={restartGame}
-        setShouldEndGame={setShouldEndGame}
-      />
-      <EndGameModal
-        stats={{
-          date,
-          saladNumber,
-          par,
-          initialWord,
-          attempts,
-          ranking,
-        }}
-        open={shouldEndGame}
-        onClose={() => setShouldEndGame(false)}
+        setStatsModalOpen={setStatsModalOpen}
+        setHTPModalOpen={setHTPModalOpen}
       />
       <HowToPlayModal
         open={howToPlayModalOpen}
