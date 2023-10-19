@@ -60,8 +60,12 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
       focusTrapped={false}
     >
       <ModalHeader>
-        {'How To PLay'.split('').map((letter) => (
-          <LettersBankTile letter={letter} isUsedLetter={!letter} />
+        {'How To PLay'.split('').map((letter, idx) => (
+          <LettersBankTile
+            key={`${letter}-${idx}`}
+            letter={letter}
+            isUsedLetter={!letter}
+          />
         ))}
       </ModalHeader>
       <ModalSubHeader>Complete the WordSalad in four words</ModalSubHeader>
