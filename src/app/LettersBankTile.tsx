@@ -12,6 +12,7 @@ const AvailableLetterTile = styled('div', {
   borderRadius: '3px',
   boxShadow: '1px 1px #751213',
   border: 'solid 1px #751213',
+  borderColor: '#9A3334 #751213 #751213 #9A3334',
   color: '#fafafa',
   width: '24px',
   height: '32px',
