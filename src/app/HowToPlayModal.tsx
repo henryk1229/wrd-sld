@@ -7,7 +7,7 @@ const ModalHeader = styled('h3', {
   display: 'flex',
   margin: '16px',
   fontSize: '20px',
-  fontWeight: 900,
+  fontWeight: 800,
 });
 
 const ModalSubHeader = styled('div', {
@@ -50,7 +50,7 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
       aria-describedby="modal-indicating-game-over"
       styles={{
         modal: {
-          width: '40%',
+          width: '32%',
           borderRadius: '3px',
           backgroundColor: '#F3EFE0',
           fontFamily: 'Helvetica',
