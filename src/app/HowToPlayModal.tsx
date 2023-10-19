@@ -71,20 +71,17 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
       <ModalSubHeader>Complete the WordSalad in four words</ModalSubHeader>
       <ModalContent>
         <ul style={{ padding: '0px 0px 0px 16px', margin: '0px' }}>
-          <li style={{ margin: '8px' }}>
-            The first word has been chosen for you
-          </li>
+          <li style={{ margin: '8px' }}>Each word must be five letters</li>
           <li style={{ margin: '8px' }}>
             Each word must start with the last letter of the preceding word
           </li>
           <li style={{ margin: '8px' }}>
-            The last word ends with the first letter of the first word
+            The last word must end with the first letter of the first word
           </li>
           <li style={{ margin: '8px' }}>
             Each letter can be used only{' '}
             <span style={{ fontWeight: 600 }}>once</span> per WordSalad
           </li>
-          <li style={{ margin: '8px' }}>Each word must be five letters</li>
         </ul>
       </ModalContent>
       <ModalSubHeader>Examples</ModalSubHeader>
