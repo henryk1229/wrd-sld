@@ -2,19 +2,29 @@ import { styled } from '@stitches/react';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { GameStats } from '../EndGameModal';
+import LettersBankTile from '../LettersBankTile';
+
+const ModalHeader = styled('h3', {
+  display: 'flex',
+  margin: '16px',
+  fontSize: '20px',
+  fontWeight: 800,
+});
+
+const ModalSubHeader = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  margin: '16px 16px 0px',
+  color: '#217C7E',
+  fontSize: '18px',
+  fontWeight: 600,
+});
 
 const ModalContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  margin: '16px',
-  color: '#217C7E',
-});
-
-const ModalHeader = styled('h3', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  margin: '8px',
+  fontSize: '16px',
 });
 
 export type Stats = Omit<GameStats, 'initialWord'>;
@@ -25,9 +35,53 @@ interface Props {
   onClose: () => void;
 }
 
+const getSuffix = (lastDigit: string) => {
+  const asNumber = parseInt(lastDigit, 10);
+  // 1st, 2nd, 3rd
+  if (asNumber === 1) {
+    return 'st';
+  }
+  if (asNumber === 2) {
+    return 'nd';
+  }
+  if (asNumber === 3) {
+    return 'rd';
+  }
+
+  // 4th, 5th, 6th, 10th
+  return 'th';
+};
+// take '2023-10-19T04:00:00' and return October 19th, 2023
+const formatDate = (date: string) => {
+  const splitYear = date.split('-');
+  const year = splitYear[0];
+  const numberedMonth = splitYear[1];
+  const monthMap: { [x: string]: string } = {
+    '01': 'January',
+    '02': 'February',
+    '03': 'March',
+    '04': 'April',
+    '05': 'May',
+    '06': 'June',
+    '07': 'July',
+    '08': 'August',
+    '09': 'September',
+    '10': 'October',
+    '11': 'November',
+    '12': 'December',
+  };
+  const month = monthMap[numberedMonth];
+  const numberedDay = splitYear[2]?.split('T')[0];
+  const splitDay = numberedDay.split('');
+  const lastDigit = splitDay[splitDay.length - 1];
+  const suffix = getSuffix(lastDigit);
+  return `${month} ${numberedDay}${suffix}, ${year}`;
+};
+
 const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
   const { date, saladNumber, par, ranking } = stats;
-  const dateObj = new Date(date);
+  const formattedDate = formatDate(date);
+  console.log({ formattedDate });
   return (
     <Modal
       open={open}
@@ -37,25 +91,37 @@ const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
       aria-describedby="modal-displaying-stats"
       styles={{
         modal: {
-          width: '32%',
+          width: '24%',
           borderRadius: '3px',
           backgroundColor: '#F3EFE0',
           fontFamily: 'Helvetica',
-          fontWeight: 800,
-          color: '#9A3334',
+          padding: '32px',
         },
       }}
       focusTrapped={false}
     >
       <ModalHeader>
-        WordSalad #{saladNumber} - {dateObj.toDateString()}
+        {`salad ${saladNumber}`.split('').map((letter, idx) => (
+          <LettersBankTile
+            key={`${letter}-${idx}`}
+            letter={letter}
+            isUsedLetter={!letter}
+          />
+        ))}
       </ModalHeader>
+      <ModalSubHeader>
+        {formattedDate} - Par {par}
+      </ModalSubHeader>
       <ModalContent>
-        <div style={{ margin: '4px' }}>Par: {par}</div>
-        <div style={{ margin: '4px' }}>Good: {par - 1}</div>
-        <div style={{ margin: '4px' }}>Great: {par - 2}</div>
-        <div style={{ margin: '4px' }}>Perfect: {par - 4}</div>
-        <div style={{ margin: '16px 4px 4px' }}>Current Rank: {ranking}</div>
+        <div style={{ margin: '4px 8px' }}>Rankings</div>
+        <ul style={{ padding: '0px 0px 0px 16px', margin: '0px' }}>
+          <li style={{ margin: '8px' }}>Good: {par - 1}</li>
+          <li style={{ margin: '8px' }}>Great: {par - 2}</li>
+          <li style={{ margin: '8px' }}>Perfect: {par - 4}</li>
+        </ul>
+        <div style={{ margin: '4px 8px' }}>
+          Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
+        </div>
       </ModalContent>
     </Modal>
   );
