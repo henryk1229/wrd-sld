@@ -35,14 +35,7 @@ const StatsDisplay: React.FC<Props> = ({ stats }) => {
           style={{ margin: '4px', cursor: 'pointer' }}
           onClick={() => setStatsModalOpen(true)}
         >
-          Current Rank:{' '}
-          <span
-            style={{
-              color: '#217C7E',
-            }}
-          >
-            {ranking}
-          </span>
+          Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
         </div>
         <div style={{ margin: '4px' }}>Par: {par}</div>
         <div style={{ margin: '4px' }}>Attempts: {attempts}</div>
