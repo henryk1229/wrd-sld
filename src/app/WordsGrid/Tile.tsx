@@ -36,7 +36,12 @@ interface Props {
   };
 }
 
-const Tile: React.FC<Props> = ({ letter, isPendingWord, isAnchorTile }) => {
+const Tile: React.FC<Props> = ({
+  letter,
+  isPendingWord,
+  isAnchorTile,
+  spring,
+}) => {
   const color = isAnchorTile
     ? { color: '#FFCC00' }
     : {
@@ -48,7 +53,9 @@ const Tile: React.FC<Props> = ({ letter, isPendingWord, isAnchorTile }) => {
     );
   }
   return letter ? (
-    <SpringBoardTile style={color}>{letter.toUpperCase()}</SpringBoardTile>
+    <SpringBoardTile style={{ ...color, ...spring }}>
+      {letter.toUpperCase()}
+    </SpringBoardTile>
   ) : (
     <EmptyTile />
   );
