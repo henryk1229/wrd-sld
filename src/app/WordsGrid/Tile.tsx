@@ -1,7 +1,7 @@
 import { SpringValue, animated } from '@react-spring/web';
 import { styled } from '@stitches/react';
 
-const sharedStyles = {
+const SpringBoardTile = styled(animated.div, {
   inset: 0,
   display: 'flex',
   justifyContent: 'center',
@@ -13,28 +13,17 @@ const sharedStyles = {
   width: '40px',
   height: '48px',
   margin: '4px',
-};
-
-const SpringBoardTile = styled(animated.div, {
-  ...sharedStyles,
   backgroundColor: '#217C7E',
   border: 'solid 1px #046466',
-  boxShadow: '2px 2px #751213',
+  borderColor: '#217C7E #046466 #046466 #217C7E',
+  boxShadow: '2px 2px #046466',
 });
 
-const EmptyTile = styled('div', {
-  ...sharedStyles,
-  backgroundColor: '#217C7E',
-  border: 'solid 1px #046466',
-  boxShadow: '2px 2px #046466',
+const EmptyTile = styled(SpringBoardTile, {
   opacity: 0.15,
 });
 
-const PendingWordTile = styled('div', {
-  ...sharedStyles,
-  backgroundColor: '#217C7E',
-  border: 'solid 1px #046466',
-  boxShadow: '2px 2px #046466',
+const PendingWordTile = styled(SpringBoardTile, {
   opacity: 0.6,
 });
 
