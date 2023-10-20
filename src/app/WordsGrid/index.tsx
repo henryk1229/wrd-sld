@@ -85,6 +85,7 @@ const WordsGrid: React.FC<Props> = ({ playedWords }) => (
 interface WordProps {
   word: string[];
 }
+// animated on mount
 const AnimatedWord: React.FC<WordProps> = ({ word }) => {
   const trails = useTrail(word.length, {
     from: { transform: 'scale(0.7)' },
