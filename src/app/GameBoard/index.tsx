@@ -83,6 +83,7 @@ const GameBoard: React.FC<Props> = ({
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
         if (isLastTurn) {
+          playNewWord(currentWord);
           // display stats modal on finish
           return setStatsModalOpen(true);
         }
@@ -150,8 +151,9 @@ const GameBoard: React.FC<Props> = ({
       if (!isLetterInput) {
         return handleWhiteSpaceInput(keyValue);
       }
-      if (submittedLetters.includes(keyValue)) {
-        return shakeWord();
+      if (usedLetters.includes(keyValue)) {
+        // early return to prevent reusing letters in currentWord
+        return;
       }
       if (currentWord.length <= 5) {
         // add the letter to the array
@@ -163,7 +165,7 @@ const GameBoard: React.FC<Props> = ({
         });
       }
     },
-    [handleWhiteSpaceInput, currentWord, submittedLetters, shakeWord]
+    [handleWhiteSpaceInput, currentWord, usedLetters]
   );
 
   const handleClick = useCallback(
