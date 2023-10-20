@@ -72,6 +72,11 @@ const GameBoard: React.FC<Props> = ({
   const usedLetters = submittedLetters.concat(currentWord.flat());
   const disableReset = playedWords.length === 1;
 
+  // TODO - clean up id if performance becomes an issue
+  const displayModalOnEndGame = useCallback(() => {
+    setTimeout(() => setStatsModalOpen(true), 800);
+  }, [setStatsModalOpen]);
+
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
       currentWord,
@@ -85,7 +90,7 @@ const GameBoard: React.FC<Props> = ({
         if (isLastTurn) {
           playNewWord(currentWord);
           // display stats modal on finish
-          return setStatsModalOpen(true);
+          return displayModalOnEndGame();
         }
         // next word should start with first letter of newly-submitted current word
         const nextWord = makeCurrentWord({
@@ -109,7 +114,7 @@ const GameBoard: React.FC<Props> = ({
     isLastTurn,
     playNewWord,
     shakeWord,
-    setStatsModalOpen,
+    displayModalOnEndGame,
   ]);
 
   const clearLetterFromCurrentWord = useCallback(() => {
