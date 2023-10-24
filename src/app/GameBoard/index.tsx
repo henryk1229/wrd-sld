@@ -1,4 +1,5 @@
 import { styled } from '@stitches/react';
+import { animated } from '@react-spring/web';
 import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from '../CurrentWord';
 import WordsGrid from '../WordsGrid';
@@ -16,6 +17,12 @@ const URL = 'http://localhost:3000/spellcheck';
 const BoardContainer = styled('div', {
   height: '560px',
   width: '1000px',
+});
+
+const SpringCaddy = styled(animated.div, {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 });
 
 const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
@@ -217,11 +224,9 @@ const GameBoard: React.FC<Props> = ({
           setHTPModalOpen={setHTPModalOpen}
         />
       </div>
-      <div
+      <SpringCaddy
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          ...shakeStyles,
         }}
       >
         {/* TODO - rm empty div for spacing  */}
@@ -232,7 +237,6 @@ const GameBoard: React.FC<Props> = ({
         />
         <CurrentWord
           currentWord={currentWord}
-          shakeStyles={shakeStyles}
           isLastWord={isLastTurn}
           handleKeyboardInput={handleKeyboardInput}
         />
@@ -241,7 +245,7 @@ const GameBoard: React.FC<Props> = ({
           onClick={clearLetterFromCurrentWord}
         />
         <RestartButton restartGame={restartGame} disabled={disableReset} />
-      </div>
+      </SpringCaddy>
     </BoardContainer>
   );
 };
