@@ -19,6 +19,12 @@ const BoardContainer = styled('div', {
   width: '1000px',
 });
 
+const SpringCaddy = styled(animated.div, {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
 const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
   const submittedWord = wordArray.join('');
   return await axios({
@@ -218,11 +224,8 @@ const GameBoard: React.FC<Props> = ({
           setHTPModalOpen={setHTPModalOpen}
         />
       </div>
-      <animated.div
+      <SpringCaddy
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           ...shakeStyles,
         }}
       >
@@ -242,7 +245,7 @@ const GameBoard: React.FC<Props> = ({
           onClick={clearLetterFromCurrentWord}
         />
         <RestartButton restartGame={restartGame} disabled={disableReset} />
-      </animated.div>
+      </SpringCaddy>
     </BoardContainer>
   );
 };
