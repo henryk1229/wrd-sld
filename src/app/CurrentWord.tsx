@@ -1,9 +1,8 @@
 import { styled } from '@stitches/react';
-import { SpringValue, animated } from '@react-spring/web';
 import { useWindowListener } from '../hooks/useWindowListener';
 import WordCaddy from './WordCaddy';
 
-const CurrentWordContainer = styled(animated.div, {
+const CurrentWordContainer = styled('div', {
   height: '84px',
   width: '400px',
   display: 'flex',
@@ -14,16 +13,12 @@ const CurrentWordContainer = styled(animated.div, {
 
 interface BoardProps {
   currentWord: string[];
-  shakeStyles: {
-    x: SpringValue<number>;
-  };
   isLastWord: boolean;
   handleKeyboardInput: (key: string, code: string) => void;
 }
 
 const CurrentWord: React.FC<BoardProps> = ({
   currentWord,
-  shakeStyles,
   isLastWord,
   handleKeyboardInput,
 }) => {
@@ -41,13 +36,7 @@ const CurrentWord: React.FC<BoardProps> = ({
   });
 
   return (
-    <CurrentWordContainer
-      autoFocus={true}
-      className="currentWord"
-      style={{
-        ...shakeStyles,
-      }}
-    >
+    <CurrentWordContainer autoFocus={true} className="currentWord">
       <WordCaddy currentWord={currentWord} isLastWord={isLastWord} />
     </CurrentWordContainer>
   );

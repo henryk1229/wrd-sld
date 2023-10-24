@@ -1,4 +1,5 @@
 import { styled } from '@stitches/react';
+import { animated } from '@react-spring/web';
 import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from '../CurrentWord';
 import WordsGrid from '../WordsGrid';
@@ -217,11 +218,12 @@ const GameBoard: React.FC<Props> = ({
           setHTPModalOpen={setHTPModalOpen}
         />
       </div>
-      <div
+      <animated.div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          ...shakeStyles,
         }}
       >
         {/* TODO - rm empty div for spacing  */}
@@ -232,7 +234,6 @@ const GameBoard: React.FC<Props> = ({
         />
         <CurrentWord
           currentWord={currentWord}
-          shakeStyles={shakeStyles}
           isLastWord={isLastTurn}
           handleKeyboardInput={handleKeyboardInput}
         />
@@ -241,7 +242,7 @@ const GameBoard: React.FC<Props> = ({
           onClick={clearLetterFromCurrentWord}
         />
         <RestartButton restartGame={restartGame} disabled={disableReset} />
-      </div>
+      </animated.div>
     </BoardContainer>
   );
 };
