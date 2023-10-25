@@ -1,19 +1,37 @@
 import GameBoard from './GameBoard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DailySalad } from './app';
 import HowToPlayModal from './HowToPlayModal';
 
-// // TODO - set salad details in local storage for streak tracking?
-// const setSaladInStorage = (dailySalad: DailySalad | null) => {
-//   if (dailySalad) {
-//     // const current_date = new Date();
-//     // const yyyyMmDd = current_date.toISOString().split('T')[0];
-//     // const rowDate = dailySalad.date.split('T')[0];
-//     // const gameInPlay = localStorage.getItem(`${yyyyMmDd}`);
-//     // track submitted words, scoped to game
-//     // localStorage.setItem(`${rowDate}`, JSON.stringify([]));
-//   }
-// };
+// TODO - refactor approach to account for this running before scopeSaladFn
+const retrieveStoredWords = (dailySalad: DailySalad): string[] => {
+  const { date } = dailySalad;
+  // split '10/25/10' from ISO string
+  const yyyyMmDd = date.split('T')[0];
+  const storedSalad =
+    localStorage.getItem(`${yyyyMmDd}`) ?? '{ "submittedWords": []}';
+  const parsed = JSON.parse(storedSalad);
+  const { submittedWords } = parsed;
+  return submittedWords;
+};
+
+// scoped guessed words to date of salad
+const scopeSaladToDate = (dailySalad: DailySalad) => {
+  const { date } = dailySalad;
+  // split '10/25/10' from ISO string
+  const yyyyMmDd = date.split('T')[0];
+  const gameInProgress = localStorage.getItem(`${yyyyMmDd}`);
+
+  if (!gameInProgress) {
+    // track submitted words, scoped to game
+    localStorage.setItem(
+      `${yyyyMmDd}`,
+      JSON.stringify({
+        submittedWords: [],
+      })
+    );
+  }
+};
 
 export const makeRankingsObject = (par: number) => {
   return {
@@ -51,17 +69,29 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(true);
   const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
 
+  useEffect(() => {
+    scopeSaladToDate(dailySalad);
+  }, [dailySalad]);
+
   // create rootWord[] from daily initialWord
   const { date, saladNumber, par, initialWord } = dailySalad;
   const rootWord = initialWord.split('');
 
   // track stored words in localStorage
-  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
-  const submittedWords: string[][] | [] = JSON.parse(storedWords);
+  // const storedWords = localStorage.getItem('submittedWords') ?? '[]';
+  const storedWords = retrieveStoredWords(dailySalad);
+
+  // TODO - clean up stored, submitted, played handling
+  console.log('stored', storedWords);
+  const submittedWords: string[][] = [...storedWords];
+
+  console.log('submitted', submittedWords);
 
   const [playedWords, setPlayedWords] = useState<string[][]>(() =>
     submittedWords.length > 0 ? [rootWord, ...submittedWords] : [rootWord]
   );
+
+  console.log('played', playedWords);
 
   // track attempts in lS
   const storedAttempts = localStorage.getItem('attempts') ?? '1';
@@ -82,8 +112,14 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
 
   // this fn sets word in local storage, and set played word state
   const playNewWord = (newWord: string[]) => {
-    const stringified = JSON.stringify([...submittedWords, newWord]);
-    localStorage.setItem('submittedWords', stringified);
+    const { date } = dailySalad;
+    // split '10/25/10' from ISO string
+    const yyyyMmDd = date.split('T')[0];
+    const stringified = JSON.stringify({
+      submittedWords: [...submittedWords, newWord],
+    });
+    console.log('submitting', { yyyyMmDd: stringified });
+    localStorage.setItem(yyyyMmDd, stringified);
     setPlayedWords([...playedWords, newWord]);
   };
 
