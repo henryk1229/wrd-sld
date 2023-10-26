@@ -1,8 +1,6 @@
 import { styled } from '@stitches/react';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
-import { GameStats } from '../EndGameModal';
-import LettersBankTile from '../LettersBankTile';
 
 const ModalHeader = styled('h3', {
   display: 'flex',
@@ -46,7 +44,13 @@ const ModalTile = styled('div', {
   backgroundColor: '#9A3334',
 });
 
-export type Stats = Omit<GameStats, 'initialWord'>;
+export type Stats = {
+  date: string;
+  saladNumber: number;
+  par: number;
+  attempts: number;
+  ranking: string;
+};
 
 interface Props {
   stats: Stats;

@@ -51,14 +51,6 @@ const scopeSaladToDate = (dailySalad: DailySalad) => {
   }
 };
 
-export const makeRankingsObject = (par: number) => {
-  return {
-    [par - 1]: 'Good',
-    [par - 2]: 'Great',
-    [par - 4]: 'Genius',
-  };
-};
-
 export const getRanking = ({
   attempts,
   par,
