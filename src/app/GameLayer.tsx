@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react';
 import { DailySalad } from './app';
 import HowToPlayModal from './HowToPlayModal';
 
-// TODO - refactor approach to account for this running before scopeSaladFn
+// TODO - refactor approach to account for this running before scopeSaladFn?
+// clean up stored, submitted handling?
 const retrieveLSData = (
   dailySalad: DailySalad
 ): {
   storedWords: string[][];
-  storedAttempts: string;
+  storedAttempts: number;
 } => {
+  // retrieve data from local storage, scoped to date
   const { date } = dailySalad;
   // split '10/25/10' from ISO string
   const yyyyMmDd = date.split('T')[0];
@@ -19,11 +21,14 @@ const retrieveLSData = (
   const parsed = JSON.parse(storedSalad);
   const { submittedWords, attempts } = parsed;
 
-  console.log('Attempts', attempts);
+  // TODO - clean up stored, submitted, played handling?
+  // format data
+  const storedWords: string[][] = [...submittedWords];
+  const storedAttempts = parseInt(attempts, 10);
 
   return {
-    storedWords: submittedWords,
-    storedAttempts: attempts,
+    storedWords,
+    storedAttempts,
   };
 };
 
@@ -91,20 +96,15 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   const rootWord = initialWord.split('');
 
   // track stored words in localStorage
-  // const storedWords = localStorage.getItem('submittedWords') ?? '[]';
   const { storedWords } = retrieveLSData(dailySalad);
 
-  // TODO - clean up stored, submitted, played handling - fold into retrieve fn?
-  const submittedWords: string[][] = [...storedWords];
-
+  // aggregate root and stored words into one array
   const [playedWords, setPlayedWords] = useState<string[][]>(() =>
-    submittedWords.length > 0 ? [rootWord, ...submittedWords] : [rootWord]
+    storedWords.length > 0 ? [rootWord, ...storedWords] : [rootWord]
   );
 
   // track attempts in lS
-  const { storedAttempts } = retrieveLSData(dailySalad);
-  const attempts = parseInt(storedAttempts, 10);
-
+  const { storedAttempts: attempts } = retrieveLSData(dailySalad);
   const ranking = getRanking({ attempts, par });
 
   const restartGame = () => {
@@ -132,7 +132,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
     const yyyyMmDd = date.split('T')[0];
     const { storedAttempts } = retrieveLSData(dailySalad);
     const stringified = JSON.stringify({
-      submittedWords: [...submittedWords, newWord],
+      submittedWords: [...storedWords, newWord],
       attempts: storedAttempts,
     });
     localStorage.setItem(yyyyMmDd, stringified);
