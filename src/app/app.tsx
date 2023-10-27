@@ -49,18 +49,26 @@ const fetchDailySalad = async () => {
 };
 
 export function App() {
-  const [dailySalad, setSalad] = useState<DailySalad | null>(null);
+  const [dailySalad, setSalad] = useState<DailySalad>({
+    id: '',
+    date: new Date().toISOString(),
+    initialWord: '',
+    par: 0,
+    saladNumber: 0,
+  });
 
   useEffect(() => {
-    fetchDailySalad().then((salad: DailySalad) => {
-      setSalad(salad);
-    });
-  }, []);
+    if (!dailySalad.id) {
+      fetchDailySalad().then((salad: DailySalad) => {
+        setSalad(salad);
+      });
+    }
+  }, [dailySalad]);
 
   return (
     <AppContainer>
       <Header />
-      {dailySalad ? <GameLayer dailySalad={dailySalad} /> : null}
+      <GameLayer dailySalad={dailySalad} />
     </AppContainer>
   );
 }
