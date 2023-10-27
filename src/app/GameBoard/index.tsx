@@ -43,10 +43,8 @@ interface Props {
   playedWords: string[][];
   attempts: number;
   ranking: string;
-  statsModalOpen: boolean;
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
-  setStatsModalOpen: (bool: boolean) => void;
   setHTPModalOpen: (bool: boolean) => void;
 }
 
@@ -57,12 +55,12 @@ const GameBoard: React.FC<Props> = ({
   par,
   playedWords,
   attempts,
-  statsModalOpen,
   playNewWord,
   restartGame,
-  setStatsModalOpen,
   setHTPModalOpen,
 }) => {
+  // control display of stats modal
+  const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
   const isLastTurn = playedWords.length === 3;
 
   const [currentWord, setCurrentWord] = useState<string[]>(
