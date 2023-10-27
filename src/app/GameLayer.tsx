@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { DailySalad } from './app';
 import HowToPlayModal from './HowToPlayModal';
 
-// clean up stored, submitted handling?
 const retrieveLSData = (
   dailySalad: DailySalad
 ): {
