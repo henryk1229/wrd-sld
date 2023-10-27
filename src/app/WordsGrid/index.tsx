@@ -93,7 +93,7 @@ const AnimatedWord: React.FC<WordProps> = ({ word }) => {
       transform: 'scale(1)',
     },
     config: {
-      duration: 100,
+      duration: 160,
     },
   });
   return trails.map((trail, idx) => {
