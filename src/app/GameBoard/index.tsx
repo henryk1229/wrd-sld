@@ -66,7 +66,6 @@ const GameBoard: React.FC<Props> = ({
   const [currentWord, setCurrentWord] = useState<string[]>(
     makeCurrentWord({
       playedWords,
-      isLastTurn,
     })
   );
 
@@ -106,7 +105,6 @@ const GameBoard: React.FC<Props> = ({
         // next word should start with first letter of newly-submitted current word
         const nextWord = makeCurrentWord({
           playedWords: [...playedWords, currentWord],
-          isLastTurn: playedWords.length === 2,
         });
         setCurrentWord(nextWord);
         return playNewWord(currentWord);
@@ -115,7 +113,6 @@ const GameBoard: React.FC<Props> = ({
     shakeWord();
     const nextWord = makeCurrentWord({
       playedWords,
-      isLastTurn,
     });
     return setCurrentWord(nextWord);
   }, [
