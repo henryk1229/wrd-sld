@@ -1,9 +1,8 @@
 import GameBoard from './GameBoard';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DailySalad } from './app';
 import HowToPlayModal from './HowToPlayModal';
 
-// TODO - refactor approach to account for this running before scopeSaladFn?
 // clean up stored, submitted handling?
 const retrieveLSData = (
   dailySalad: DailySalad
@@ -32,24 +31,25 @@ const retrieveLSData = (
   };
 };
 
+// TODO - does this need to be run as an effect?
 // scoped guessed words to date of salad
-const scopeSaladToDate = (dailySalad: DailySalad) => {
-  const { date } = dailySalad;
-  // split '10/25/10' from ISO string
-  const yyyyMmDd = date.split('T')[0];
-  const gameInProgress = localStorage.getItem(`${yyyyMmDd}`);
+// const scopeSaladToDate = (dailySalad: DailySalad) => {
+//   const { date } = dailySalad;
+//   // split '10/25/10' from ISO string
+//   const yyyyMmDd = date.split('T')[0];
+//   const gameInProgress = localStorage.getItem(`${yyyyMmDd}`);
 
-  if (!gameInProgress) {
-    // track submitted words, scoped to game
-    localStorage.setItem(
-      `${yyyyMmDd}`,
-      JSON.stringify({
-        submittedWords: [],
-        attempts: 1,
-      })
-    );
-  }
-};
+//   if (!gameInProgress) {
+//     // track submitted words, scoped to game
+//     localStorage.setItem(
+//       `${yyyyMmDd}`,
+//       JSON.stringify({
+//         submittedWords: [],
+//         attempts: 1,
+//       })
+//     );
+//   }
+// };
 
 export const getRanking = ({
   attempts,
@@ -79,25 +79,21 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(true);
   const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    scopeSaladToDate(dailySalad);
-  }, [dailySalad]);
+  // useEffect(() => {
+  //   scopeSaladToDate(dailySalad);
+  // }, [dailySalad]);
 
   // create rootWord[] from daily initialWord
   const { date, saladNumber, par, initialWord } = dailySalad;
   const rootWord = initialWord.split('');
 
-  // track stored words in localStorage
-  const { storedWords } = retrieveLSData(dailySalad);
+  // track stored words and attempts in localStorage
+  const { storedWords, storedAttempts: attempts } = retrieveLSData(dailySalad);
 
   // aggregate root and stored words into one array
   const [playedWords, setPlayedWords] = useState<string[][]>(() =>
     storedWords.length > 0 ? [rootWord, ...storedWords] : [rootWord]
   );
-
-  // track attempts in lS
-  const { storedAttempts: attempts } = retrieveLSData(dailySalad);
-  const ranking = getRanking({ attempts, par });
 
   const restartGame = () => {
     const { date } = dailySalad;
@@ -122,10 +118,9 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
     const { date } = dailySalad;
     // split '10/25/10' from ISO string
     const yyyyMmDd = date.split('T')[0];
-    const { storedAttempts } = retrieveLSData(dailySalad);
     const stringified = JSON.stringify({
       submittedWords: [...storedWords, newWord],
-      attempts: storedAttempts,
+      attempts,
     });
     localStorage.setItem(yyyyMmDd, stringified);
     setPlayedWords([...playedWords, newWord]);
@@ -136,7 +131,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
       <GameBoard
         date={date}
         saladNumber={saladNumber}
-        ranking={ranking}
+        ranking={getRanking({ attempts, par })}
         key={attempts}
         par={par}
         playedWords={playedWords}
