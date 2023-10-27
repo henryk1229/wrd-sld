@@ -124,6 +124,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
 
   return (
     <GameBoard
+      key={playedWords.length}
       date={date}
       saladNumber={saladNumber}
       ranking={getRanking({ attempts, par })}
