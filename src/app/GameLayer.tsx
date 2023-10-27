@@ -3,25 +3,52 @@ import { useState } from 'react';
 import { DailySalad } from './app';
 import HowToPlayModal from './HowToPlayModal';
 
-// // TODO - set salad details in local storage for streak tracking?
-// const setSaladInStorage = (dailySalad: DailySalad | null) => {
-//   if (dailySalad) {
-//     // const current_date = new Date();
-//     // const yyyyMmDd = current_date.toISOString().split('T')[0];
-//     // const rowDate = dailySalad.date.split('T')[0];
-//     // const gameInPlay = localStorage.getItem(`${yyyyMmDd}`);
-//     // track submitted words, scoped to game
-//     // localStorage.setItem(`${rowDate}`, JSON.stringify([]));
-//   }
-// };
+const retrieveLSData = (
+  dailySalad: DailySalad
+): {
+  storedWords: string[][];
+  storedAttempts: number;
+} => {
+  // retrieve data from local storage, scoped to date
+  const { date } = dailySalad;
+  // split '10/25/10' from ISO string
+  const yyyyMmDd = date.split('T')[0];
+  const storedSalad =
+    localStorage.getItem(`${yyyyMmDd}`) ??
+    '{ "submittedWords": [], "attempts": 1 }';
+  const parsed = JSON.parse(storedSalad);
+  const { submittedWords, attempts } = parsed;
 
-export const makeRankingsObject = (par: number) => {
+  // TODO - clean up stored, submitted, played handling?
+  // format data
+  const storedWords: string[][] = [...submittedWords];
+  const storedAttempts = parseInt(attempts, 10);
+
   return {
-    [par - 1]: 'Good',
-    [par - 2]: 'Great',
-    [par - 4]: 'Genius',
+    storedWords,
+    storedAttempts,
   };
 };
+
+// TODO - does this need to be run as an effect?
+// scoped guessed words to date of salad
+// const scopeSaladToDate = (dailySalad: DailySalad) => {
+//   const { date } = dailySalad;
+//   // split '10/25/10' from ISO string
+//   const yyyyMmDd = date.split('T')[0];
+//   const gameInProgress = localStorage.getItem(`${yyyyMmDd}`);
+
+//   if (!gameInProgress) {
+//     // track submitted words, scoped to game
+//     localStorage.setItem(
+//       `${yyyyMmDd}`,
+//       JSON.stringify({
+//         submittedWords: [],
+//         attempts: 1,
+//       })
+//     );
+//   }
+// };
 
 export const getRanking = ({
   attempts,
@@ -51,30 +78,35 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(true);
   const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
 
+  // useEffect(() => {
+  //   scopeSaladToDate(dailySalad);
+  // }, [dailySalad]);
+
   // create rootWord[] from daily initialWord
   const { date, saladNumber, par, initialWord } = dailySalad;
   const rootWord = initialWord.split('');
 
-  // track stored words in localStorage
-  const storedWords = localStorage.getItem('submittedWords') ?? '[]';
-  const submittedWords: string[][] | [] = JSON.parse(storedWords);
+  // track stored words and attempts in localStorage
+  const { storedWords, storedAttempts: attempts } = retrieveLSData(dailySalad);
 
+  // aggregate root and stored words into one array
   const [playedWords, setPlayedWords] = useState<string[][]>(() =>
-    submittedWords.length > 0 ? [rootWord, ...submittedWords] : [rootWord]
+    storedWords.length > 0 ? [rootWord, ...storedWords] : [rootWord]
   );
 
-  // track attempts in lS
-  const storedAttempts = localStorage.getItem('attempts') ?? '1';
-  const attempts = parseInt(storedAttempts, 10);
-
-  const ranking = getRanking({ attempts, par });
-
   const restartGame = () => {
-    // tally restart
+    const { date } = dailySalad;
+    // split '10/25/10' from ISO string
+    const yyyyMmDd = date.split('T')[0];
     const newAttempts = attempts + 1;
-    localStorage.setItem('attempts', newAttempts.toString());
-    // clear submitted words
-    localStorage.removeItem('submittedWords');
+    // reset words and tally restart
+    localStorage.setItem(
+      yyyyMmDd,
+      JSON.stringify({
+        submittedWords: [],
+        attempts: newAttempts,
+      })
+    );
     // trigger refresh
     const newRoot = [...rootWord];
     setPlayedWords([newRoot]);
@@ -82,8 +114,14 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
 
   // this fn sets word in local storage, and set played word state
   const playNewWord = (newWord: string[]) => {
-    const stringified = JSON.stringify([...submittedWords, newWord]);
-    localStorage.setItem('submittedWords', stringified);
+    const { date } = dailySalad;
+    // split '10/25/10' from ISO string
+    const yyyyMmDd = date.split('T')[0];
+    const stringified = JSON.stringify({
+      submittedWords: [...storedWords, newWord],
+      attempts,
+    });
+    localStorage.setItem(yyyyMmDd, stringified);
     setPlayedWords([...playedWords, newWord]);
   };
 
@@ -92,7 +130,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
       <GameBoard
         date={date}
         saladNumber={saladNumber}
-        ranking={ranking}
+        ranking={getRanking({ attempts, par })}
         key={attempts}
         par={par}
         playedWords={playedWords}
