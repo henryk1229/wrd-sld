@@ -14,8 +14,8 @@ const AvailableLetterTile = styled('div', {
   border: 'solid 1px #751213',
   borderColor: '#9A3334 #751213 #751213 #9A3334',
   color: '#fafafa',
-  width: '24px',
-  height: '32px',
+  width: '32px',
+  height: '40px',
   margin: '4px 2px',
   backgroundColor: '#9A3334',
   '&:hover': {
