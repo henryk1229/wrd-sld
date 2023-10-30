@@ -23,7 +23,7 @@ const HelpButton: React.FC<Props> = ({ onClick }) => (
   </StyledButton>
 );
 
-const HelpIcon = ({ size = 24, color = '#000000' }) => (
+const HelpIcon = ({ size = 20, color = '#000000' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}

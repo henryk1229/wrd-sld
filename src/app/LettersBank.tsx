@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import LettersBankTile from './LettersBankTile';
 
 const LettersBankContainer = styled('div', {
-  width: '320px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

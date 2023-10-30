@@ -3,7 +3,6 @@ import StatsModal, { Stats } from './StatsModal';
 import HelpButton from '../HelpButton';
 
 const DisplayContainer = styled('div', {
-  width: '320px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-evenly',
@@ -34,16 +33,18 @@ const StatsDisplay: React.FC<Props> = ({
   return (
     <DisplayContainer>
       <DisplayContent>
-        <div
-          style={{ margin: '4px', cursor: 'pointer' }}
-          onClick={() => setStatsModalOpen(true)}
-        >
-          Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
-        </div>
-        <div style={{ margin: '4px' }}>Par: {par}</div>
-        <div style={{ margin: '4px' }}>Attempts: {attempts}</div>
-        <div style={{ margin: '4px 0px' }}>
-          <HelpButton onClick={() => setHTPModalOpen(true)} />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            style={{ margin: '4px', cursor: 'pointer' }}
+            onClick={() => setStatsModalOpen(true)}
+          >
+            Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
+          </div>
+          <div style={{ margin: '4px' }}>Par: {par}</div>
+          <div style={{ margin: '4px' }}>Attempts: {attempts}</div>
+          <div style={{ margin: '4px' }}>
+            <HelpButton onClick={() => setHTPModalOpen(true)} />
+          </div>
         </div>
       </DisplayContent>
       <StatsModal
