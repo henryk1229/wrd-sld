@@ -36,13 +36,13 @@ const StatsDisplay: React.FC<Props> = ({
       <DisplayContent>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div
-            style={{ margin: '8px', cursor: 'pointer' }}
+            style={{ margin: '4px', cursor: 'pointer' }}
             onClick={() => setStatsModalOpen(true)}
           >
             Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
           </div>
-          <div style={{ margin: '8px' }}>Par: {par}</div>
-          <div style={{ margin: '8px' }}>Attempts: {attempts}</div>
+          <div style={{ margin: '4px' }}>Par: {par}</div>
+          <div style={{ margin: '4px' }}>Attempts: {attempts}</div>
           <div style={{ margin: '4px' }}>
             <HelpButton onClick={() => setHTPModalOpen(true)} />
           </div>

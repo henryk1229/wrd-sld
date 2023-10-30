@@ -210,7 +210,7 @@ const GameBoard: React.FC<Props> = ({
         style={{
           display: 'flex',
           justifyContent: 'space-evenly',
-          padding: '16px 48px',
+          padding: '16px 32px',
         }}
       >
         <WordsGrid playedWords={playedWords} />
@@ -220,7 +220,6 @@ const GameBoard: React.FC<Props> = ({
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'space-evenly',
-            padding: '36px 0px',
           }}
         >
           <StatsDisplay

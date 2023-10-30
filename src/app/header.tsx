@@ -6,14 +6,14 @@ const APP_NAME = ['w', 'o', 'r', 'd', 's', 'a', 'l', 'a', 'd'];
 
 const HeaderContainer = styled(animated.div, {
   display: 'flex',
-  padding: '8px 8px 0px 16px',
+  padding: '8px 8px 0px 8px',
   justifyContent: 'space-evenly',
 });
 
 const Chip = styled('div', {
   display: 'flex',
   marginLeft: '16px',
-  padding: '8px 4px 4px 72px',
+  padding: '8px 4px 4px 64px',
   alignItems: 'end',
   fontFamily: 'Helvetica',
   borderBottom: 'solid 1px',
