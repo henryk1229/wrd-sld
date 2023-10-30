@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { camelCase } from 'change-case';
 import GameLayer from './GameLayer';
+import HowToPlayModal from './HowToPlayModal';
 
 const URL = 'http://localhost:3000/';
 
@@ -24,6 +25,14 @@ export type DailySalad = {
   saladNumber: number;
 };
 
+const initialSalad: () => DailySalad = () => ({
+  id: '',
+  date: new Date().toISOString(),
+  initialWord: '',
+  par: 0,
+  saladNumber: 0,
+});
+
 // TODO - error handling
 const fetchDailySalad = async () => {
   return await axios({
@@ -36,31 +45,41 @@ const fetchDailySalad = async () => {
         ...acc,
         [camelCase(key)]: salad[key],
       }),
-      {
-        id: '',
-        date: '',
-        initialWord: '',
-        par: 0,
-        saladNumber: 0,
-      }
+      initialSalad()
     );
     return camelCased;
   });
 };
 
 export function App() {
-  const [dailySalad, setSalad] = useState<DailySalad | null>(null);
+  const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(true);
+  const [statsModalDismissed, setStatsModalDismissed] =
+    useState<boolean>(false);
+
+  const [dailySalad, setSalad] = useState<DailySalad>(initialSalad());
 
   useEffect(() => {
-    fetchDailySalad().then((salad: DailySalad) => {
-      setSalad(salad);
-    });
-  }, []);
+    if (!dailySalad.id) {
+      fetchDailySalad().then((salad: DailySalad) => {
+        setSalad(salad);
+      });
+    }
+  }, [dailySalad]);
+
+  const closeModal = () => {
+    setHTPModalOpen(false);
+    if (!statsModalDismissed) {
+      setStatsModalDismissed(true);
+    }
+  };
 
   return (
     <AppContainer>
       <Header />
-      {dailySalad ? <GameLayer dailySalad={dailySalad} /> : null}
+      {statsModalDismissed ? (
+        <GameLayer dailySalad={dailySalad} setHTPModalOpen={setHTPModalOpen} />
+      ) : null}
+      <HowToPlayModal open={howToPlayModalOpen} onClose={closeModal} />
     </AppContainer>
   );
 }

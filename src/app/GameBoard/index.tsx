@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
-import { BaseSyntheticEvent, useCallback, useState } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react';
 import CurrentWord from '../CurrentWord';
 import WordsGrid from '../WordsGrid';
 import { useShakeWord } from '../../hooks/useShakeWord';
@@ -43,10 +43,8 @@ interface Props {
   playedWords: string[][];
   attempts: number;
   ranking: string;
-  statsModalOpen: boolean;
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
-  setStatsModalOpen: (bool: boolean) => void;
   setHTPModalOpen: (bool: boolean) => void;
 }
 
@@ -57,18 +55,17 @@ const GameBoard: React.FC<Props> = ({
   par,
   playedWords,
   attempts,
-  statsModalOpen,
   playNewWord,
   restartGame,
-  setStatsModalOpen,
   setHTPModalOpen,
 }) => {
+  // control display of stats modal
+  const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
   const isLastTurn = playedWords.length === 3;
 
   const [currentWord, setCurrentWord] = useState<string[]>(
     makeCurrentWord({
       playedWords,
-      isLastTurn,
     })
   );
 
@@ -79,10 +76,18 @@ const GameBoard: React.FC<Props> = ({
   const usedLetters = submittedLetters.concat(currentWord.flat());
   const disableReset = playedWords.length === 1;
 
-  // TODO - clean up id if performance becomes an issue
-  const displayModalOnEndGame = useCallback(() => {
-    setTimeout(() => setStatsModalOpen(true), 800);
-  }, [setStatsModalOpen]);
+  // display stats modal on finish
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    if (playedWords.length === 4) {
+      timeoutId = setTimeout(() => setStatsModalOpen(true), 800);
+    }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [playedWords.length]);
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
@@ -95,14 +100,11 @@ const GameBoard: React.FC<Props> = ({
       const isValidWord = await spellCheckWord(currentWord);
       if (isValidWord) {
         if (isLastTurn) {
-          playNewWord(currentWord);
-          // display stats modal on finish
-          return displayModalOnEndGame();
+          return playNewWord(currentWord);
         }
         // next word should start with first letter of newly-submitted current word
         const nextWord = makeCurrentWord({
           playedWords: [...playedWords, currentWord],
-          isLastTurn: playedWords.length === 2,
         });
         setCurrentWord(nextWord);
         return playNewWord(currentWord);
@@ -111,7 +113,6 @@ const GameBoard: React.FC<Props> = ({
     shakeWord();
     const nextWord = makeCurrentWord({
       playedWords,
-      isLastTurn,
     });
     return setCurrentWord(nextWord);
   }, [
@@ -121,7 +122,6 @@ const GameBoard: React.FC<Props> = ({
     isLastTurn,
     playNewWord,
     shakeWord,
-    displayModalOnEndGame,
   ]);
 
   const clearLetterFromCurrentWord = useCallback(() => {

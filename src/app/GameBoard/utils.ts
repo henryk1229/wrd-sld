@@ -53,13 +53,14 @@ export const determineFirstLetter = (playedWords: string[][]) => {
 
 export const makeCurrentWord = ({
   playedWords,
-  isLastTurn,
 }: {
   playedWords: string[][];
-  isLastTurn: boolean;
-}) => {
+}): string[] => {
+  if (playedWords.length === 4) {
+    return playedWords[0];
+  }
   // initialize currentWord from storedWords
   const firstLetter = determineFirstLetter(playedWords);
-  const lastLetter = isLastTurn ? playedWords[0][0] : '';
+  const lastLetter = playedWords.length === 3 ? playedWords[0][0] : '';
   return [firstLetter, '', '', '', lastLetter];
 };

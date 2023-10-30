@@ -1,7 +1,6 @@
 import GameBoard from './GameBoard';
 import { useState } from 'react';
 import { DailySalad } from './app';
-import HowToPlayModal from './HowToPlayModal';
 
 const retrieveLSData = (
   dailySalad: DailySalad
@@ -71,23 +70,21 @@ export const getRanking = ({
 
 interface Props {
   dailySalad: DailySalad;
+  setHTPModalOpen: (bool: boolean) => void;
 }
 
-const GameLayer: React.FC<Props> = ({ dailySalad }) => {
-  // control display of modals
-  const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(true);
-  const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
+const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
+  const { date, saladNumber, par, initialWord } = dailySalad;
+
+  // track stored words and attempts in localStorage
+  const { storedWords, storedAttempts: attempts } = retrieveLSData(dailySalad);
 
   // useEffect(() => {
   //   scopeSaladToDate(dailySalad);
   // }, [dailySalad]);
 
-  // create rootWord[] from daily initialWord
-  const { date, saladNumber, par, initialWord } = dailySalad;
+  // create rootWord[] from daily initialWord ''
   const rootWord = initialWord.split('');
-
-  // track stored words and attempts in localStorage
-  const { storedWords, storedAttempts: attempts } = retrieveLSData(dailySalad);
 
   // aggregate root and stored words into one array
   const [playedWords, setPlayedWords] = useState<string[][]>(() =>
@@ -126,26 +123,18 @@ const GameLayer: React.FC<Props> = ({ dailySalad }) => {
   };
 
   return (
-    <>
-      <GameBoard
-        date={date}
-        saladNumber={saladNumber}
-        ranking={getRanking({ attempts, par })}
-        key={attempts}
-        par={par}
-        playedWords={playedWords}
-        attempts={attempts}
-        statsModalOpen={statsModalOpen}
-        playNewWord={playNewWord}
-        restartGame={restartGame}
-        setStatsModalOpen={setStatsModalOpen}
-        setHTPModalOpen={setHTPModalOpen}
-      />
-      <HowToPlayModal
-        open={howToPlayModalOpen}
-        onClose={() => setHTPModalOpen(false)}
-      />
-    </>
+    <GameBoard
+      key={playedWords.length}
+      date={date}
+      saladNumber={saladNumber}
+      ranking={getRanking({ attempts, par })}
+      par={par}
+      playedWords={playedWords}
+      attempts={attempts}
+      playNewWord={playNewWord}
+      restartGame={restartGame}
+      setHTPModalOpen={setHTPModalOpen}
+    />
   );
 };
 
