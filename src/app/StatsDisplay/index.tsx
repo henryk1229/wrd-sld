@@ -43,7 +43,7 @@ const StatsDisplay: React.FC<Props> = ({
           </div>
           <div style={{ margin: '8px' }}>Par: {par}</div>
           <div style={{ margin: '8px' }}>Attempts: {attempts}</div>
-          <div style={{ margin: '8px' }}>
+          <div style={{ margin: '4px' }}>
             <HelpButton onClick={() => setHTPModalOpen(true)} />
           </div>
         </div>

@@ -5,20 +5,18 @@ import WordCaddy from './WordCaddy';
 const APP_NAME = ['w', 'o', 'r', 'd', 's', 'a', 'l', 'a', 'd'];
 
 const HeaderContainer = styled(animated.div, {
-  height: '96px',
-  width: '960px',
   display: 'flex',
-  margin: '16px',
-  alignItems: 'center',
+  marginTop: '16px',
+  padding: '8px 8px 8px 16px',
   justifyContent: 'space-evenly',
+  borderBottom: 'solid',
 });
 
 const Chip = styled('div', {
   display: 'flex',
-  margin: '16px',
-  padding: '16px',
-  alignItems: 'center',
-  justifyContent: 'center',
+  marginLeft: '40px',
+  padding: '8px 4px 4px 32px',
+  alignItems: 'end',
   fontFamily: 'Helvetica',
 });
 
