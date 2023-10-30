@@ -14,7 +14,7 @@ const HeaderContainer = styled(animated.div, {
 const Chip = styled('div', {
   display: 'flex',
   marginLeft: '16px',
-  padding: '8px 4px 4px 56px',
+  padding: '8px 4px 4px 72px',
   alignItems: 'end',
   fontFamily: 'Helvetica',
   borderBottom: 'solid 1px',
