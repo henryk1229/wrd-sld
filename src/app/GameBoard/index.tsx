@@ -207,22 +207,35 @@ const GameBoard: React.FC<Props> = ({
     <BoardContainer className="boardContainer">
       <div
         className="boardWrapper"
-        style={{ display: 'flex', justifyContent: 'space-evenly' }}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          padding: '16px 32px',
+        }}
       >
-        <LettersBank usedLetters={usedLetters} onClick={handleClick} />
         <WordsGrid playedWords={playedWords} />
-        <StatsDisplay
-          stats={{
-            date,
-            saladNumber,
-            par,
-            attempts,
-            ranking,
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-evenly',
           }}
-          statsModalOpen={statsModalOpen}
-          setStatsModalOpen={setStatsModalOpen}
-          setHTPModalOpen={setHTPModalOpen}
-        />
+        >
+          <StatsDisplay
+            stats={{
+              date,
+              saladNumber,
+              par,
+              attempts,
+              ranking,
+            }}
+            statsModalOpen={statsModalOpen}
+            setStatsModalOpen={setStatsModalOpen}
+            setHTPModalOpen={setHTPModalOpen}
+          />
+          <LettersBank usedLetters={usedLetters} onClick={handleClick} />
+        </div>
       </div>
       <SpringCaddy
         style={{

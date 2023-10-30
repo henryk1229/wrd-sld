@@ -5,11 +5,11 @@ import { useTrail } from '@react-spring/web';
 
 const WordsGridContainer = styled('div', {
   height: '360px',
-  width: '360px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+  marginRight: '32px',
 });
 
 const TileWrapper = styled('div', {
