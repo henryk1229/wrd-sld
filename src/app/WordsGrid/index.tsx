@@ -5,7 +5,6 @@ import { useTrail } from '@react-spring/web';
 
 const WordsGridContainer = styled('div', {
   height: '360px',
-  width: '360px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

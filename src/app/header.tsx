@@ -6,7 +6,6 @@ const APP_NAME = ['w', 'o', 'r', 'd', 's', 'a', 'l', 'a', 'd'];
 
 const HeaderContainer = styled(animated.div, {
   display: 'flex',
-  marginTop: '16px',
   padding: '8px 8px 0px 16px',
   justifyContent: 'space-evenly',
 });
