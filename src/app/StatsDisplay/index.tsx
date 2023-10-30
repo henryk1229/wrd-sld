@@ -3,7 +3,6 @@ import StatsModal, { Stats } from './StatsModal';
 import HelpButton from '../HelpButton';
 
 const DisplayContainer = styled('div', {
-  // width: '320px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-evenly',
