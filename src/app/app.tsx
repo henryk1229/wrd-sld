@@ -59,12 +59,12 @@ export function App() {
   const [dailySalad, setSalad] = useState<DailySalad>(initialSalad());
 
   useEffect(() => {
-    if (!dailySalad.id) {
+    if (statsModalDismissed) {
       fetchDailySalad().then((salad: DailySalad) => {
         setSalad(salad);
       });
     }
-  }, [dailySalad]);
+  }, [statsModalDismissed]);
 
   const closeModal = () => {
     setHTPModalOpen(false);
@@ -76,9 +76,11 @@ export function App() {
   return (
     <AppContainer>
       <Header />
-      {statsModalDismissed ? (
-        <GameLayer dailySalad={dailySalad} setHTPModalOpen={setHTPModalOpen} />
-      ) : null}
+      <GameLayer
+        key={dailySalad.initialWord}
+        dailySalad={dailySalad}
+        setHTPModalOpen={setHTPModalOpen}
+      />
       <HowToPlayModal open={howToPlayModalOpen} onClose={closeModal} />
     </AppContainer>
   );
