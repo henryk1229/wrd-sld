@@ -79,7 +79,7 @@ const GameBoard: React.FC<Props> = ({
   // display stats modal on finish
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    if (playedWords.length === 4) {
+    if (playedWords.length === 4 && playedWords[0].length > 0) {
       timeoutId = setTimeout(() => setStatsModalOpen(true), 800);
     }
     return () => {
@@ -87,7 +87,7 @@ const GameBoard: React.FC<Props> = ({
         clearTimeout(timeoutId);
       }
     };
-  }, [playedWords.length]);
+  }, [playedWords.length, playedWords]);
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
@@ -210,7 +210,7 @@ const GameBoard: React.FC<Props> = ({
         style={{
           display: 'flex',
           justifyContent: 'space-evenly',
-          padding: '16px 32px',
+          padding: '16px 0px',
         }}
       >
         <WordsGrid playedWords={playedWords} />
