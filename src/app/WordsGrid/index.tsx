@@ -24,13 +24,13 @@ interface Props {
 
 const makeWordsGrid = (playedWords: string[][]): string[][] => {
   const emptyGrid = ['', '', '', '', ''];
-  // the game is over, don't insert pending and empty words
-  if (playedWords.length > 3) {
-    return playedWords;
-  }
   // we haven't fetched the initial word yet, return a skeleton grid
   if (playedWords[0] && playedWords[0].length === 0) {
     return [emptyGrid, emptyGrid, emptyGrid, emptyGrid];
+  }
+  // the game is over, don't insert pending and empty words
+  if (playedWords.length > 3) {
+    return playedWords;
   }
   // prevent mutation of original array
   const wordsGrid = playedWords.slice();
