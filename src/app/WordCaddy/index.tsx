@@ -25,10 +25,8 @@ const WordCaddy: React.FC<WordCaddyProps> = ({ currentWord, isLastWord }) => {
   return (
     <div style={{ display: 'flex' }}>
       {trails.map((spring, idx) => {
-        const isAnchorTile = isLastWord
-          ? isMountedInHeader
-            ? [0, 8].includes(idx)
-            : [0, 4].includes(idx)
+        const isAnchorTile = isMountedInHeader
+          ? [0, 8].includes(idx)
           : idx === 0;
         return (
           <WordCaddyTile

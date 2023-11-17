@@ -92,9 +92,7 @@ const GameBoard: React.FC<Props> = ({
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
       currentWord,
-      playedWords,
       submittedLetters,
-      isLastTurn,
     });
     if (shouldAllowSubmit) {
       const isValidWord = await spellCheckWord(currentWord);
@@ -135,12 +133,10 @@ const GameBoard: React.FC<Props> = ({
     }
     // we're deleting the last item in the array
     if (idx === -1) {
-      isLastTurn
-        ? (newWord[newWord.length - 2] = '')
-        : (newWord[newWord.length - 1] = '');
+      newWord[newWord.length - 1] = '';
     }
     return setCurrentWord(newWord);
-  }, [currentWord, isLastTurn]);
+  }, [currentWord]);
 
   // handle non-letter input
   const handleWhiteSpaceInput = useCallback(
@@ -244,10 +240,7 @@ const GameBoard: React.FC<Props> = ({
       >
         {/* TODO - rm empty div for spacing  */}
         <div style={{ width: '40px', height: '40px' }} />
-        <EnterButton
-          disabled={isLastTurn ? !currentWord[3] : !currentWord[4]}
-          onClick={handleSubmitWord}
-        />
+        <EnterButton disabled={!currentWord[4]} onClick={handleSubmitWord} />
         <CurrentWord
           currentWord={currentWord}
           isLastWord={isLastTurn}

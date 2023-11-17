@@ -90,9 +90,6 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
             Each word must start with the last letter of the preceding word
           </li>
           <li style={{ margin: '8px' }}>
-            The last word must end with the first letter of the first word
-          </li>
-          <li style={{ margin: '8px' }}>
             Each letter can be used only{' '}
             <span style={{ fontWeight: 600 }}>once</span> per WordSalad
           </li>
@@ -117,8 +114,7 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
             JKL
             <span style={{ textDecoration: 'underline' }}>M</span>,{' '}
             <span style={{ textDecoration: 'underline' }}>M</span>
-            LNO
-            <span style={{ textDecoration: 'underline' }}>A</span>
+            LNOP
           </li>
           <li
             style={{
@@ -136,8 +132,7 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
             LMN
             <span style={{ textDecoration: 'underline' }}>O</span>,{' '}
             <span style={{ textDecoration: 'underline' }}>O</span>
-            PQR
-            <span style={{ textDecoration: 'underline' }}>C</span>
+            PQRS
           </li>
           <li
             style={{
@@ -155,8 +150,7 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
             NOP
             <span style={{ textDecoration: 'underline' }}>Q</span>,{' '}
             <span style={{ textDecoration: 'underline' }}>Q</span>
-            RST
-            <span style={{ textDecoration: 'underline' }}>E</span>
+            RSTU
           </li>
         </ul>
       </ModalContent>
