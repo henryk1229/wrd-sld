@@ -92,9 +92,7 @@ const GameBoard: React.FC<Props> = ({
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
       currentWord,
-      playedWords,
       submittedLetters,
-      isLastTurn,
     });
     if (shouldAllowSubmit) {
       const isValidWord = await spellCheckWord(currentWord);

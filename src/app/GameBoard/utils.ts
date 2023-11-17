@@ -1,30 +1,15 @@
 export const checkSubmitConditions = ({
   currentWord,
-  playedWords,
   submittedLetters,
-  isLastTurn,
 }: {
   currentWord: string[];
-  playedWords: string[][];
   submittedLetters: string[];
-  isLastTurn: boolean;
 }) => {
   const blankTileIdx = currentWord.findIndex((el) => !el);
   // check that letters in current word haven't been used, except for last letter of last word
-  const nonUniqueLetters = isLastTurn
-    ? currentWord.some((letter, idx) => {
-        if (idx === 0) {
-          return false;
-        }
-        // explicitly return false here, because we expect true
-        if (idx === 4) {
-          return false;
-        }
-        return submittedLetters.includes(letter);
-      })
-    : currentWord.some((letter, idx) =>
-        idx === 0 ? false : submittedLetters.includes(letter)
-      );
+  const nonUniqueLetters = currentWord.some((letter, idx) =>
+    idx === 0 ? false : submittedLetters.includes(letter)
+  );
   // check that current word has unique letters
   const currentWordRepeatsLetters =
     new Set(currentWord).size !== currentWord.length;
