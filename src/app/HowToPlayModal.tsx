@@ -115,7 +115,6 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
             <span style={{ textDecoration: 'underline' }}>M</span>,{' '}
             <span style={{ textDecoration: 'underline' }}>M</span>
             LNOP
-            {/* <span style={{ textDecoration: 'underline' }}>P</span> */}
           </li>
           <li
             style={{
@@ -134,7 +133,6 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
             <span style={{ textDecoration: 'underline' }}>O</span>,{' '}
             <span style={{ textDecoration: 'underline' }}>O</span>
             PQRS
-            {/* <span style={{ textDecoration: 'underline' }}>C</span> */}
           </li>
           <li
             style={{
@@ -153,7 +151,6 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
             <span style={{ textDecoration: 'underline' }}>Q</span>,{' '}
             <span style={{ textDecoration: 'underline' }}>Q</span>
             RSTU
-            {/* <span style={{ textDecoration: 'underline' }}>E</span> */}
           </li>
         </ul>
       </ModalContent>
