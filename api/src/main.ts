@@ -3,6 +3,8 @@ import cors from 'cors';
 import config from './config';
 import { spellcheckWord } from './spellchecker';
 import { query } from './db';
+import { saladGenerator } from './salad-calculator';
+import { wordGenerator } from './word-generator';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -41,6 +43,28 @@ app.post('/spellcheck', (req, res) => {
   const submittedWord = req.body.submittedWord;
   const isValidWord = spellcheckWord(submittedWord);
   res.send({ valid: isValidWord });
+});
+
+app.get('/generate-salad', async (req, res) => {
+  const { rows } = await query({
+    text: 'select initial_word from salads',
+  });
+  // query existing words
+  const usedWords = rows?.map((row) => row.initial_word);
+  // generate unused initial word
+  const initialWord = wordGenerator(usedWords);
+  // generate word salads from new word
+  const wordSalads = saladGenerator(initialWord);
+
+  // insert into postgres
+  const current_date = new Date();
+  const yyyyMmDd = current_date.toISOString().split('T')[0];
+  const formatted = `${yyyyMmDd} 00:00:00`;
+  await query({
+    text: 'insert into salads (initial_word, par, date, solution_set) values ($1, 6, $2, $3)',
+    params: [initialWord, formatted, wordSalads],
+  });
+  res.send({ wordSalads });
 });
 
 app.listen(port, host, () => {
