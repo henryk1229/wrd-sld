@@ -61,6 +61,5 @@ export const makeCurrentWord = ({
   }
   // initialize currentWord from storedWords
   const firstLetter = determineFirstLetter(playedWords);
-  const lastLetter = playedWords.length === 3 ? playedWords[0][0] : '';
-  return [firstLetter, '', '', '', lastLetter];
+  return [firstLetter, '', '', '', ''];
 };

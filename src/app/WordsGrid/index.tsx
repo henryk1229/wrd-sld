@@ -43,11 +43,7 @@ const makeWordsGrid = (playedWords: string[][]): string[][] => {
   // creating pending word with letters from last played word
   const insertIdx = playedWords.length;
   const firstLetter = playedWords[playedWords.length - 1][4];
-  const lastLetterFourthWord = playedWords[0][0];
-  const grid =
-    insertIdx === 3
-      ? [firstLetter, '', '', '', lastLetterFourthWord]
-      : [firstLetter, '', '', '', ''];
+  const grid = [firstLetter, '', '', '', ''];
   wordsGrid[insertIdx] = grid;
   return wordsGrid;
 };
