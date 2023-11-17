@@ -29,12 +29,8 @@ export const checkSubmitConditions = ({
   const currentWordRepeatsLetters =
     new Set(currentWord).size !== currentWord.length;
   // allow submit if: current word has no blank tiles, letters are unused + no letters are repeated
-  const shouldAllowSubmit = isLastTurn
-    ? blankTileIdx === -1 &&
-      !nonUniqueLetters &&
-      !currentWordRepeatsLetters &&
-      playedWords[0][0] === currentWord[4]
-    : blankTileIdx === -1 && !nonUniqueLetters && !currentWordRepeatsLetters;
+  const shouldAllowSubmit =
+    blankTileIdx === -1 && !nonUniqueLetters && !currentWordRepeatsLetters;
 
   return {
     shouldAllowSubmit,

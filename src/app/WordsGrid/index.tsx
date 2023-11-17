@@ -63,14 +63,14 @@ const WordsGrid: React.FC<Props> = ({ playedWords }) => (
         >
           <TileWrapper>
             {isLastPlayedWord ? (
-              <AnimatedWord word={word} />
+              <AnimatedWord word={word} isLastTurn={playedWords.length >= 3} />
             ) : (
               word.map((letter, letterIdx) => (
                 <Tile
                   key={letterIdx}
                   letter={letter}
                   isPendingWord={isPendingWord}
-                  isAnchorTile={[0, 4].includes(letterIdx)}
+                  isAnchorTile={[0].includes(letterIdx)}
                 />
               ))
             )}
@@ -84,9 +84,10 @@ const WordsGrid: React.FC<Props> = ({ playedWords }) => (
 
 interface WordProps {
   word: string[];
+  isLastTurn: boolean;
 }
 // animated on mount
-const AnimatedWord: React.FC<WordProps> = ({ word }) => {
+const AnimatedWord: React.FC<WordProps> = ({ word, isLastTurn }) => {
   const trails = useTrail(word.length, {
     from: { transform: 'scale(0.7)' },
     to: {
@@ -98,7 +99,7 @@ const AnimatedWord: React.FC<WordProps> = ({ word }) => {
   });
   return trails.map((trail, idx) => {
     // first and last letters in array will be right and left bounds of board
-    const isAnchorTile = [0, 4].includes(idx);
+    const isAnchorTile = isLastTurn ? idx === 0 : [0, 4].includes(idx);
     return (
       <Tile
         key={idx}
