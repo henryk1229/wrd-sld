@@ -2,6 +2,14 @@ import GameBoard from './GameBoard';
 import { useState } from 'react';
 import { DailySalad } from './app';
 
+type SolutionSet = {
+  [x: string]: {
+    [x: string]: {
+      [x: string]: string[];
+    };
+  };
+};
+
 const retrieveLSData = (
   dailySalad: DailySalad
 ): {
@@ -68,13 +76,53 @@ export const getRanking = ({
   return 'Normal';
 };
 
+const makeSolutionsObject = (initialWord: string, solutionSet: string) => {
+  const solutionsArray = solutionSet?.split('-') ?? [];
+  const solutionsObj: SolutionSet = { [initialWord]: {} };
+  for (const solution of solutionsArray) {
+    const words = solution.split(',');
+    words.forEach((word, idx) => {
+      if (idx === 1) {
+        const nextLayer = {
+          [word]: { ...solutionsObj[words[0]][words[1]] },
+        };
+        const newObj = {
+          ...solutionsObj[words[0]],
+          ...nextLayer,
+        };
+        solutionsObj[words[0]] = newObj;
+      }
+      if (idx === 2) {
+        const nextLayer = {
+          [word]: { ...solutionsObj[words[0]][words[1]][words[2]] },
+        };
+        const newObj = {
+          ...solutionsObj[words[0]][words[1]],
+          ...nextLayer,
+        };
+        solutionsObj[words[0]][words[1]] = newObj;
+      }
+      if (idx === 3) {
+        const currWords =
+          solutionsObj[words[0]][words[1]][words[2]] &&
+          Object.values(solutionsObj[words[0]][words[1]][words[2]]);
+        const nextLayer = [...currWords, word];
+        solutionsObj[words[0]][words[1]][words[2]] = nextLayer;
+      }
+    });
+  }
+  return solutionsObj;
+};
+
 interface Props {
   dailySalad: DailySalad;
   setHTPModalOpen: (bool: boolean) => void;
 }
 
 const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
-  const { date, saladNumber, par, initialWord } = dailySalad;
+  const { date, saladNumber, par, initialWord, solutionSet } = dailySalad;
+
+  const solutionsObj = makeSolutionsObject(initialWord, solutionSet);
 
   // track stored words and attempts in localStorage
   const { storedWords, storedAttempts: attempts } = retrieveLSData(dailySalad);
