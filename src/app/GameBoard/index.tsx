@@ -205,6 +205,27 @@ const GameBoard: React.FC<Props> = ({
   return (
     <BoardContainer className="boardContainer">
       <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          margin: '4px 104px',
+        }}
+      >
+        <StatsDisplay
+          stats={{
+            date,
+            saladNumber,
+            par,
+            attempts,
+            ranking,
+          }}
+          statsModalOpen={statsModalOpen}
+          setStatsModalOpen={setStatsModalOpen}
+          setHTPModalOpen={setHTPModalOpen}
+        />
+      </div>
+
+      <div
         className="boardWrapper"
         style={{
           display: 'flex',
@@ -227,18 +248,6 @@ const GameBoard: React.FC<Props> = ({
             justifyContent: 'space-evenly',
           }}
         >
-          <StatsDisplay
-            stats={{
-              date,
-              saladNumber,
-              par,
-              attempts,
-              ranking,
-            }}
-            statsModalOpen={statsModalOpen}
-            setStatsModalOpen={setStatsModalOpen}
-            setHTPModalOpen={setHTPModalOpen}
-          />
           <LettersBank usedLetters={usedLetters} onClick={handleClick} />
         </div>
       </div>
