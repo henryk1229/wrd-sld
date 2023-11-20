@@ -1,15 +1,25 @@
 import { SpringValue, animated } from '@react-spring/web';
 import { styled } from '@stitches/react';
 
-const SpringBoardTile = styled(animated.div, {
+const BadgeContainer = styled('div', {
+  height: '360px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+});
+
+const Badge = styled(animated.div, {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   fontFamily: 'Helvetica',
+  fontSize: '12px',
   color: 'black',
-  height: '48px',
-  width: '8px',
-  marginBottom: '31px',
+  height: '32px',
+  width: '32px',
+  marginBottom: '40px',
+  border: '2px solid black' /* Light grey */,
+  borderRadius: '50%',
 });
 
 interface Props {
@@ -51,20 +61,13 @@ const SolutionDisplay: React.FC<Props> = ({
 }) => {
   const solutionSets = makeSolutionSets(playedWords, solutionSet);
   return (
-    <div
-      style={{
-        height: '360px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}
-    >
+    <BadgeContainer>
       {solutionSets.map((set, idx) => (
-        <SpringBoardTile key={`${set.size}-${idx}`} style={{ ...spring }}>
+        <Badge key={`${set.size}-${idx}`} style={{ ...spring }}>
           {set.size}
-        </SpringBoardTile>
+        </Badge>
       ))}
-    </div>
+    </BadgeContainer>
   );
 };
 
