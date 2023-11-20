@@ -1,4 +1,4 @@
-import { SpringValue, animated } from '@react-spring/web';
+import { SpringValue, animated, useTrail } from '@react-spring/web';
 import { styled } from '@stitches/react';
 
 const BadgeContainer = styled('div', {
@@ -8,18 +8,25 @@ const BadgeContainer = styled('div', {
   justifyContent: 'flex-end',
 });
 
-const Badge = styled(animated.div, {
+const Badge = styled('div', {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  color: 'black',
+  height: '32px',
+  width: '32px',
+  marginBottom: '40px',
+  border: '2px solid black',
+  borderRadius: '50%',
+});
+
+const BadgeContents = styled(animated.div, {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   fontFamily: 'Helvetica',
   fontSize: '12px',
   color: 'black',
-  height: '32px',
-  width: '32px',
-  marginBottom: '40px',
-  border: '2px solid black' /* Light grey */,
-  borderRadius: '50%',
 });
 
 interface Props {
@@ -60,11 +67,22 @@ const SolutionDisplay: React.FC<Props> = ({
   spring,
 }) => {
   const solutionSets = makeSolutionSets(playedWords, solutionSet);
+  const trails = useTrail(solutionSets.length, {
+    from: { opacity: 0 },
+    to: {
+      opacity: 1,
+    },
+    config: {
+      duration: 500,
+    },
+  });
   return (
     <BadgeContainer>
-      {solutionSets.map((set, idx) => (
-        <Badge key={`${set.size}-${idx}`} style={{ ...spring }}>
-          {set.size}
+      {trails.map((trail, idx) => (
+        <Badge key={`${solutionSets[idx].size}-${idx}`}>
+          <BadgeContents style={{ ...trail }}>
+            {solutionSets[idx].size}
+          </BadgeContents>
         </Badge>
       ))}
     </BadgeContainer>
