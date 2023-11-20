@@ -9,7 +9,6 @@ const WordsGridContainer = styled('div', {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  marginRight: '32px',
 });
 
 const TileWrapper = styled('div', {

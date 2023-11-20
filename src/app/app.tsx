@@ -23,6 +23,7 @@ export type DailySalad = {
   initialWord: string;
   par: number;
   saladNumber: number;
+  solutionSet: string;
 };
 
 const initialSalad: () => DailySalad = () => ({
@@ -31,6 +32,7 @@ const initialSalad: () => DailySalad = () => ({
   initialWord: '',
   par: 0,
   saladNumber: 0,
+  solutionSet: '',
 });
 
 // TODO - error handling
