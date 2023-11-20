@@ -11,6 +11,7 @@ import StatsDisplay from '../StatsDisplay';
 import DeleteButton from '../DeleteButton';
 import EnterButton from '../EnterButton';
 import RestartButton from '../RestartButton';
+import SolutionDisplay from '../SolutionDisplay';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -43,6 +44,7 @@ interface Props {
   playedWords: string[][];
   attempts: number;
   ranking: string;
+  solutionSet: string;
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
   setHTPModalOpen: (bool: boolean) => void;
@@ -55,6 +57,7 @@ const GameBoard: React.FC<Props> = ({
   par,
   playedWords,
   attempts,
+  solutionSet,
   playNewWord,
   restartGame,
   setHTPModalOpen,
@@ -209,7 +212,13 @@ const GameBoard: React.FC<Props> = ({
           padding: '16px 0px',
         }}
       >
-        <WordsGrid playedWords={playedWords} />
+        <div style={{ display: 'flex' }}>
+          <WordsGrid playedWords={playedWords} />
+          <SolutionDisplay
+            playedWords={playedWords}
+            solutionSet={solutionSet}
+          />
+        </div>
         <div
           style={{
             display: 'flex',
