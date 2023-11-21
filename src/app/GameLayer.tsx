@@ -6,20 +6,20 @@ const retrieveLSData = (
   dailySalad: DailySalad
 ): {
   storedWords: string[][];
-  storedAttempts: number;
+  storedAttempts: string[][];
 } => {
   // retrieve data from local storage, scoped to saladNumber
   const { saladNumber } = dailySalad;
   const storedSalad =
     localStorage.getItem(saladNumber.toString()) ??
-    '{ "submittedWords": [], "attempts": 1 }';
+    '{ "submittedWords": [], "attempts": [] }';
   const parsed = JSON.parse(storedSalad);
   const { submittedWords, attempts } = parsed;
 
   // TODO - clean up stored, submitted, played handling?
   // format data
   const storedWords: string[][] = [...submittedWords];
-  const storedAttempts = parseInt(attempts, 10);
+  const storedAttempts: string[][] = [...attempts];
 
   return {
     storedWords,
@@ -51,16 +51,17 @@ export const getRanking = ({
   attempts,
   par,
 }: {
-  attempts: number;
+  attempts: string[][];
   par: number;
 }) => {
-  if (attempts <= par - 4) {
+  const numAttempts = attempts.length;
+  if (numAttempts <= par - 4) {
     return 'Perfect';
   }
-  if (attempts <= par - 2) {
+  if (numAttempts <= par - 2) {
     return 'Great';
   }
-  if (attempts <= par - 1) {
+  if (numAttempts <= par - 1) {
     return 'Good';
   }
   return 'Normal';
@@ -91,13 +92,13 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
 
   const restartGame = () => {
     const { saladNumber } = dailySalad;
-    const newAttempts = attempts + 1;
     // reset words and tally restart
+    const latestAttempt = playedWords.map((word) => word.join(''));
     localStorage.setItem(
       saladNumber.toString(),
       JSON.stringify({
         submittedWords: [],
-        attempts: newAttempts,
+        attempts: [...attempts, latestAttempt],
       })
     );
     // trigger refresh

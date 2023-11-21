@@ -42,7 +42,7 @@ interface Props {
   saladNumber: number;
   par: number;
   playedWords: string[][];
-  attempts: number;
+  attempts: string[][];
   ranking: string;
   solutionSet: string;
   playNewWord: (word: string[]) => void;
@@ -225,13 +225,11 @@ const GameBoard: React.FC<Props> = ({
           setHTPModalOpen={setHTPModalOpen}
         />
       </div>
-
       <div
         className="boardWrapper"
         style={{
           display: 'flex',
           justifyContent: 'space-evenly',
-          padding: '16px 0px',
         }}
       >
         <div style={{ display: 'flex' }}>
