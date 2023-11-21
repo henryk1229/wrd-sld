@@ -60,7 +60,6 @@ app.get('/generate-salad', async (_req, res) => {
     // generate word salads from new word
     const wordSalads = saladGenerator(initialWord);
     if (wordSalads.length > 0) {
-      console.log('DOWN HERE', wordSalads.length);
       solutionString = wordSalads;
     }
   }
