@@ -4,7 +4,7 @@ import GuideLine from './GuideLine';
 import { useTrail } from '@react-spring/web';
 
 const WordsGridContainer = styled('div', {
-  height: '360px',
+  height: '324px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

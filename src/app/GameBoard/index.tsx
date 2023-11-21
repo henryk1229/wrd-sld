@@ -24,6 +24,7 @@ const SpringCaddy = styled(animated.div, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  marginTop: '16px',
 });
 
 const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
@@ -209,7 +210,7 @@ const GameBoard: React.FC<Props> = ({
           display: 'flex',
           justifyContent: 'flex-end',
           fontSize: '18px',
-          margin: '8px 100px',
+          margin: '8px 100px 0px',
         }}
       >
         <StatsDisplay
