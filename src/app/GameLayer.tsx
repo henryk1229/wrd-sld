@@ -8,12 +8,10 @@ const retrieveLSData = (
   storedWords: string[][];
   storedAttempts: number;
 } => {
-  // retrieve data from local storage, scoped to date
-  const { date } = dailySalad;
-  // split '10/25/10' from ISO string
-  const yyyyMmDd = date.split('T')[0];
+  // retrieve data from local storage, scoped to saladNumber
+  const { saladNumber } = dailySalad;
   const storedSalad =
-    localStorage.getItem(`${yyyyMmDd}`) ??
+    localStorage.getItem(saladNumber.toString()) ??
     '{ "submittedWords": [], "attempts": 1 }';
   const parsed = JSON.parse(storedSalad);
   const { submittedWords, attempts } = parsed;
@@ -32,15 +30,15 @@ const retrieveLSData = (
 // TODO - does this need to be run as an effect?
 // scoped guessed words to date of salad
 // const scopeSaladToDate = (dailySalad: DailySalad) => {
-//   const { date } = dailySalad;
+//   const { saladNumber } = dailySalad;
 //   // split '10/25/10' from ISO string
 //   const yyyyMmDd = date.split('T')[0];
-//   const gameInProgress = localStorage.getItem(`${yyyyMmDd}`);
+//   const gameInProgress = localStorage.getItem(saladNumber.toString());
 
 //   if (!gameInProgress) {
 //     // track submitted words, scoped to game
 //     localStorage.setItem(
-//       `${yyyyMmDd}`,
+//       saladNumber.toString(),
 //       JSON.stringify({
 //         submittedWords: [],
 //         attempts: 1,
@@ -92,13 +90,11 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
   );
 
   const restartGame = () => {
-    const { date } = dailySalad;
-    // split '10/25/10' from ISO string
-    const yyyyMmDd = date.split('T')[0];
+    const { saladNumber } = dailySalad;
     const newAttempts = attempts + 1;
     // reset words and tally restart
     localStorage.setItem(
-      yyyyMmDd,
+      saladNumber.toString(),
       JSON.stringify({
         submittedWords: [],
         attempts: newAttempts,
@@ -111,14 +107,12 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
 
   // this fn sets word in local storage, and set played word state
   const playNewWord = (newWord: string[]) => {
-    const { date } = dailySalad;
-    // split '10/25/10' from ISO string
-    const yyyyMmDd = date.split('T')[0];
+    const { saladNumber } = dailySalad;
     const stringified = JSON.stringify({
       submittedWords: [...storedWords, newWord],
       attempts,
     });
-    localStorage.setItem(yyyyMmDd, stringified);
+    localStorage.setItem(saladNumber.toString(), stringified);
     setPlayedWords([...playedWords, newWord]);
   };
 
