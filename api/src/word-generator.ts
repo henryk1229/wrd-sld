@@ -7,7 +7,13 @@ export const wordGenerator = (usedWords: string[]) => {
   let chosenWord: string | undefined = undefined;
   while (!chosenWord) {
     for (const word of generatedWords) {
-      if (word.length === 5 && !usedWords.includes(word)) {
+      const letters = word.split('');
+      const uniqueLetters = new Set(letters);
+      if (
+        word.length === 5 &&
+        uniqueLetters.size === 5 &&
+        !usedWords.includes(word)
+      ) {
         chosenWord = word;
       }
     }

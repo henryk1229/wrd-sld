@@ -45,7 +45,7 @@ app.post('/spellcheck', (req, res) => {
   res.send({ valid: isValidWord });
 });
 
-app.get('/generate-salad', async (req, res) => {
+app.get('/generate-salad', async (_req, res) => {
   const { rows } = await query({
     text: 'select initial_word from salads',
   });
@@ -53,8 +53,21 @@ app.get('/generate-salad', async (req, res) => {
   const usedWords = rows?.map((row) => row.initial_word);
   // generate unused initial word
   const initialWord = wordGenerator(usedWords);
-  // generate word salads from new word
-  const wordSalads = saladGenerator(initialWord);
+
+  let solutionString: string | undefined = undefined;
+
+  while (!solutionString) {
+    // generate word salads from new word
+    const wordSalads = saladGenerator(initialWord);
+    if (wordSalads.length > 0) {
+      solutionString = wordSalads;
+    }
+  }
+
+  // catch empty solution set
+  if (!solutionString) {
+    throw new Error('Failed to generate a solution set');
+  }
 
   // insert into postgres
   const current_date = new Date();
@@ -62,9 +75,9 @@ app.get('/generate-salad', async (req, res) => {
   const formatted = `${yyyyMmDd} 00:00:00`;
   await query({
     text: 'insert into salads (initial_word, par, date, solution_set) values ($1, 6, $2, $3)',
-    params: [initialWord, formatted, wordSalads],
+    params: [initialWord, formatted, solutionString],
   });
-  res.send({ wordSalads });
+  res.send({ initialWord });
 });
 
 app.listen(port, host, () => {
