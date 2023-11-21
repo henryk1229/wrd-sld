@@ -24,6 +24,7 @@ const SpringCaddy = styled(animated.div, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  marginTop: '16px',
 });
 
 const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
@@ -42,7 +43,7 @@ interface Props {
   saladNumber: number;
   par: number;
   playedWords: string[][];
-  attempts: number;
+  attempts: string[][];
   ranking: string;
   solutionSet: string;
   playNewWord: (word: string[]) => void;
@@ -208,7 +209,8 @@ const GameBoard: React.FC<Props> = ({
         style={{
           display: 'flex',
           justifyContent: 'flex-end',
-          margin: '4px 104px',
+          fontSize: '18px',
+          margin: '8px 100px 0px',
         }}
       >
         <StatsDisplay
@@ -224,13 +226,11 @@ const GameBoard: React.FC<Props> = ({
           setHTPModalOpen={setHTPModalOpen}
         />
       </div>
-
       <div
         className="boardWrapper"
         style={{
           display: 'flex',
           justifyContent: 'space-evenly',
-          padding: '16px 0px',
         }}
       >
         <div style={{ display: 'flex' }}>

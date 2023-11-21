@@ -48,7 +48,7 @@ export type Stats = {
   date: string;
   saladNumber: number;
   par: number;
-  attempts: number;
+  attempts: string[][];
   ranking: string;
 };
 

@@ -2,7 +2,7 @@ import { SpringValue, animated, useTrail } from '@react-spring/web';
 import { styled } from '@stitches/react';
 
 const BadgeContainer = styled('div', {
-  height: '360px',
+  height: '324px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-end',
@@ -13,9 +13,9 @@ const Badge = styled('div', {
   justifyContent: 'center',
   alignItems: 'center',
   color: 'black',
-  height: '32px',
-  width: '32px',
-  marginBottom: '40px',
+  height: '28px',
+  width: '28px',
+  margin: '22px 0px',
   border: '2px solid black',
   borderRadius: '50%',
 });
