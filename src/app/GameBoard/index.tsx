@@ -208,7 +208,8 @@ const GameBoard: React.FC<Props> = ({
         style={{
           display: 'flex',
           justifyContent: 'flex-end',
-          margin: '4px 104px',
+          fontSize: '18px',
+          margin: '8px 100px',
         }}
       >
         <StatsDisplay
