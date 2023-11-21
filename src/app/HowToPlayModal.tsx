@@ -68,7 +68,7 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
       aria-describedby="modal-indicating-game-over"
       styles={{
         modal: {
-          width: '32%',
+          width: '44%',
           borderRadius: '3px',
           backgroundColor: '#F3EFE0',
           fontFamily: 'Helvetica',
@@ -85,13 +85,22 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
       <ModalSubHeader>Complete the WordSalad in four words</ModalSubHeader>
       <ModalContent>
         <ul style={{ padding: '0px 0px 0px 16px', margin: '0px' }}>
-          <li style={{ margin: '8px' }}>Each word must be five letters</li>
           <li style={{ margin: '8px' }}>
-            Each word must start with the last letter of the preceding word
+            Each word must be <span style={{ fontWeight: 600 }}>five</span>{' '}
+            letters
+          </li>
+          <li style={{ margin: '8px' }}>
+            Each word must start with the{' '}
+            <span style={{ fontWeight: 600 }}>last letter</span> of the
+            preceding word
           </li>
           <li style={{ margin: '8px' }}>
             Each letter can be used only{' '}
             <span style={{ fontWeight: 600 }}>once</span> per WordSalad
+          </li>
+          <li style={{ margin: '8px' }}>
+            The <span style={{ fontWeight: 600 }}>number</span> next to each row
+            shows the remaining word combinations
           </li>
         </ul>
       </ModalContent>
