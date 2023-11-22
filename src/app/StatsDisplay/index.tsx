@@ -17,6 +17,12 @@ const DisplayContent = styled('div', {
   justifyContent: 'left',
 });
 
+const RankContainer = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-evenly',
+});
+
 const AttemptBadge = styled('div', {
   color: 'black',
   height: '4px',
@@ -44,18 +50,18 @@ const StatsDisplay: React.FC<Props> = ({
   return (
     <DisplayContainer>
       <DisplayContent>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <RankContainer>
           <div
-            style={{ margin: '4px', cursor: 'pointer' }}
+            style={{ margin: '4px', cursor: 'pointer', width: '184px' }}
             onClick={() => setStatsModalOpen(true)}
           >
             Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
           </div>
-          <div style={{ margin: '4px' }}>Par: {par}</div>
+          <div style={{ margin: '4px', width: '50px' }}>Par: {par}</div>
           <div style={{ margin: '4px' }}>
             <HelpButton onClick={() => setHTPModalOpen(true)} />
           </div>
-        </div>
+        </RankContainer>
         <AttemptsDisplay attempts={attempts} />
       </DisplayContent>
       <StatsModal
