@@ -30,7 +30,7 @@ const initialSalad: () => DailySalad = () => ({
   id: '',
   date: new Date().toISOString(),
   initialWord: '',
-  par: 0,
+  par: 6,
   saladNumber: 0,
   solutionSet: '',
 });
