@@ -78,12 +78,16 @@ const GameBoard: React.FC<Props> = ({
 
   const submittedLetters = playedWords.flat();
   const usedLetters = submittedLetters.concat(currentWord.flat());
-  const disableReset = playedWords.length === 1;
+
+  const isWordSalad = playedWords.length === 4 && playedWords[0].length > 0;
+  const isLastAttempt = attempts.length > 7;
+  const disableReset = playedWords.length === 1 || isWordSalad || isLastAttempt;
+  const disableSubmitDelete = !currentWord[1] || isWordSalad;
 
   // display stats modal on finish
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
-    if (playedWords.length === 4 && playedWords[0].length > 0) {
+    if (isWordSalad) {
       timeoutId = setTimeout(() => setStatsModalOpen(true), 800);
     }
     return () => {
@@ -91,7 +95,7 @@ const GameBoard: React.FC<Props> = ({
         clearTimeout(timeoutId);
       }
     };
-  }, [playedWords.length, playedWords]);
+  }, [isWordSalad]);
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
@@ -258,14 +262,17 @@ const GameBoard: React.FC<Props> = ({
       >
         {/* TODO - rm empty div for spacing  */}
         <div style={{ width: '40px', height: '40px' }} />
-        <EnterButton disabled={!currentWord[4]} onClick={handleSubmitWord} />
+        <EnterButton
+          disabled={disableSubmitDelete}
+          onClick={handleSubmitWord}
+        />
         <CurrentWord
           currentWord={currentWord}
           isLastWord={isLastTurn}
           handleKeyboardInput={handleKeyboardInput}
         />
         <DeleteButton
-          disabled={!currentWord[1]}
+          disabled={disableSubmitDelete}
           onClick={clearLetterFromCurrentWord}
         />
         <RestartButton restartGame={restartGame} disabled={disableReset} />
