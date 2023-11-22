@@ -48,13 +48,13 @@ const retrieveLSData = (
 // };
 
 export const getRanking = ({ numAttempts }: { numAttempts: number }) => {
-  if (numAttempts < 1) {
+  if (numAttempts <= 1) {
     return 'Perfect';
   }
   if (numAttempts <= 2) {
     return 'Great';
   }
-  if (numAttempts <= 5) {
+  if (numAttempts <= 4) {
     return 'Good';
   }
   return 'Normal';
@@ -69,7 +69,8 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
   const { date, saladNumber, par, initialWord, solutionSet } = dailySalad;
 
   // track stored words and attempts in localStorage
-  const { storedWords, storedAttempts: attempts } = retrieveLSData(dailySalad);
+  const { storedWords, storedAttempts: pastAttempts } =
+    retrieveLSData(dailySalad);
 
   // useEffect(() => {
   //   scopeSaladToDate(dailySalad);
@@ -91,7 +92,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
       saladNumber.toString(),
       JSON.stringify({
         submittedWords: [],
-        attempts: [...attempts, latestAttempt],
+        attempts: [...pastAttempts, latestAttempt],
       })
     );
     // trigger refresh
@@ -104,21 +105,24 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     const { saladNumber } = dailySalad;
     const stringified = JSON.stringify({
       submittedWords: [...storedWords, newWord],
-      attempts,
+      attempts: pastAttempts,
     });
     localStorage.setItem(saladNumber.toString(), stringified);
     setPlayedWords([...playedWords, newWord]);
   };
+
+  const currentAttempt = playedWords.map((word) => word.join(''));
+  const allAttempts = [currentAttempt, ...pastAttempts];
 
   return (
     <GameBoard
       key={playedWords.length}
       date={date}
       saladNumber={saladNumber}
-      ranking={getRanking({ numAttempts: attempts.length })}
+      ranking={getRanking({ numAttempts: allAttempts.length })}
       par={par}
       playedWords={playedWords}
-      attempts={attempts}
+      attempts={allAttempts}
       solutionSet={solutionSet}
       playNewWord={playNewWord}
       restartGame={restartGame}
