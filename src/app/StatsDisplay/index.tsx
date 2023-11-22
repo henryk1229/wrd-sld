@@ -56,32 +56,7 @@ const StatsDisplay: React.FC<Props> = ({
             <HelpButton onClick={() => setHTPModalOpen(true)} />
           </div>
         </div>
-        <div style={{ display: 'flex', margin: '0px 4px' }}>
-          {attempts.length > 0 ? (
-            attempts.map((attempt, idx) => (
-              <AttemptBadge
-                key={idx}
-                data-tooltip-id={`attempt-tooltip-${idx}`}
-              >
-                <Tooltip
-                  id={`attempt-tooltip-${idx}`}
-                  place="bottom"
-                  opacity={0.6}
-                >
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    {attempt.map((word) => (
-                      <div style={{ marginBottom: '2px' }} key={word}>
-                        {word.toUpperCase()}
-                      </div>
-                    ))}
-                  </div>
-                </Tooltip>
-              </AttemptBadge>
-            ))
-          ) : (
-            <AttemptBadge />
-          )}
-        </div>
+        <AttemptsDisplay attempts={attempts} />
       </DisplayContent>
       <StatsModal
         stats={stats}
@@ -89,6 +64,51 @@ const StatsDisplay: React.FC<Props> = ({
         onClose={() => setStatsModalOpen(false)}
       />
     </DisplayContainer>
+  );
+};
+
+interface AttemptsDisplayProps {
+  attempts: string[][];
+}
+
+// display past attempts and remaining attempts as badges
+const AttemptsDisplay: React.FC<AttemptsDisplayProps> = ({ attempts }) => {
+  // make an array of seven past attempts and any remaining attempts
+  const attemptsAndRemaining = Array.from(
+    Array(7),
+    (_num, idx) => attempts[idx]
+  );
+  return (
+    <div
+      style={{
+        display: 'flex',
+        margin: '0px 32px',
+        justifyContent: 'space-evenly',
+      }}
+    >
+      {attemptsAndRemaining.map((attempt, idx) =>
+        attempt ? (
+          <AttemptBadge key={idx} data-tooltip-id={`attempt-tooltip-${idx}`}>
+            <Tooltip id={`attempt-tooltip-${idx}`} place="bottom" opacity={0.6}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {attempt.map((word) => (
+                  <div style={{ marginBottom: '2px' }} key={word}>
+                    {word.toUpperCase()}
+                  </div>
+                ))}
+              </div>
+            </Tooltip>
+          </AttemptBadge>
+        ) : (
+          <AttemptBadge
+            key={idx}
+            style={{
+              backgroundColor: '#F3EFE0',
+            }}
+          />
+        )
+      )}
+    </div>
   );
 };
 
