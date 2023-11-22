@@ -47,21 +47,14 @@ const retrieveLSData = (
 //   }
 // };
 
-export const getRanking = ({
-  attempts,
-  par,
-}: {
-  attempts: string[][];
-  par: number;
-}) => {
-  const numAttempts = attempts.length;
-  if (numAttempts <= par - 4) {
+export const getRanking = ({ numAttempts }: { numAttempts: number }) => {
+  if (numAttempts === 1) {
     return 'Perfect';
   }
-  if (numAttempts <= par - 2) {
+  if (numAttempts <= 3) {
     return 'Great';
   }
-  if (numAttempts <= par - 1) {
+  if (numAttempts <= 5) {
     return 'Good';
   }
   return 'Normal';
@@ -122,7 +115,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
       key={playedWords.length}
       date={date}
       saladNumber={saladNumber}
-      ranking={getRanking({ attempts, par })}
+      ranking={getRanking({ numAttempts: attempts.length })}
       par={par}
       playedWords={playedWords}
       attempts={attempts}
