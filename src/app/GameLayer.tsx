@@ -112,7 +112,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
   };
 
   const currentAttempt = playedWords.map((word) => word.join(''));
-  const allAttempts = [currentAttempt, ...pastAttempts];
+  const allAttempts = [...pastAttempts, currentAttempt];
 
   return (
     <GameBoard
