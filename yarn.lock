@@ -4667,7 +4667,7 @@ __metadata:
     react-dom: 18.2.0
     react-responsive-modal: ^6.4.2
     react-tooltip: ^5.23.0
-    salad_calculator: ^0.1.2
+    salad_calculator: ^0.1.4
     ts-jest: ^29.1.0
     ts-node: 10.9.1
     tslib: ^2.3.0
@@ -12118,10 +12118,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"salad_calculator@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "salad_calculator@npm:0.1.2"
-  checksum: 64527b949bac135aa41425c49901d47db0c78ae4fb9d36ee141af51a14a38d21b5539b9837069a7c78bcedb14bb2f7b470577423adb0dffd899607d704b838fb
+"salad_calculator@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "salad_calculator@npm:0.1.4"
+  checksum: 549b117716fa1d647baf1ca751aedbe97176ee1a2101a8da9f0d29098e1c4239cb66d448adf3b396d782e8663dc9a9571a6c357d48dfd22c54a1ddcb9427b646
   languageName: node
   linkType: hard
 
