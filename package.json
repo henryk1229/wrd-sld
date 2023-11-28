@@ -23,7 +23,7 @@
     "react-dom": "18.2.0",
     "react-responsive-modal": "^6.4.2",
     "react-tooltip": "^5.23.0",
-    "salad_calculator": "^0.1.2",
+    "salad_calculator": "^0.1.4",
     "tslib": "^2.3.0",
     "typo-js": "^1.2.3"
   },
