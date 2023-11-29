@@ -1,17 +1,17 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
 import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react';
-import CurrentWord from '../CurrentWord';
-import WordsGrid from '../WordsGrid';
+import CurrentWord from './CurrentWord';
+import WordsGrid from './WordsGrid';
 import { useShakeWord } from '../../hooks/useShakeWord';
 import axios from 'axios';
-import LettersBank from '../LettersBank';
+import LettersBank from './LettersBank';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
 import StatsDisplay from '../StatsDisplay';
-import DeleteButton from '../DeleteButton';
-import EnterButton from '../EnterButton';
-import RestartButton from '../RestartButton';
-import SolutionDisplay from '../SolutionDisplay';
+import DeleteButton from '../buttons/DeleteButton';
+import EnterButton from '../buttons/EnterButton';
+import RestartButton from '../buttons/RestartButton';
+import SolutionDisplay from './SolutionDisplay';
 
 const URL = 'http://localhost:3000/spellcheck';
 

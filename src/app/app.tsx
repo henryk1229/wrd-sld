@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { camelCase } from 'change-case';
 import GameLayer from './GameLayer';
-import HowToPlayModal from './HowToPlayModal';
+import HowToPlayModal from './modals/HowToPlayModal';
 
 const URL = 'http://localhost:3000/';
 

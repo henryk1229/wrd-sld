@@ -1,7 +1,7 @@
 import { styled } from '@stitches/react';
 import { Tooltip } from 'react-tooltip';
-import StatsModal, { Stats } from './StatsModal';
-import HelpButton from '../HelpButton';
+import StatsModal, { Stats } from './modals/StatsModal';
+import HelpButton from './buttons/HelpButton';
 
 const DisplayContainer = styled('div', {
   display: 'flex',

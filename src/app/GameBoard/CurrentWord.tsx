@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
-import { useWindowListener } from '../hooks/useWindowListener';
-import WordCaddy from './WordCaddy';
+import { useWindowListener } from '../../hooks/useWindowListener';
+import WordCaddy from '../WordCaddy';
 
 const CurrentWordContainer = styled('div', {
   height: '84px',
