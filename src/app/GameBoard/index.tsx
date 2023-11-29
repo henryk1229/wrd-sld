@@ -8,9 +8,9 @@ import axios from 'axios';
 import LettersBank from '../LettersBank';
 import { checkSubmitConditions, makeCurrentWord } from './utils';
 import StatsDisplay from '../StatsDisplay';
-import DeleteButton from '../DeleteButton';
-import EnterButton from '../EnterButton';
-import RestartButton from '../RestartButton';
+import DeleteButton from '../buttons/DeleteButton';
+import EnterButton from '../buttons/EnterButton';
+import RestartButton from '../buttons/RestartButton';
 import SolutionDisplay from '../SolutionDisplay';
 
 const URL = 'http://localhost:3000/spellcheck';
