@@ -13,10 +13,10 @@ const Badge = styled('div', {
   justifyContent: 'center',
   alignItems: 'center',
   color: 'black',
-  height: '28px',
-  width: '28px',
-  margin: '22px 0px',
-  border: '2px solid black',
+  height: '24px',
+  width: '24px',
+  margin: '27px 0px 24px 4px',
+  border: '1.5px solid black',
   borderRadius: '50%',
 });
 
@@ -25,7 +25,7 @@ const BadgeContents = styled(animated.div, {
   justifyContent: 'center',
   alignItems: 'center',
   fontFamily: 'Helvetica',
-  fontSize: '12px',
+  fontSize: '11px',
   color: 'black',
 });
 
@@ -78,13 +78,19 @@ const SolutionDisplay: React.FC<Props> = ({
   });
   return (
     <BadgeContainer>
-      {trails.map((trail, idx) => (
-        <Badge key={`${solutionSets[idx].size}-${idx}`}>
-          <BadgeContents style={{ ...trail }}>
-            {solutionSets[idx].size}
-          </BadgeContents>
+      {trails.length > 0 ? (
+        trails.map((trail, idx) => (
+          <Badge key={`${solutionSets[idx].size}-${idx}`}>
+            <BadgeContents style={{ ...trail }}>
+              {solutionSets[idx].size ?? '!'}
+            </BadgeContents>
+          </Badge>
+        ))
+      ) : (
+        <Badge style={{ border: 'none' }}>
+          <BadgeContents></BadgeContents>
         </Badge>
-      ))}
+      )}
     </BadgeContainer>
   );
 };
