@@ -9,7 +9,7 @@ import {
   useChain,
   easings,
 } from '@react-spring/web';
-import { makeSolutionSets } from '../SolutionDisplay';
+import { makeSolutionSets } from './utils';
 import LastPlayedWord from './LastPlayedWord';
 
 const WordWrapper = styled('div', {
