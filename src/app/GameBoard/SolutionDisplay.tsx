@@ -8,7 +8,7 @@ const BadgeContainer = styled('div', {
   justifyContent: 'flex-end',
 });
 
-const Badge = styled('div', {
+const Badge = styled(animated.div, {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -38,7 +38,10 @@ interface Props {
 }
 
 // returns an array of sets containing remaining words to play
-const makeSolutionSets = (playedWords: string[][], solutionSet: string) => {
+export const makeSolutionSets = (
+  playedWords: string[][],
+  solutionSet: string
+): Set<string>[] => {
   const filterString = playedWords.map((word) => word.join('')).join(',');
   const solutionsArray = solutionSet?.split('-') ?? [];
   const filtered = solutionsArray.filter((set) => {
@@ -49,7 +52,10 @@ const makeSolutionSets = (playedWords: string[][], solutionSet: string) => {
     return slice;
   });
   const numToCreate = 4 - playedWords.length;
-  const sets = Array.from(Array(numToCreate), (_arr) => new Set());
+  const sets: Set<string>[] = Array.from(
+    Array(numToCreate),
+    (_arr) => new Set()
+  );
   remainders.forEach((wordArray) => {
     wordArray.forEach((word, idx) => {
       const set = sets[idx];
@@ -73,17 +79,15 @@ const SolutionDisplay: React.FC<Props> = ({
       opacity: 1,
     },
     config: {
-      duration: 500,
+      duration: 2000,
     },
   });
   return (
     <BadgeContainer>
       {trails.length > 0 ? (
         trails.map((trail, idx) => (
-          <Badge key={`${solutionSets[idx].size}-${idx}`}>
-            <BadgeContents style={{ ...trail }}>
-              {solutionSets[idx].size ?? '!'}
-            </BadgeContents>
+          <Badge key={`${solutionSets[idx].size}-${idx}`} style={{ ...trail }}>
+            <BadgeContents>{solutionSets[idx].size ?? '!'}</BadgeContents>
           </Badge>
         ))
       ) : (

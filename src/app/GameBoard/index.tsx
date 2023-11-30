@@ -238,11 +238,11 @@ const GameBoard: React.FC<Props> = ({
         }}
       >
         <div style={{ display: 'flex' }}>
-          <WordsGrid playedWords={playedWords} />
-          <SolutionDisplay
+          <WordsGrid playedWords={playedWords} solutionSet={solutionSet} />
+          {/* <SolutionDisplay
             playedWords={playedWords}
             solutionSet={solutionSet}
-          />
+          /> */}
         </div>
         <div
           style={{
