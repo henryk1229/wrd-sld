@@ -19,6 +19,13 @@ const BoardContainer = styled('div', {
   width: '1000px',
 });
 
+const WordsGridContainer = styled('div', {
+  width: '324px',
+  height: '324px',
+  display: 'flex',
+  flexDirection: 'column',
+});
+
 const SpringCaddy = styled(animated.div, {
   display: 'flex',
   alignItems: 'center',
@@ -236,9 +243,9 @@ const GameBoard: React.FC<Props> = ({
           justifyContent: 'space-evenly',
         }}
       >
-        <div style={{ display: 'flex' }}>
+        <WordsGridContainer>
           <WordsGrid playedWords={playedWords} solutionSet={solutionSet} />
-        </div>
+        </WordsGridContainer>
         <div
           style={{
             display: 'flex',
