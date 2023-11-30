@@ -11,7 +11,6 @@ import StatsDisplay from '../StatsDisplay';
 import DeleteButton from '../buttons/DeleteButton';
 import EnterButton from '../buttons/EnterButton';
 import RestartButton from '../buttons/RestartButton';
-import SolutionDisplay from './SolutionDisplay';
 
 const URL = 'http://localhost:3000/spellcheck';
 
@@ -239,10 +238,6 @@ const GameBoard: React.FC<Props> = ({
       >
         <div style={{ display: 'flex' }}>
           <WordsGrid playedWords={playedWords} solutionSet={solutionSet} />
-          {/* <SolutionDisplay
-            playedWords={playedWords}
-            solutionSet={solutionSet}
-          /> */}
         </div>
         <div
           style={{
