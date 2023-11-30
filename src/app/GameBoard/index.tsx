@@ -55,6 +55,7 @@ interface Props {
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
   setHTPModalOpen: (bool: boolean) => void;
+  autoRestartGame: () => void;
 }
 
 const GameBoard: React.FC<Props> = ({
@@ -68,6 +69,7 @@ const GameBoard: React.FC<Props> = ({
   playNewWord,
   restartGame,
   setHTPModalOpen,
+  autoRestartGame,
 }) => {
   // control display of stats modal
   const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
@@ -99,15 +101,15 @@ const GameBoard: React.FC<Props> = ({
       timeoutId = setTimeout(() => setStatsModalOpen(true), 800);
     }
     if (isBadAttempt) {
-      // TODO
-      // restartGame();
+      setTimeout(() => autoRestartGame(), 2000);
+      timeoutId = setTimeout(() => restartGame(), 4000);
     }
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
     };
-  }, [isWordSalad, isBadAttempt, restartGame]);
+  }, [isWordSalad, isBadAttempt, restartGame, autoRestartGame]);
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
