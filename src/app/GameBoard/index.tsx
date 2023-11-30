@@ -51,7 +51,7 @@ interface Props {
   playedWords: string[][];
   attempts: string[][];
   ranking: string;
-  solutionSet: string;
+  solutionSets: Set<string>[];
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
   setHTPModalOpen: (bool: boolean) => void;
@@ -64,7 +64,7 @@ const GameBoard: React.FC<Props> = ({
   par,
   playedWords,
   attempts,
-  solutionSet,
+  solutionSets,
   playNewWord,
   restartGame,
   setHTPModalOpen,
@@ -89,6 +89,8 @@ const GameBoard: React.FC<Props> = ({
   const isLastAttempt = attempts.length > 7;
   const disableReset = playedWords.length === 1 || isWordSalad || isLastAttempt;
   const disableSubmitDelete = !currentWord[1] || isWordSalad;
+  const isBadAttempt =
+    playedWords[0]?.length > 0 && solutionSets[0]?.size === 0;
 
   // display stats modal on finish
   useEffect(() => {
@@ -96,12 +98,16 @@ const GameBoard: React.FC<Props> = ({
     if (isWordSalad) {
       timeoutId = setTimeout(() => setStatsModalOpen(true), 800);
     }
+    if (isBadAttempt) {
+      // TODO
+      // restartGame();
+    }
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
     };
-  }, [isWordSalad]);
+  }, [isWordSalad, isBadAttempt, restartGame]);
 
   const handleSubmitWord = useCallback(async () => {
     const { shouldAllowSubmit } = checkSubmitConditions({
@@ -244,7 +250,7 @@ const GameBoard: React.FC<Props> = ({
         }}
       >
         <WordsGridContainer>
-          <WordsGrid playedWords={playedWords} solutionSet={solutionSet} />
+          <WordsGrid playedWords={playedWords} solutionSets={solutionSets} />
         </WordsGridContainer>
         <div
           style={{

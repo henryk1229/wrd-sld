@@ -1,6 +1,7 @@
 import GameBoard from './GameBoard';
 import { useState } from 'react';
 import { DailySalad } from './app';
+import { makeSolutionSets } from './utils';
 
 const retrieveLSData = (
   dailySalad: DailySalad
@@ -114,6 +115,8 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
   const currentAttempt = playedWords.map((word) => word.join(''));
   const allAttempts = [...pastAttempts, currentAttempt];
 
+  const solutionSets = makeSolutionSets(playedWords, solutionSet);
+
   return (
     <GameBoard
       key={playedWords.length}
@@ -123,7 +126,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
       par={par}
       playedWords={playedWords}
       attempts={allAttempts}
-      solutionSet={solutionSet}
+      solutionSets={solutionSets}
       playNewWord={playNewWord}
       restartGame={restartGame}
       setHTPModalOpen={setHTPModalOpen}

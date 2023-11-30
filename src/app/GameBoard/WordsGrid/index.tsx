@@ -9,7 +9,6 @@ import {
   useChain,
   easings,
 } from '@react-spring/web';
-import { makeSolutionSets } from './utils';
 import LastPlayedWord from './LastPlayedWord';
 
 const WordWrapper = styled('div', {
@@ -40,7 +39,7 @@ const BadgeContents = styled(animated.div, {
 
 interface Props {
   playedWords: string[][];
-  solutionSet: string;
+  solutionSets: Set<string>[];
 }
 
 const makeWordsGrid = (playedWords: string[][]): string[][] => {
@@ -69,7 +68,7 @@ const makeWordsGrid = (playedWords: string[][]): string[][] => {
   return wordsGrid;
 };
 
-const WordsGrid: React.FC<Props> = ({ playedWords, solutionSet }) => {
+const WordsGrid: React.FC<Props> = ({ playedWords, solutionSets }) => {
   const trailsRef = useSpringRef();
   const trails = useTrail(5, {
     ref: trailsRef,
@@ -92,13 +91,12 @@ const WordsGrid: React.FC<Props> = ({ playedWords, solutionSet }) => {
     },
   });
 
-  const solutionSets = makeSolutionSets(playedWords, solutionSet);
-
   useChain([trailsRef, springRef]);
 
   return makeWordsGrid(playedWords).map((word: string[], wordIdx: number) => {
     const isPendingWord = !!word[0] && !word[1];
     const isLastPlayedWord = wordIdx === playedWords.length - 1;
+
     return (
       <animated.div
         style={{
@@ -126,9 +124,7 @@ const WordsGrid: React.FC<Props> = ({ playedWords, solutionSet }) => {
               ))}
               {isPendingWord && (
                 <Badge style={{ ...spring }}>
-                  <BadgeContents>
-                    {solutionSets[wordIdx]?.size ?? '0'}
-                  </BadgeContents>
+                  <BadgeContents>{solutionSets[0].size ?? '0'}</BadgeContents>
                 </Badge>
               )}
             </div>
