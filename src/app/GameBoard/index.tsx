@@ -48,7 +48,6 @@ const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
 interface Props {
   date: string;
   saladNumber: number;
-  par: number;
   playedWords: string[][];
   attempts: string[][];
   ranking: string;
@@ -63,7 +62,6 @@ const GameBoard: React.FC<Props> = ({
   date,
   saladNumber,
   ranking,
-  par,
   playedWords,
   attempts,
   solutionSets,
@@ -235,7 +233,6 @@ const GameBoard: React.FC<Props> = ({
           stats={{
             date,
             saladNumber,
-            par,
             attempts,
             ranking,
           }}

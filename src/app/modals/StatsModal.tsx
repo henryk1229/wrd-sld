@@ -47,7 +47,6 @@ const ModalTile = styled('div', {
 export type Stats = {
   date: string;
   saladNumber: number;
-  par: number;
   attempts: string[][];
   ranking: string;
 };
@@ -102,7 +101,7 @@ const formatDate = (date: string) => {
 };
 
 const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
-  const { date, saladNumber, par, ranking } = stats;
+  const { date, saladNumber, ranking } = stats;
   const formattedDate = formatDate(date);
   return (
     <Modal
@@ -127,16 +126,8 @@ const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
           <ModalTile key={`${letter}-${idx}`}>{letter}</ModalTile>
         ))}
       </ModalHeader>
-      <ModalSubHeader>
-        {formattedDate} - Par {par}
-      </ModalSubHeader>
+      <ModalSubHeader>{formattedDate}</ModalSubHeader>
       <ModalContent>
-        <div style={{ margin: '4px 8px' }}>Rankings</div>
-        <ul style={{ padding: '0px 0px 0px 16px', margin: '0px' }}>
-          <li style={{ margin: '8px' }}>Good: {par - 1}</li>
-          <li style={{ margin: '8px' }}>Great: {par - 2}</li>
-          <li style={{ margin: '8px' }}>Perfect: {par - 4}</li>
-        </ul>
         <div style={{ margin: '4px 8px' }}>
           Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
         </div>

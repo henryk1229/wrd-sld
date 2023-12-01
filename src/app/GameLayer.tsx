@@ -68,7 +68,7 @@ interface Props {
 }
 
 const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
-  const { date, saladNumber, par, initialWord, solutionSet } = dailySalad;
+  const { date, saladNumber, initialWord, solutionSet } = dailySalad;
 
   // track stored words and attempts in localStorage
   const { storedWords, storedAttempts: pastAttempts } =
@@ -131,7 +131,6 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
         date={date}
         saladNumber={saladNumber}
         ranking={getRanking({ numAttempts: allAttempts.length })}
-        par={par}
         playedWords={playedWords}
         attempts={allAttempts}
         solutionSets={solutionSets}
