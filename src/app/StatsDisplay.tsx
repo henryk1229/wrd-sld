@@ -46,7 +46,7 @@ const StatsDisplay: React.FC<Props> = ({
   setStatsModalOpen,
   setHTPModalOpen,
 }) => {
-  const { attempts, ranking, par } = stats;
+  const { attempts, ranking } = stats;
   return (
     <DisplayContainer>
       <DisplayContent>
@@ -57,7 +57,6 @@ const StatsDisplay: React.FC<Props> = ({
           >
             Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
           </div>
-          <div style={{ margin: '4px', width: '50px' }}>Par: {par}</div>
           <div style={{ margin: '4px' }}>
             <HelpButton onClick={() => setHTPModalOpen(true)} />
           </div>

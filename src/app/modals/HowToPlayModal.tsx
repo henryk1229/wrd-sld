@@ -47,7 +47,6 @@ const ModalTile = styled('div', {
 export type GameStats = {
   date: string;
   saladNumber: number;
-  par: number;
   attempts: number;
   ranking: string;
   initialWord: string;
