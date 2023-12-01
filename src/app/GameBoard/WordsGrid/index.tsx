@@ -23,10 +23,9 @@ const Badge = styled(animated.div, {
   color: 'black',
   height: '32px',
   width: '32px',
-  marginLeft: '8px',
+  marginLeft: '12px',
   border: '2px solid black',
   borderRadius: '50%',
-  boxShadow: '1px 1px #5C5C5C',
 });
 
 const BadgeContents = styled(animated.div, {
