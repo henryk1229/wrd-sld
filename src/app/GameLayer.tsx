@@ -113,7 +113,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     setPlayedWords([...playedWords, newWord]);
   };
 
-  const autoRestartGame = () => {
+  const displayToast = () => {
     toast('NO MORE SALADS!', {
       id: 'badAttempt',
     });
@@ -138,7 +138,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
         playNewWord={playNewWord}
         restartGame={restartGame}
         setHTPModalOpen={setHTPModalOpen}
-        autoRestartGame={autoRestartGame}
+        displayToast={displayToast}
       />
       <Toaster
         containerStyle={{ top: '120px' }}
