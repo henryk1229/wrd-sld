@@ -1,6 +1,8 @@
 import GameBoard from './GameBoard';
 import { useState } from 'react';
 import { DailySalad } from './app';
+import { makeSolutionSets } from './utils';
+import toast, { Toaster } from 'react-hot-toast';
 
 const retrieveLSData = (
   dailySalad: DailySalad
@@ -111,23 +113,46 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     setPlayedWords([...playedWords, newWord]);
   };
 
+  const displayToast = () => {
+    toast('NO MORE SALADS!', {
+      id: 'badAttempt',
+    });
+  };
+
   const currentAttempt = playedWords.map((word) => word.join(''));
   const allAttempts = [...pastAttempts, currentAttempt];
 
+  const solutionSets = makeSolutionSets(playedWords, solutionSet);
+
   return (
-    <GameBoard
-      key={playedWords.length}
-      date={date}
-      saladNumber={saladNumber}
-      ranking={getRanking({ numAttempts: allAttempts.length })}
-      par={par}
-      playedWords={playedWords}
-      attempts={allAttempts}
-      solutionSet={solutionSet}
-      playNewWord={playNewWord}
-      restartGame={restartGame}
-      setHTPModalOpen={setHTPModalOpen}
-    />
+    <>
+      <GameBoard
+        key={playedWords.length}
+        date={date}
+        saladNumber={saladNumber}
+        ranking={getRanking({ numAttempts: allAttempts.length })}
+        par={par}
+        playedWords={playedWords}
+        attempts={allAttempts}
+        solutionSets={solutionSets}
+        playNewWord={playNewWord}
+        restartGame={restartGame}
+        setHTPModalOpen={setHTPModalOpen}
+        displayToast={displayToast}
+      />
+      <Toaster
+        containerStyle={{ top: '120px' }}
+        toastOptions={{
+          duration: 2000,
+          style: {
+            background: 'black',
+            color: '#fafafa',
+            fontFamily: 'Helvetica',
+            fontSize: '18px',
+          },
+        }}
+      />
+    </>
   );
 };
 

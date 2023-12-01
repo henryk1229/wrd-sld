@@ -1,6 +1,6 @@
 import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
-import { BaseSyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from './CurrentWord';
 import WordsGrid from './WordsGrid';
 import { useShakeWord } from '../../hooks/useShakeWord';
@@ -11,13 +11,20 @@ import StatsDisplay from '../StatsDisplay';
 import DeleteButton from '../buttons/DeleteButton';
 import EnterButton from '../buttons/EnterButton';
 import RestartButton from '../buttons/RestartButton';
-import SolutionDisplay from './SolutionDisplay';
+import { useWatchGameFlow } from '../../hooks/useWatchGameFlow';
 
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
   height: '560px',
   width: '1000px',
+});
+
+const WordsGridContainer = styled('div', {
+  width: '324px',
+  height: '324px',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 const SpringCaddy = styled(animated.div, {
@@ -45,10 +52,11 @@ interface Props {
   playedWords: string[][];
   attempts: string[][];
   ranking: string;
-  solutionSet: string;
+  solutionSets: Set<string>[];
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
   setHTPModalOpen: (bool: boolean) => void;
+  displayToast: () => void;
 }
 
 const GameBoard: React.FC<Props> = ({
@@ -58,10 +66,11 @@ const GameBoard: React.FC<Props> = ({
   par,
   playedWords,
   attempts,
-  solutionSet,
+  solutionSets,
   playNewWord,
   restartGame,
   setHTPModalOpen,
+  displayToast,
 }) => {
   // control display of stats modal
   const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
@@ -80,24 +89,27 @@ const GameBoard: React.FC<Props> = ({
   const usedLetters = submittedLetters.concat(currentWord.flat());
 
   const isWordSalad = playedWords.length === 4 && playedWords[0].length > 0;
-  const isLastAttempt = attempts.length > 7;
+  const isLastAttempt = attempts.length >= 7;
+  const isBadAttempt =
+    playedWords[0]?.length > 0 && solutionSets[0]?.size === 0;
+  const isLostGame = isLastAttempt && isBadAttempt;
   const disableReset = playedWords.length === 1 || isWordSalad || isLastAttempt;
-  const disableSubmitDelete = !currentWord[1] || isWordSalad;
+  const disableSubmitDelete = !currentWord[1] || isWordSalad || isLostGame;
 
   // display stats modal on finish
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    if (isWordSalad) {
-      timeoutId = setTimeout(() => setStatsModalOpen(true), 800);
-    }
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [isWordSalad]);
+  useWatchGameFlow({
+    isWordSalad,
+    isBadAttempt,
+    isLostGame,
+    displayToast,
+    restartGame,
+    setStatsModalOpen,
+  });
 
   const handleSubmitWord = useCallback(async () => {
+    if (isLostGame || isWordSalad) {
+      return shakeWord();
+    }
     const { shouldAllowSubmit } = checkSubmitConditions({
       currentWord,
       submittedLetters,
@@ -126,6 +138,8 @@ const GameBoard: React.FC<Props> = ({
     playedWords,
     submittedLetters,
     isLastTurn,
+    isLostGame,
+    isWordSalad,
     playNewWord,
     shakeWord,
   ]);
@@ -237,13 +251,9 @@ const GameBoard: React.FC<Props> = ({
           justifyContent: 'space-evenly',
         }}
       >
-        <div style={{ display: 'flex' }}>
-          <WordsGrid playedWords={playedWords} />
-          <SolutionDisplay
-            playedWords={playedWords}
-            solutionSet={solutionSet}
-          />
-        </div>
+        <WordsGridContainer>
+          <WordsGrid playedWords={playedWords} solutionSets={solutionSets} />
+        </WordsGridContainer>
         <div
           style={{
             display: 'flex',

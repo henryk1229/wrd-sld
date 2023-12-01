@@ -1,24 +1,45 @@
 import { styled } from '@stitches/react';
 import Tile from './Tile';
 import GuideLine from './GuideLine';
-import { useTrail } from '@react-spring/web';
+import {
+  animated,
+  useSpring,
+  useSpringRef,
+  useTrail,
+  useChain,
+  easings,
+} from '@react-spring/web';
+import LastPlayedWord from './LastPlayedWord';
 
-const WordsGridContainer = styled('div', {
-  height: '324px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
-
-const TileWrapper = styled('div', {
+const WordWrapper = styled('div', {
   display: 'flex',
   margin: '12px 0px 0px',
+});
+
+const Badge = styled(animated.div, {
+  display: 'flex',
   justifyContent: 'center',
+  alignItems: 'center',
+  color: 'black',
+  height: '32px',
+  width: '32px',
+  marginLeft: '12px',
+  border: '2px solid black',
+  borderRadius: '50%',
+});
+
+const BadgeContents = styled(animated.div, {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontFamily: 'Helvetica',
+  fontSize: '12px',
+  color: 'black',
 });
 
 interface Props {
   playedWords: string[][];
+  solutionSets: Set<string>[];
 }
 
 const makeWordsGrid = (playedWords: string[][]): string[][] => {
@@ -47,47 +68,10 @@ const makeWordsGrid = (playedWords: string[][]): string[][] => {
   return wordsGrid;
 };
 
-const WordsGrid: React.FC<Props> = ({ playedWords }) => (
-  <WordsGridContainer>
-    {makeWordsGrid(playedWords).map((word: string[], wordIdx: number) => {
-      const isPendingWord = !!word[0] && !word[1];
-      const isLastPlayedWord = wordIdx === playedWords.length - 1;
-      return (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-          key={wordIdx}
-        >
-          <TileWrapper>
-            {isLastPlayedWord ? (
-              <AnimatedWord word={word} isLastTurn={playedWords.length >= 3} />
-            ) : (
-              word.map((letter, letterIdx) => (
-                <Tile
-                  key={letterIdx}
-                  letter={letter}
-                  isPendingWord={isPendingWord}
-                  isAnchorTile={[0].includes(letterIdx)}
-                />
-              ))
-            )}
-          </TileWrapper>
-          {wordIdx !== 3 && <GuideLine />}
-        </div>
-      );
-    })}
-  </WordsGridContainer>
-);
-
-interface WordProps {
-  word: string[];
-  isLastTurn: boolean;
-}
-// animated on mount
-const AnimatedWord: React.FC<WordProps> = ({ word, isLastTurn }) => {
-  const trails = useTrail(word.length, {
+const WordsGrid: React.FC<Props> = ({ playedWords, solutionSets }) => {
+  const trailsRef = useSpringRef();
+  const trails = useTrail(5, {
+    ref: trailsRef,
     from: { transform: 'scale(0.7)' },
     to: {
       transform: 'scale(1)',
@@ -96,17 +80,58 @@ const AnimatedWord: React.FC<WordProps> = ({ word, isLastTurn }) => {
       duration: 180,
     },
   });
-  return trails.map((trail, idx) => {
-    // first and last letters in array will be right and left bounds of board
-    const isAnchorTile = isLastTurn ? idx === 0 : [0, 4].includes(idx);
+  const springRef = useSpringRef();
+  const spring = useSpring({
+    ref: springRef,
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+    config: {
+      duration: 1200,
+      easing: easings.easeInBack,
+    },
+  });
+
+  useChain([trailsRef, springRef]);
+
+  return makeWordsGrid(playedWords).map((word: string[], wordIdx: number) => {
+    const isPendingWord = !!word[0] && !word[1];
+    const isLastPlayedWord = wordIdx === playedWords.length - 1;
+
     return (
-      <Tile
-        key={idx}
-        letter={word[idx]}
-        isPendingWord={false}
-        isAnchorTile={isAnchorTile}
-        spring={trail}
-      />
+      <animated.div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        key={wordIdx}
+      >
+        <WordWrapper>
+          {isLastPlayedWord ? (
+            <LastPlayedWord
+              word={word}
+              trails={trails}
+              isLastTurn={playedWords.length >= 3}
+            />
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {word.map((letter, letterIdx) => (
+                <Tile
+                  key={letterIdx}
+                  letter={letter}
+                  isPendingWord={isPendingWord}
+                  isAnchorTile={[0].includes(letterIdx)}
+                />
+              ))}
+              {isPendingWord && (
+                <Badge style={{ ...spring }}>
+                  <BadgeContents>{solutionSets[0].size ?? '0'}</BadgeContents>
+                </Badge>
+              )}
+            </div>
+          )}
+        </WordWrapper>
+        {wordIdx !== 3 && <GuideLine />}
+      </animated.div>
     );
   });
 };
