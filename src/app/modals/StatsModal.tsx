@@ -44,6 +44,16 @@ const ModalTile = styled('div', {
   backgroundColor: '#9A3334',
 });
 
+const AttemptBadge = styled('div', {
+  color: 'black',
+  height: '4px',
+  width: '4px',
+  backgroundColor: 'black',
+  margin: '8px 8px 8px 2px',
+  border: '2px solid black',
+  borderRadius: '50%',
+});
+
 export type Stats = {
   date: string;
   saladNumber: number;
@@ -54,6 +64,7 @@ export type Stats = {
 interface Props {
   stats: Stats;
   open: boolean;
+  isGameOver: boolean;
   onClose: () => void;
 }
 
@@ -100,9 +111,10 @@ const formatDate = (date: string) => {
   return `${month} ${numberedDay}${suffix}, ${year}`;
 };
 
-const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
-  const { date, saladNumber, ranking } = stats;
+const StatsModal: React.FC<Props> = ({ stats, open, isGameOver, onClose }) => {
+  const { date, saladNumber, ranking, attempts } = stats;
   const formattedDate = formatDate(date);
+  const rankingText = isGameOver ? 'Rank:' : 'Current Rank:';
   return (
     <Modal
       open={open}
@@ -128,11 +140,78 @@ const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
       </ModalHeader>
       <ModalSubHeader>{formattedDate}</ModalSubHeader>
       <ModalContent>
+        <AttemptsDisplay attempts={attempts} />
         <div style={{ margin: '4px 8px' }}>
-          Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
+          {rankingText} <span style={{ fontWeight: 'bold' }}>{ranking}</span>
         </div>
       </ModalContent>
     </Modal>
+  );
+};
+
+// TODO
+// distinguish between lost and won end games?
+
+interface AttemptsDisplayProps {
+  attempts: string[][];
+}
+
+const AttemptsDisplay: React.FC<AttemptsDisplayProps> = ({ attempts }) => {
+  const rankingsObject: Record<number, string> = {
+    1: 'Perfect',
+    2: 'Great',
+    4: 'Good',
+    6: 'Normal',
+  };
+  // make an array of seven past attempts and any remaining attempts
+  const attemptsAndRemaining = Array.from(
+    Array(7),
+    (_num, idx) => attempts[idx]
+  );
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        margin: '8px',
+      }}
+    >
+      {attemptsAndRemaining.map((attempt, idx) =>
+        attempt ? (
+          <div
+            key={idx}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              fontWeight: 'bold',
+            }}
+          >
+            <AttemptBadge key={idx} />
+            {rankingsObject[idx + 1]}
+          </div>
+        ) : (
+          <div
+            key={idx}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              fontWeight: 'bold',
+            }}
+          >
+            <AttemptBadge
+              key={idx}
+              style={{
+                backgroundColor: '#F3EFE0',
+              }}
+            />
+            {rankingsObject[idx + 1]}
+          </div>
+        )
+      )}
+    </div>
   );
 };
 
