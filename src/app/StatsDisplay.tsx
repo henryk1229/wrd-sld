@@ -36,6 +36,7 @@ const AttemptBadge = styled('div', {
 interface Props {
   stats: Stats;
   statsModalOpen: boolean;
+  isGameOver: boolean;
   setStatsModalOpen: (bool: boolean) => void;
   setHTPModalOpen: (bool: boolean) => void;
 }
@@ -43,6 +44,7 @@ interface Props {
 const StatsDisplay: React.FC<Props> = ({
   stats,
   statsModalOpen,
+  isGameOver,
   setStatsModalOpen,
   setHTPModalOpen,
 }) => {
@@ -52,7 +54,7 @@ const StatsDisplay: React.FC<Props> = ({
       <DisplayContent>
         <RankContainer>
           <div
-            style={{ margin: '4px', cursor: 'pointer', width: '184px' }}
+            style={{ margin: '4px', cursor: 'pointer', width: '180px' }}
             onClick={() => setStatsModalOpen(true)}
           >
             Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
@@ -66,6 +68,7 @@ const StatsDisplay: React.FC<Props> = ({
       <StatsModal
         stats={stats}
         open={statsModalOpen}
+        isGameOver={isGameOver}
         onClose={() => setStatsModalOpen(false)}
       />
     </DisplayContainer>

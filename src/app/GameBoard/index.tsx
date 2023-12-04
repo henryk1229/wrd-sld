@@ -237,6 +237,7 @@ const GameBoard: React.FC<Props> = ({
             ranking,
           }}
           statsModalOpen={statsModalOpen}
+          isGameOver={isLostGame || isWordSalad}
           setStatsModalOpen={setStatsModalOpen}
           setHTPModalOpen={setHTPModalOpen}
         />
