@@ -2,6 +2,8 @@ import { styled } from '@stitches/react';
 import { Tooltip } from 'react-tooltip';
 import StatsModal, { Stats } from './modals/StatsModal';
 import HelpButton from './buttons/HelpButton';
+import StatsButton from './buttons/StatsButtton';
+import RankingsModal from './modals/RankingsModal';
 
 const DisplayContainer = styled('div', {
   display: 'flex',
@@ -36,7 +38,10 @@ const AttemptBadge = styled('div', {
 interface Props {
   stats: Stats;
   statsModalOpen: boolean;
-  isGameOver: boolean;
+  isWordSalad: boolean;
+  isLostGame: boolean;
+  rankingsModalOpen: boolean;
+  setRankingsModalOpen: (bool: boolean) => void;
   setStatsModalOpen: (bool: boolean) => void;
   setHTPModalOpen: (bool: boolean) => void;
 }
@@ -44,7 +49,10 @@ interface Props {
 const StatsDisplay: React.FC<Props> = ({
   stats,
   statsModalOpen,
-  isGameOver,
+  isWordSalad,
+  isLostGame,
+  rankingsModalOpen,
+  setRankingsModalOpen,
   setStatsModalOpen,
   setHTPModalOpen,
 }) => {
@@ -55,9 +63,12 @@ const StatsDisplay: React.FC<Props> = ({
         <RankContainer>
           <div
             style={{ margin: '4px', cursor: 'pointer', width: '180px' }}
-            onClick={() => setStatsModalOpen(true)}
+            onClick={() => setRankingsModalOpen(true)}
           >
             Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
+          </div>
+          <div style={{ margin: '4px' }}>
+            <StatsButton onClick={() => setStatsModalOpen(true)} />
           </div>
           <div style={{ margin: '4px' }}>
             <HelpButton onClick={() => setHTPModalOpen(true)} />
@@ -65,10 +76,18 @@ const StatsDisplay: React.FC<Props> = ({
         </RankContainer>
         <AttemptsDisplay attempts={attempts} />
       </DisplayContent>
+      <RankingsModal
+        stats={stats}
+        open={rankingsModalOpen}
+        isWordSalad={isWordSalad}
+        isLostGame={isLostGame}
+        onClose={() => setRankingsModalOpen(false)}
+      />
       <StatsModal
         stats={stats}
         open={statsModalOpen}
-        isGameOver={isGameOver}
+        isWordSalad={isWordSalad}
+        isLostGame={isLostGame}
         onClose={() => setStatsModalOpen(false)}
       />
     </DisplayContainer>
