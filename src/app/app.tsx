@@ -55,23 +55,22 @@ const fetchDailySalad = async () => {
 
 export function App() {
   const [howToPlayModalOpen, setHTPModalOpen] = useState<boolean>(true);
-  const [statsModalDismissed, setStatsModalDismissed] =
-    useState<boolean>(false);
+  const [htpModalDismissed, setHTPModalDismissed] = useState<boolean>(false);
 
   const [dailySalad, setSalad] = useState<DailySalad>(initialSalad());
 
   useEffect(() => {
-    if (statsModalDismissed) {
+    if (htpModalDismissed) {
       fetchDailySalad().then((salad: DailySalad) => {
         setSalad(salad);
       });
     }
-  }, [statsModalDismissed]);
+  }, [htpModalDismissed]);
 
   const closeModal = () => {
     setHTPModalOpen(false);
-    if (!statsModalDismissed) {
-      setStatsModalDismissed(true);
+    if (!htpModalDismissed) {
+      setHTPModalDismissed(true);
     }
   };
 
