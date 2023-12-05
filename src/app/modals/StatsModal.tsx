@@ -147,7 +147,6 @@ const StatsModal: React.FC<Props> = ({
       </ModalHeader>
       <ModalSubHeader>{formattedDate}</ModalSubHeader>
       <ModalContent>
-        <AttemptsDisplay attempts={attempts} />
         {!isLostGame && (
           <div style={{ margin: '4px 8px' }}>
             {rankingText} <span style={{ fontWeight: 'bold' }}>{ranking}</span>
@@ -155,72 +154,6 @@ const StatsModal: React.FC<Props> = ({
         )}
       </ModalContent>
     </Modal>
-  );
-};
-
-// TODO
-// distinguish between lost and won end games?
-
-interface AttemptsDisplayProps {
-  attempts: string[][];
-}
-
-const AttemptsDisplay: React.FC<AttemptsDisplayProps> = ({ attempts }) => {
-  const rankingsObject: Record<number, string> = {
-    1: 'Perfect',
-    2: 'Great',
-    4: 'Good',
-    6: 'Normal',
-  };
-  // make an array of seven past attempts and any remaining attempts
-  const attemptsAndRemaining = Array.from(
-    Array(7),
-    (_num, idx) => attempts[idx]
-  );
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        margin: '8px',
-      }}
-    >
-      {attemptsAndRemaining.map((attempt, idx) =>
-        attempt ? (
-          <div
-            key={idx}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              fontWeight: 'bold',
-            }}
-          >
-            <AttemptBadge key={idx} />
-            {rankingsObject[idx + 1]}
-          </div>
-        ) : (
-          <div
-            key={idx}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              fontWeight: 'bold',
-            }}
-          >
-            <AttemptBadge
-              key={idx}
-              style={{
-                backgroundColor: '#F3EFE0',
-              }}
-            />
-            {rankingsObject[idx + 1]}
-          </div>
-        )
-      )}
-    </div>
   );
 };
 
