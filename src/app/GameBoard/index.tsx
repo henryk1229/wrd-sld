@@ -72,7 +72,7 @@ const GameBoard: React.FC<Props> = ({
 }) => {
   // control display of stats modal
   const [statsModalOpen, setStatsModalOpen] = useState<boolean>(false);
-  const isLastTurn = playedWords.length === 3;
+  const [rankingsModalOpen, setRankingsModalOpen] = useState<boolean>(false);
 
   const [currentWord, setCurrentWord] = useState<string[]>(
     makeCurrentWord({
@@ -85,6 +85,7 @@ const GameBoard: React.FC<Props> = ({
 
   const submittedLetters = playedWords.flat();
   const usedLetters = submittedLetters.concat(currentWord.flat());
+  const isLastTurn = playedWords.length === 3;
 
   const isWordSalad = playedWords.length === 4 && playedWords[0].length > 0;
   const isLastAttempt = attempts.length >= 7;
@@ -237,7 +238,10 @@ const GameBoard: React.FC<Props> = ({
             ranking,
           }}
           statsModalOpen={statsModalOpen}
-          isGameOver={isLostGame || isWordSalad}
+          isWordSalad={isWordSalad}
+          isLostGame={isLostGame}
+          rankingsModalOpen={rankingsModalOpen}
+          setRankingsModalOpen={setRankingsModalOpen}
           setStatsModalOpen={setStatsModalOpen}
           setHTPModalOpen={setHTPModalOpen}
         />
