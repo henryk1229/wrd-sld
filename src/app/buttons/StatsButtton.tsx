@@ -16,7 +16,7 @@ interface Props {
   onClick: () => void;
 }
 
-// renders a stylized restart button
+// renders a stylized stats button
 const StatsButton: React.FC<Props> = ({ onClick }) => (
   <StyledButton onClick={onClick}>
     <StatsIcon />

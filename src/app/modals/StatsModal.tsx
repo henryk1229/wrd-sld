@@ -44,16 +44,6 @@ const ModalTile = styled('div', {
   backgroundColor: '#9A3334',
 });
 
-const AttemptBadge = styled('div', {
-  color: 'black',
-  height: '4px',
-  width: '4px',
-  backgroundColor: 'black',
-  margin: '8px 8px 8px 2px',
-  border: '2px solid black',
-  borderRadius: '50%',
-});
-
 export type Stats = {
   date: string;
   saladNumber: number;

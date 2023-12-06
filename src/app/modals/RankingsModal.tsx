@@ -9,15 +9,6 @@ const ModalHeader = styled('h3', {
   fontWeight: 800,
 });
 
-const ModalSubHeader = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  margin: '16px 16px 0px',
-  color: '#217C7E',
-  fontSize: '18px',
-  fontWeight: 600,
-});
-
 const ModalContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
@@ -101,10 +92,9 @@ const RankingsModal: React.FC<Props> = ({
           <ModalTile key={`${letter}-${idx}`}>{letter}</ModalTile>
         ))}
       </ModalHeader>
-      {/* <ModalSubHeader>Ranks are based on number of attempts</ModalSubHeader> */}
       <ModalContent>
         <div style={{ margin: '4px 12px' }}>
-          Ranks are based on number of attempts
+          Ranking is based on number of attempts
         </div>
         <AttemptsDisplay attempts={attempts} />
         {!isLostGame && (
@@ -116,9 +106,6 @@ const RankingsModal: React.FC<Props> = ({
     </Modal>
   );
 };
-
-// TODO
-// distinguish between lost and won end games?
 
 interface AttemptsDisplayProps {
   attempts: string[][];
