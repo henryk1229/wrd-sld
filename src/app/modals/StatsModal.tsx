@@ -54,6 +54,8 @@ export type Stats = {
 interface Props {
   stats: Stats;
   open: boolean;
+  isWordSalad: boolean;
+  isLostGame: boolean;
   onClose: () => void;
 }
 
@@ -100,9 +102,16 @@ const formatDate = (date: string) => {
   return `${month} ${numberedDay}${suffix}, ${year}`;
 };
 
-const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
-  const { date, saladNumber, ranking } = stats;
+const StatsModal: React.FC<Props> = ({
+  stats,
+  open,
+  isLostGame,
+  isWordSalad,
+  onClose,
+}) => {
+  const { date, saladNumber, ranking, attempts } = stats;
   const formattedDate = formatDate(date);
+  const rankingText = isWordSalad ? 'Rank:' : 'Current Rank:';
   return (
     <Modal
       open={open}
@@ -128,9 +137,11 @@ const StatsModal: React.FC<Props> = ({ stats, open, onClose }) => {
       </ModalHeader>
       <ModalSubHeader>{formattedDate}</ModalSubHeader>
       <ModalContent>
-        <div style={{ margin: '4px 8px' }}>
-          Current Rank: <span style={{ fontWeight: 'bold' }}>{ranking}</span>
-        </div>
+        {!isLostGame && (
+          <div style={{ margin: '4px 8px' }}>
+            {rankingText} <span style={{ fontWeight: 'bold' }}>{ranking}</span>
+          </div>
+        )}
       </ModalContent>
     </Modal>
   );

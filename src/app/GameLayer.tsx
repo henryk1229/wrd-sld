@@ -50,14 +50,14 @@ const retrieveLSData = (
 // };
 
 export const getRanking = ({ numAttempts }: { numAttempts: number }) => {
-  if (numAttempts <= 1) {
-    return 'Perfect';
+  if (numAttempts >= 4) {
+    return 'Good';
   }
-  if (numAttempts <= 2) {
+  if (numAttempts >= 2) {
     return 'Great';
   }
-  if (numAttempts <= 4) {
-    return 'Good';
+  if (numAttempts <= 1) {
+    return 'Perfect';
   }
   return 'Normal';
 };
