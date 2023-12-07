@@ -86,6 +86,13 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     storedWords.length > 0 ? [rootWord, ...storedWords] : [rootWord]
   );
 
+  // aggregate attempt in play and past attempts
+  const currentAttempt = playedWords.map((word) => word.join(''));
+  const allAttempts = [...pastAttempts, currentAttempt];
+
+  // make solution sets based on words played
+  const solutionSets = makeSolutionSets(playedWords, solutionSet);
+
   const restartGame = () => {
     const { saladNumber } = dailySalad;
     // reset words and tally restart
@@ -114,15 +121,50 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
   };
 
   const displayToast = () => {
-    toast('NO MORE SALADS!', {
-      id: 'badAttempt',
-    });
+    const attemptsRemaining = 7 - allAttempts.length;
+
+    // reveal a random WordSalad on game over
+    if (attemptsRemaining < 1) {
+      const solutions = solutionSet.split('-');
+      const setLength = solutions.length;
+      // generate random number between 0 and setLength - 1
+      const randomIdx = Math.floor(Math.random() * setLength);
+      const randomSet = solutions[randomIdx];
+      return toast(
+        <div>
+          {randomSet.split(',').map((word, idx) => (
+            <div key={`${word}-${idx}`} style={{ margin: '4px' }}>
+              {word.toUpperCase()}
+            </div>
+          ))}
+        </div>,
+        {
+          id: 'gameOver',
+          duration: 5000,
+        }
+      );
+    }
+    const attemptsText =
+      attemptsRemaining === 1
+        ? '1 attempt left'
+        : `${attemptsRemaining} attempts left`;
+    // display attempts remaining
+    return toast(
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <div style={{ margin: '8px' }}>NOT A SALAD!</div>
+        <div style={{ margin: '8px' }}>{attemptsText}</div>
+      </div>,
+      {
+        id: 'badAttempt',
+      }
+    );
   };
-
-  const currentAttempt = playedWords.map((word) => word.join(''));
-  const allAttempts = [...pastAttempts, currentAttempt];
-
-  const solutionSets = makeSolutionSets(playedWords, solutionSet);
 
   return (
     <>
