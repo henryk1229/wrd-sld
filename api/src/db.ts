@@ -1,7 +1,7 @@
 import config from './config';
 import { Pool } from 'pg';
 
-const pool = new Pool({
+export const pgPool = new Pool({
   connectionString: config.databaseUrl,
   max: config.maxPoolSize,
 });
@@ -16,7 +16,7 @@ export const query = async ({
   params?: any[];
 }) => {
   if (params) {
-    return await pool.query(text, params);
+    return await pgPool.query(text, params);
   }
-  return await pool.query(text);
+  return await pgPool.query(text);
 };

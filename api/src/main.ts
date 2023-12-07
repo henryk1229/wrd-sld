@@ -2,15 +2,23 @@ import express from 'express';
 import cors from 'cors';
 import config from './config';
 import { spellcheckWord } from './spellchecker';
-import { query } from './db';
+import { pgPool, query } from './db';
 import { saladGenerator } from './salad-calculator';
 import { wordGenerator } from './word-generator';
+import expressSession from 'express-session';
+import pgSession from 'connect-pg-simple';
+import { v4 as uuidV4 } from 'uuid';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
+const { sessionSecret } = config;
+
+const PgSession = pgSession(expressSession);
+
 const app = express();
 
+app.enable('trust proxy'); // TODO - set vs. enable?
 app.use(
   cors({
     origin: (_, callback) => {
@@ -21,9 +29,33 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(
+  expressSession({
+    secret: sessionSecret,
+    cookie: {
+      httpOnly: true, // no access from js
+      secure: false, // config.isProduction,
+      maxAge: 365 * 24 * 60 * 60 * 1000, // one year
+    },
+    store: new PgSession({
+      pool: pgPool,
+      createTableIfMissing: false,
+      // errorLog: (...args) => logger.error(...args),
+      pruneSessionInterval: config.isTest ? false : 60,
+    }),
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
-// TODO - handle fetching errors
-app.get('/', async (_req, res) => {
+// !!! TODO - determine how to establish session_id <-> user_id !!!
+
+// TODO - handle fetch errors
+app.get('/', async (req, res) => {
+  // if (!req.session.id) {
+  //   req.session.id = uuidV4();
+  // }
+  console.log({ req });
   const { rows } = await query({
     text: 'select * from salads order by salad_number desc limit 1',
   });

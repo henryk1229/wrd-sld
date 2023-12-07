@@ -11,6 +11,7 @@ type AppConfig = {
   maxPoolSize: number;
   allowedOrigins: string[];
   port: number;
+  sessionSecret: string;
 };
 
 const env = envalid.cleanEnv(process.env, {
@@ -22,6 +23,7 @@ const env = envalid.cleanEnv(process.env, {
   MIN_POOL_SIZE: num({ default: 1 }),
   MAX_POOL_SIZE: num({ default: 20 }),
   PORT: num({ default: 8001 }),
+  SESSION_SECRET: str({ devDefault: 'baboon' }),
 });
 
 const config: AppConfig = {
@@ -34,6 +36,7 @@ const config: AppConfig = {
   maxPoolSize: env.MAX_POOL_SIZE,
   allowedOrigins: env.ALLOWED_ORIGINS.split(','),
   port: env.PORT,
+  sessionSecret: env.SESSION_SECRET,
 };
 
 export default config;
