@@ -3,7 +3,7 @@ import { Tooltip } from 'react-tooltip';
 import StatsModal from './modals/StatsModal';
 import HelpButton from './buttons/HelpButton';
 import StatsButton from './buttons/StatsButtton';
-import RankingsModal, { Stats } from './modals/RankingsModal';
+import RankingsModal from './modals/RankingsModal';
 
 const DisplayContainer = styled('div', {
   display: 'flex',
@@ -36,7 +36,10 @@ const AttemptBadge = styled('div', {
 });
 
 interface Props {
-  stats: Stats;
+  saladDate: string;
+  saladNumber: number;
+  attempts: string[][];
+  ranking: string;
   statsModalOpen: boolean;
   isWordSalad: boolean;
   isLostGame: boolean;
@@ -47,7 +50,10 @@ interface Props {
 }
 
 const StatsDisplay: React.FC<Props> = ({
-  stats,
+  saladDate,
+  saladNumber,
+  attempts,
+  ranking,
   statsModalOpen,
   isWordSalad,
   isLostGame,
@@ -56,7 +62,6 @@ const StatsDisplay: React.FC<Props> = ({
   setStatsModalOpen,
   setHTPModalOpen,
 }) => {
-  const { attempts, ranking, date, saladNumber } = stats;
   return (
     <DisplayContainer>
       <DisplayContent>
@@ -77,14 +82,15 @@ const StatsDisplay: React.FC<Props> = ({
         <AttemptsDisplay attempts={attempts} />
       </DisplayContent>
       <RankingsModal
-        stats={stats}
+        attempts={attempts}
+        ranking={ranking}
         open={rankingsModalOpen}
         isWordSalad={isWordSalad}
         isLostGame={isLostGame}
         onClose={() => setRankingsModalOpen(false)}
       />
       <StatsModal
-        saladDate={date}
+        saladDate={saladDate}
         saladNumber={saladNumber}
         open={statsModalOpen}
         isWordSalad={isWordSalad}
