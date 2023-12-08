@@ -116,7 +116,7 @@ const StatsModal: React.FC<Props> = ({
   const { storedStats: userStats } = retrieveLSData(saladNumber);
   const { played, gamesWon, currentStreak, maxStreak } = userStats;
   const formattedDate = formatDate(saladDate);
-  const winPercentage = played ? (gamesWon / played) * 100 : 0;
+  const winPercentage = played ? Math.round((gamesWon / played) * 100) : 0;
   return (
     <Modal
       open={open}
