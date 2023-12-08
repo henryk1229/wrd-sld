@@ -16,7 +16,7 @@ const ModalSubHeader = styled('div', {
   flexDirection: 'column',
   margin: '8px 16px 0px',
   color: '#217C7E',
-  fontSize: '18px',
+  fontSize: '16px',
   fontWeight: 600,
 });
 
@@ -30,7 +30,7 @@ const ModalContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  fontSize: '18px',
+  fontSize: '16px',
 });
 
 const ModalTile = styled('div', {
@@ -116,7 +116,7 @@ const StatsModal: React.FC<Props> = ({
   const { storedStats: userStats } = retrieveLSData(saladNumber);
   const { played, gamesWon, currentStreak, maxStreak } = userStats;
   const formattedDate = formatDate(saladDate);
-  const winPercentage = played ? gamesWon / played : 0;
+  const winPercentage = played ? (gamesWon / played) * 100 : 0;
   return (
     <Modal
       open={open}
@@ -141,7 +141,9 @@ const StatsModal: React.FC<Props> = ({
         ))}
       </ModalHeader>
       <ModalSubHeader>{formattedDate}</ModalSubHeader>
-      <ModalSubHeader style={{ color: 'black', marginTop: '12px' }}>
+      <ModalSubHeader
+        style={{ color: 'black', marginTop: '16px', fontSize: '18px' }}
+      >
         Statistics
       </ModalSubHeader>
       <ModalContentWrapper>

@@ -10,6 +10,7 @@ export type UserStats = {
   currentStreak: number;
   maxStreak: number;
   prevSaladWon: number;
+  prevSaladPlayed: number;
 };
 
 export const retrieveLSData = (
@@ -28,7 +29,7 @@ export const retrieveLSData = (
 
   const storedStats =
     localStorage.getItem('userStats') ??
-    '{ "played": 0, "gamesWon": 0, "currentStreak": 0, "maxStreak": 0, "prevSaladWon": null }';
+    '{ "played": 0, "gamesWon": 0, "currentStreak": 0, "maxStreak": 0, "prevSaladWon": null, "prevSaladPlayed": null }';
 
   // TODO - clean up stored, submitted, played handling?
   // format data
@@ -138,16 +139,21 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
 
   console.log({ userStats });
 
-  // TODO - only tally once per game
   const tallyUserStats = (isWordSalad: boolean) => {
     // get current user stats from LS
     const {
       currentStreak: prevStreak,
       maxStreak: prevMaxStreak,
-      prevSaladWon,
       played: prevPlayed,
       gamesWon: prevGamesWon,
+      prevSaladWon,
+      prevSaladPlayed,
     } = userStats;
+
+    if (prevSaladPlayed === saladNumber) {
+      // prevent incorrect stat tally when useEffect runs after gameover
+      return;
+    }
     // tally win stats
     if (isWordSalad) {
       const prevSaladNumber = saladNumber - 1;
@@ -161,14 +167,12 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
         currentStreak,
         maxStreak,
         prevSaladWon: saladNumber,
+        prevSaladPlayed: saladNumber,
       };
-      console.log({ updatedStats });
       const stringified = JSON.stringify(updatedStats);
-      console.log({ stringified });
       return localStorage.setItem('userStats', stringified);
     }
 
-    console.log('DOWN HERE');
     // tally loss stats
     const updatedStats = {
       played: prevPlayed + 1,
@@ -176,10 +180,9 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
       currentStreak: 0,
       maxStreak: prevMaxStreak,
       prevSaladWon,
+      prevSaladPlayed: saladNumber,
     };
-    console.log({ updatedStats });
     const stringified = JSON.stringify(updatedStats);
-    console.log({ stringified });
     return localStorage.setItem('userStats', stringified);
   };
 
