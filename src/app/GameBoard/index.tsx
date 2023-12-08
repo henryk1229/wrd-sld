@@ -52,6 +52,7 @@ interface Props {
   attempts: string[][];
   ranking: string;
   solutionSets: Set<string>[];
+  tallyUserStats: (isWordSalad: boolean) => void;
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
   setHTPModalOpen: (bool: boolean) => void;
@@ -65,6 +66,7 @@ const GameBoard: React.FC<Props> = ({
   playedWords,
   attempts,
   solutionSets,
+  tallyUserStats,
   playNewWord,
   restartGame,
   setHTPModalOpen,
@@ -100,6 +102,7 @@ const GameBoard: React.FC<Props> = ({
     isWordSalad,
     isBadAttempt,
     isLostGame,
+    tallyUserStats,
     displayToast,
     restartGame,
     setStatsModalOpen,
@@ -231,6 +234,7 @@ const GameBoard: React.FC<Props> = ({
         }}
       >
         <StatsDisplay
+          // TODO - rename prop
           stats={{
             date,
             saladNumber,
