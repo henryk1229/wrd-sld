@@ -29,7 +29,7 @@ export const retrieveLSData = (
 
   const storedStats =
     localStorage.getItem('userStats') ??
-    '{ "played": 0, "gamesWon": 0, "currentStreak": 0, "maxStreak": 0, "prevSaladWon": null, "prevSaladPlayed": null }';
+    '{ "played": 0, "gamesWon": 0, "currentStreak": null, "maxStreak": null, "prevSaladWon": null, "prevSaladPlayed": null }';
 
   // TODO - clean up stored, submitted, played handling?
   // format data
@@ -137,13 +137,11 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     setPlayedWords([...playedWords, newWord]);
   };
 
-  console.log({ userStats });
-
   const tallyUserStats = (isWordSalad: boolean) => {
     // get current user stats from LS
     const {
-      currentStreak: prevStreak,
-      maxStreak: prevMaxStreak,
+      currentStreak,
+      maxStreak,
       played: prevPlayed,
       gamesWon: prevGamesWon,
       prevSaladWon,
@@ -157,15 +155,17 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     // tally win stats
     if (isWordSalad) {
       const prevSaladNumber = saladNumber - 1;
-      const isWinStreak = prevSaladWon === prevSaladNumber;
-      const isMaxStreak = prevStreak === prevMaxStreak;
-      const currentStreak = isWinStreak ? prevStreak + 1 : 0;
-      const maxStreak = isMaxStreak ? prevMaxStreak + 1 : prevMaxStreak;
+      const isWinStreak =
+        prevSaladWon === null ? true : prevSaladWon === prevSaladNumber;
+      const isMaxStreak =
+        prevSaladWon === null ? true : currentStreak === maxStreak;
+      const updatedStreak = isWinStreak ? currentStreak + 1 : 1;
+      const updatedMaxStreak = isMaxStreak ? maxStreak + 1 : maxStreak;
       const updatedStats = {
         played: prevPlayed + 1,
         gamesWon: prevGamesWon + 1,
-        currentStreak,
-        maxStreak,
+        currentStreak: updatedStreak,
+        maxStreak: updatedMaxStreak,
         prevSaladWon: saladNumber,
         prevSaladPlayed: saladNumber,
       };
@@ -178,7 +178,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
       played: prevPlayed + 1,
       gamesWon: prevGamesWon,
       currentStreak: 0,
-      maxStreak: prevMaxStreak,
+      maxStreak,
       prevSaladWon,
       prevSaladPlayed: saladNumber,
     };
@@ -236,7 +236,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     <>
       <GameBoard
         key={playedWords.length}
-        date={date}
+        saladDate={date}
         saladNumber={saladNumber}
         ranking={getRanking({ numAttempts: allAttempts.length })}
         playedWords={playedWords}
