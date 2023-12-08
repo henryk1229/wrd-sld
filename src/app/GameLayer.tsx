@@ -4,19 +4,31 @@ import { DailySalad } from './app';
 import { makeSolutionSets } from './utils';
 import toast, { Toaster } from 'react-hot-toast';
 
-const retrieveLSData = (
-  dailySalad: DailySalad
+export type UserStats = {
+  played: number;
+  gamesWon: number;
+  currentStreak: number;
+  maxStreak: number;
+  prevSaladWon: number;
+};
+
+export const retrieveLSData = (
+  saladNumber: number
 ): {
   storedWords: string[][];
   storedAttempts: string[][];
+  storedStats: UserStats;
 } => {
   // retrieve data from local storage, scoped to saladNumber
-  const { saladNumber } = dailySalad;
   const storedSalad =
     localStorage.getItem(saladNumber.toString()) ??
     '{ "submittedWords": [], "attempts": [] }';
   const parsed = JSON.parse(storedSalad);
   const { submittedWords, attempts } = parsed;
+
+  const storedStats =
+    localStorage.getItem('userStats') ??
+    '{ "played": 0, "gamesWon": 0, "currentStreak": 0, "maxStreak": 0, "prevSaladWon": null }';
 
   // TODO - clean up stored, submitted, played handling?
   // format data
@@ -26,6 +38,7 @@ const retrieveLSData = (
   return {
     storedWords,
     storedAttempts,
+    storedStats: JSON.parse(storedStats),
   };
 };
 
@@ -71,8 +84,11 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
   const { date, saladNumber, initialWord, solutionSet } = dailySalad;
 
   // track stored words and attempts in localStorage
-  const { storedWords, storedAttempts: pastAttempts } =
-    retrieveLSData(dailySalad);
+  const {
+    storedWords,
+    storedAttempts: pastAttempts,
+    storedStats: userStats,
+  } = retrieveLSData(saladNumber);
 
   // useEffect(() => {
   //   scopeSaladToDate(dailySalad);
@@ -118,6 +134,53 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     });
     localStorage.setItem(saladNumber.toString(), stringified);
     setPlayedWords([...playedWords, newWord]);
+  };
+
+  console.log({ userStats });
+
+  // TODO - only tally once per game
+  const tallyUserStats = (isWordSalad: boolean) => {
+    // get current user stats from LS
+    const {
+      currentStreak: prevStreak,
+      maxStreak: prevMaxStreak,
+      prevSaladWon,
+      played: prevPlayed,
+      gamesWon: prevGamesWon,
+    } = userStats;
+    // tally win stats
+    if (isWordSalad) {
+      const prevSaladNumber = saladNumber - 1;
+      const isWinStreak = prevSaladWon === prevSaladNumber;
+      const isMaxStreak = prevStreak === prevMaxStreak;
+      const currentStreak = isWinStreak ? prevStreak + 1 : 0;
+      const maxStreak = isMaxStreak ? prevMaxStreak + 1 : prevMaxStreak;
+      const updatedStats = {
+        played: prevPlayed + 1,
+        gamesWon: prevGamesWon + 1,
+        currentStreak,
+        maxStreak,
+        prevSaladWon: saladNumber,
+      };
+      console.log({ updatedStats });
+      const stringified = JSON.stringify(updatedStats);
+      console.log({ stringified });
+      return localStorage.setItem('userStats', stringified);
+    }
+
+    console.log('DOWN HERE');
+    // tally loss stats
+    const updatedStats = {
+      played: prevPlayed + 1,
+      gamesWon: prevGamesWon,
+      currentStreak: 0,
+      maxStreak: prevMaxStreak,
+      prevSaladWon,
+    };
+    console.log({ updatedStats });
+    const stringified = JSON.stringify(updatedStats);
+    console.log({ stringified });
+    return localStorage.setItem('userStats', stringified);
   };
 
   const displayToast = () => {
@@ -176,6 +239,7 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
         playedWords={playedWords}
         attempts={allAttempts}
         solutionSets={solutionSets}
+        tallyUserStats={tallyUserStats}
         playNewWord={playNewWord}
         restartGame={restartGame}
         setHTPModalOpen={setHTPModalOpen}
