@@ -1,10 +1,12 @@
 import { styled } from '@stitches/react';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
+import { retrieveLSData } from '../GameLayer';
+import { DailySalad } from '../app';
 
 const ModalHeader = styled('h3', {
   display: 'flex',
-  margin: '16px',
+  margin: '8px 16px',
   fontSize: '20px',
   fontWeight: 800,
 });
@@ -12,17 +14,23 @@ const ModalHeader = styled('h3', {
 const ModalSubHeader = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  margin: '16px 16px 0px',
+  margin: '8px 16px 0px',
   color: '#217C7E',
   fontSize: '18px',
   fontWeight: 600,
 });
 
+const ModalContentWrapper = styled('div', {
+  display: 'flex',
+  justifyContent: 'space-between',
+  margin: '8px 16px',
+});
+
 const ModalContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  margin: '8px',
-  fontSize: '16px',
+  alignItems: 'center',
+  fontSize: '18px',
 });
 
 const ModalTile = styled('div', {
@@ -40,19 +48,14 @@ const ModalTile = styled('div', {
   width: '28px',
   height: '36px',
   margin: '4px 2px',
-  // fontSize: '20px',
   backgroundColor: '#9A3334',
 });
 
-export type Stats = {
-  date: string;
-  saladNumber: number;
-  attempts: string[][];
-  ranking: string;
-};
+export type SaladData = Pick<DailySalad, 'date' | 'saladNumber'>;
 
 interface Props {
-  stats: Stats;
+  saladDate: string;
+  saladNumber: number;
   open: boolean;
   isWordSalad: boolean;
   isLostGame: boolean;
@@ -103,15 +106,17 @@ const formatDate = (date: string) => {
 };
 
 const StatsModal: React.FC<Props> = ({
-  stats,
+  saladDate,
+  saladNumber,
   open,
   isLostGame,
   isWordSalad,
   onClose,
 }) => {
-  const { date, saladNumber, ranking, attempts } = stats;
-  const formattedDate = formatDate(date);
-  const rankingText = isWordSalad ? 'Rank:' : 'Current Rank:';
+  const { storedStats: userStats } = retrieveLSData(saladNumber);
+  const { played, gamesWon, currentStreak, maxStreak } = userStats;
+  const formattedDate = formatDate(saladDate);
+  const winPercentage = played ? gamesWon / played : 0;
   return (
     <Modal
       open={open}
@@ -121,7 +126,7 @@ const StatsModal: React.FC<Props> = ({
       aria-describedby="modal-displaying-stats"
       styles={{
         modal: {
-          width: '24%',
+          width: '36%',
           borderRadius: '3px',
           backgroundColor: '#F3EFE0',
           fontFamily: 'Helvetica',
@@ -136,13 +141,27 @@ const StatsModal: React.FC<Props> = ({
         ))}
       </ModalHeader>
       <ModalSubHeader>{formattedDate}</ModalSubHeader>
-      <ModalContent>
-        {!isLostGame && (
-          <div style={{ margin: '4px 8px' }}>
-            {rankingText} <span style={{ fontWeight: 'bold' }}>{ranking}</span>
-          </div>
-        )}
-      </ModalContent>
+      <ModalSubHeader style={{ color: 'black', marginTop: '12px' }}>
+        Statistics
+      </ModalSubHeader>
+      <ModalContentWrapper>
+        <ModalContent>
+          <div style={{ fontSize: '40px' }}>{played}</div>
+          <div>Played</div>
+        </ModalContent>
+        <ModalContent>
+          <div style={{ fontSize: '40px' }}>{winPercentage}</div>
+          <div>Win % </div>
+        </ModalContent>
+        <ModalContent>
+          <div style={{ fontSize: '40px' }}>{currentStreak}</div>
+          <div>Win Streak</div>
+        </ModalContent>
+        <ModalContent>
+          <div style={{ fontSize: '40px' }}>{maxStreak}</div>
+          <div>Max Streak</div>
+        </ModalContent>
+      </ModalContentWrapper>
     </Modal>
   );
 };

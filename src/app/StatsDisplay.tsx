@@ -1,9 +1,9 @@
 import { styled } from '@stitches/react';
 import { Tooltip } from 'react-tooltip';
-import StatsModal, { Stats } from './modals/StatsModal';
+import StatsModal from './modals/StatsModal';
 import HelpButton from './buttons/HelpButton';
 import StatsButton from './buttons/StatsButtton';
-import RankingsModal from './modals/RankingsModal';
+import RankingsModal, { Stats } from './modals/RankingsModal';
 
 const DisplayContainer = styled('div', {
   display: 'flex',
@@ -56,7 +56,7 @@ const StatsDisplay: React.FC<Props> = ({
   setStatsModalOpen,
   setHTPModalOpen,
 }) => {
-  const { attempts, ranking } = stats;
+  const { attempts, ranking, date, saladNumber } = stats;
   return (
     <DisplayContainer>
       <DisplayContent>
@@ -84,7 +84,8 @@ const StatsDisplay: React.FC<Props> = ({
         onClose={() => setRankingsModalOpen(false)}
       />
       <StatsModal
-        stats={stats}
+        saladDate={date}
+        saladNumber={saladNumber}
         open={statsModalOpen}
         isWordSalad={isWordSalad}
         isLostGame={isLostGame}
