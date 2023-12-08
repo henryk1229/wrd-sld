@@ -4,19 +4,32 @@ import { DailySalad } from './app';
 import { makeSolutionSets } from './utils';
 import toast, { Toaster } from 'react-hot-toast';
 
-const retrieveLSData = (
-  dailySalad: DailySalad
+export type UserStats = {
+  played: number;
+  gamesWon: number;
+  currentStreak: number;
+  maxStreak: number;
+  prevSaladWon: number;
+  prevSaladPlayed: number;
+};
+
+export const retrieveLSData = (
+  saladNumber: number
 ): {
   storedWords: string[][];
   storedAttempts: string[][];
+  storedStats: UserStats;
 } => {
   // retrieve data from local storage, scoped to saladNumber
-  const { saladNumber } = dailySalad;
   const storedSalad =
     localStorage.getItem(saladNumber.toString()) ??
     '{ "submittedWords": [], "attempts": [] }';
   const parsed = JSON.parse(storedSalad);
   const { submittedWords, attempts } = parsed;
+
+  const storedStats =
+    localStorage.getItem('userStats') ??
+    '{ "played": 0, "gamesWon": 0, "currentStreak": null, "maxStreak": null, "prevSaladWon": null, "prevSaladPlayed": null }';
 
   // TODO - clean up stored, submitted, played handling?
   // format data
@@ -26,6 +39,7 @@ const retrieveLSData = (
   return {
     storedWords,
     storedAttempts,
+    storedStats: JSON.parse(storedStats),
   };
 };
 
@@ -71,8 +85,11 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
   const { date, saladNumber, initialWord, solutionSet } = dailySalad;
 
   // track stored words and attempts in localStorage
-  const { storedWords, storedAttempts: pastAttempts } =
-    retrieveLSData(dailySalad);
+  const {
+    storedWords,
+    storedAttempts: pastAttempts,
+    storedStats: userStats,
+  } = retrieveLSData(saladNumber);
 
   // useEffect(() => {
   //   scopeSaladToDate(dailySalad);
@@ -118,6 +135,55 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     });
     localStorage.setItem(saladNumber.toString(), stringified);
     setPlayedWords([...playedWords, newWord]);
+  };
+
+  const tallyUserStats = (isWordSalad: boolean) => {
+    // get current user stats from LS
+    const {
+      currentStreak,
+      maxStreak,
+      played: prevPlayed,
+      gamesWon: prevGamesWon,
+      prevSaladWon,
+      prevSaladPlayed,
+    } = userStats;
+
+    if (prevSaladPlayed === saladNumber) {
+      // prevent incorrect stat tally when useEffect runs after gameover
+      return;
+    }
+    // tally win stats
+    if (isWordSalad) {
+      const prevSaladNumber = saladNumber - 1;
+      const isWinStreak =
+        prevSaladWon === null ? true : prevSaladWon === prevSaladNumber;
+      const isMaxStreak =
+        prevSaladWon === null ? true : currentStreak === maxStreak;
+      const updatedStreak = isWinStreak ? currentStreak + 1 : 1;
+      const updatedMaxStreak = isMaxStreak ? maxStreak + 1 : maxStreak;
+      const updatedStats = {
+        played: prevPlayed + 1,
+        gamesWon: prevGamesWon + 1,
+        currentStreak: updatedStreak,
+        maxStreak: updatedMaxStreak,
+        prevSaladWon: saladNumber,
+        prevSaladPlayed: saladNumber,
+      };
+      const stringified = JSON.stringify(updatedStats);
+      return localStorage.setItem('userStats', stringified);
+    }
+
+    // tally loss stats
+    const updatedStats = {
+      played: prevPlayed + 1,
+      gamesWon: prevGamesWon,
+      currentStreak: 0,
+      maxStreak,
+      prevSaladWon,
+      prevSaladPlayed: saladNumber,
+    };
+    const stringified = JSON.stringify(updatedStats);
+    return localStorage.setItem('userStats', stringified);
   };
 
   const displayToast = () => {
@@ -170,12 +236,13 @@ const GameLayer: React.FC<Props> = ({ dailySalad, setHTPModalOpen }) => {
     <>
       <GameBoard
         key={playedWords.length}
-        date={date}
+        saladDate={date}
         saladNumber={saladNumber}
         ranking={getRanking({ numAttempts: allAttempts.length })}
         playedWords={playedWords}
         attempts={allAttempts}
         solutionSets={solutionSets}
+        tallyUserStats={tallyUserStats}
         playNewWord={playNewWord}
         restartGame={restartGame}
         setHTPModalOpen={setHTPModalOpen}

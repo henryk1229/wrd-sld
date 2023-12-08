@@ -46,12 +46,13 @@ const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
 };
 
 interface Props {
-  date: string;
+  saladDate: string;
   saladNumber: number;
   playedWords: string[][];
   attempts: string[][];
   ranking: string;
   solutionSets: Set<string>[];
+  tallyUserStats: (isWordSalad: boolean) => void;
   playNewWord: (word: string[]) => void;
   restartGame: () => void;
   setHTPModalOpen: (bool: boolean) => void;
@@ -59,12 +60,13 @@ interface Props {
 }
 
 const GameBoard: React.FC<Props> = ({
-  date,
+  saladDate,
   saladNumber,
   ranking,
   playedWords,
   attempts,
   solutionSets,
+  tallyUserStats,
   playNewWord,
   restartGame,
   setHTPModalOpen,
@@ -100,6 +102,7 @@ const GameBoard: React.FC<Props> = ({
     isWordSalad,
     isBadAttempt,
     isLostGame,
+    tallyUserStats,
     displayToast,
     restartGame,
     setStatsModalOpen,
@@ -231,12 +234,10 @@ const GameBoard: React.FC<Props> = ({
         }}
       >
         <StatsDisplay
-          stats={{
-            date,
-            saladNumber,
-            attempts,
-            ranking,
-          }}
+          saladDate={saladDate}
+          saladNumber={saladNumber}
+          attempts={attempts}
+          ranking={ranking}
           statsModalOpen={statsModalOpen}
           isWordSalad={isWordSalad}
           isLostGame={isLostGame}

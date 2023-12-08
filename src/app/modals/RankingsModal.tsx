@@ -45,15 +45,9 @@ const AttemptBadge = styled('div', {
   borderRadius: '50%',
 });
 
-export type Stats = {
-  date: string;
-  saladNumber: number;
+interface Props {
   attempts: string[][];
   ranking: string;
-};
-
-interface Props {
-  stats: Stats;
   open: boolean;
   isWordSalad: boolean;
   isLostGame: boolean;
@@ -61,13 +55,13 @@ interface Props {
 }
 
 const RankingsModal: React.FC<Props> = ({
-  stats,
+  attempts,
+  ranking,
   open,
   isLostGame,
   isWordSalad,
   onClose,
 }) => {
-  const { ranking, attempts } = stats;
   const rankingText = isWordSalad ? 'Rank:' : 'Current Rank:';
   return (
     <Modal
