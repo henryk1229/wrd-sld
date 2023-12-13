@@ -1,4 +1,4 @@
-import { styled } from '@stitches/react';
+// import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
 import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from './CurrentWord';
@@ -12,12 +12,39 @@ import DeleteButton from '../buttons/DeleteButton';
 import EnterButton from '../buttons/EnterButton';
 import RestartButton from '../buttons/RestartButton';
 import { useWatchGameFlow } from '../../hooks/useWatchGameFlow';
+import { styled } from '../../styles';
 
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
-  height: '560px',
-  width: '1000px',
+  variants: {
+    size: {
+      small: {
+        width: '400px',
+      },
+      large: {
+        height: '560px',
+        width: '1000px',
+      },
+    },
+  },
+});
+
+const BoardWrapper = styled('div', {
+  variants: {
+    size: {
+      small: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      },
+      large: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+      },
+    },
+  },
 });
 
 const WordsGridContainer = styled('div', {
@@ -28,10 +55,22 @@ const WordsGridContainer = styled('div', {
 });
 
 const SpringCaddy = styled(animated.div, {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginTop: '16px',
+  variants: {
+    size: {
+      small: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: '16px',
+      },
+      large: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: '16px',
+      },
+    },
+  },
 });
 
 const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
@@ -224,7 +263,14 @@ const GameBoard: React.FC<Props> = ({
   );
 
   return (
-    <BoardContainer className="boardContainer">
+    <BoardContainer
+      className="boardContainer"
+      size={{
+        '@initial': 'large',
+        '@bp1': 'small',
+        '@bp3': 'large',
+      }}
+    >
       <div
         style={{
           display: 'flex',
@@ -247,11 +293,12 @@ const GameBoard: React.FC<Props> = ({
           setHTPModalOpen={setHTPModalOpen}
         />
       </div>
-      <div
+      <BoardWrapper
         className="boardWrapper"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-evenly',
+        size={{
+          '@initial': 'large',
+          '@bp1': 'small',
+          '@bp2': 'large',
         }}
       >
         <WordsGridContainer>
@@ -267,10 +314,15 @@ const GameBoard: React.FC<Props> = ({
         >
           <LettersBank usedLetters={usedLetters} onClick={handleClick} />
         </div>
-      </div>
+      </BoardWrapper>
       <SpringCaddy
         style={{
           ...shakeStyles,
+        }}
+        size={{
+          '@initial': 'large',
+          '@bp1': 'small',
+          '@bp3': 'large',
         }}
       >
         {/* TODO - rm empty div for spacing  */}

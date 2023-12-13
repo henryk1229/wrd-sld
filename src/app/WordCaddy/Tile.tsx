@@ -1,5 +1,5 @@
 import { SpringValue, animated } from '@react-spring/web';
-import { styled } from '@stitches/react';
+import { styled } from '../../styles';
 import React from 'react';
 
 const LetterTile = styled(animated.div, {
@@ -14,10 +14,21 @@ const LetterTile = styled(animated.div, {
   border: 'solid 2px',
   borderColor: '#9A3334 #751213 #751213 #9A3334',
   color: '#fafafa',
-  width: '56px',
-  height: '64px',
-  margin: '6px',
   backgroundColor: '#9A3334',
+  variants: {
+    size: {
+      small: {
+        width: '32px',
+        height: '40px',
+        margin: '4px 2px',
+      },
+      large: {
+        width: '56px',
+        height: '64px',
+        margin: '6px',
+      },
+    },
+  },
 });
 
 const BlankTile = styled(LetterTile, {
@@ -34,7 +45,14 @@ interface Props {
 
 const WordCaddyTile: React.FC<Props> = ({ letter, spring, isAnchorTile }) => {
   return !letter ? (
-    <BlankTile style={spring} />
+    <BlankTile
+      style={spring}
+      size={{
+        '@initial': 'large',
+        '@bp1': 'small',
+        '@bp3': 'large',
+      }}
+    />
   ) : (
     <LetterTile
       style={{
@@ -44,6 +62,11 @@ const WordCaddyTile: React.FC<Props> = ({ letter, spring, isAnchorTile }) => {
           : {
               color: '#fafafa',
             }),
+      }}
+      size={{
+        '@initial': 'large',
+        '@bp1': 'small',
+        '@bp3': 'large',
       }}
     >
       {letter.toUpperCase()}
