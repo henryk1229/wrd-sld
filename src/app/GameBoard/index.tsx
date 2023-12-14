@@ -37,6 +37,7 @@ const BoardWrapper = styled('div', {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
       },
       large: {
         display: 'flex',
@@ -310,6 +311,7 @@ const GameBoard: React.FC<Props> = ({
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'space-evenly',
+            marginTop: '20px',
           }}
         >
           <LettersBank usedLetters={usedLetters} onClick={handleClick} />
