@@ -21,7 +21,7 @@ const BoardContainer = styled('div', {
     size: {
       small: {
         position: 'fixed',
-        inset: '84px 16px 16px',
+        inset: '72px 16px 16px',
       },
       large: {
         position: 'relative',
@@ -42,7 +42,7 @@ const BoardWrapper = styled('div', {
         alignItems: 'center',
         justifyContent: 'center',
       },
-      large: {
+      medium: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
@@ -73,7 +73,7 @@ const StatsDisplayContainer = styled('div', {
   justifyContent: 'center',
   variants: {
     size: {
-      large: {
+      medium: {
         margin: '8px 100px 0px',
         justifyContent: 'flex-end',
       },
@@ -293,7 +293,7 @@ const GameBoard: React.FC<Props> = ({
     <BoardContainer
       className="boardContainer"
       size={{
-        '@initial': 'large',
+        '@initial': 'small',
         '@bp1': 'small',
         '@bp3': 'large',
       }}
@@ -301,8 +301,8 @@ const GameBoard: React.FC<Props> = ({
       <StatsDisplayContainer
         className="statsDisplayContainer"
         size={{
-          '@initial': 'large',
-          '@bp3': 'large',
+          '@initial': 'medium',
+          '@bp2': 'medium',
         }}
       >
         <StatsDisplay
@@ -322,14 +322,14 @@ const GameBoard: React.FC<Props> = ({
       <BoardWrapper
         className="boardWrapper"
         size={{
-          '@initial': 'large',
+          '@initial': 'small',
           '@bp1': 'small',
-          '@bp2': 'large',
+          '@bp2': 'medium',
         }}
       >
         <WordsGridContainer
           size={{
-            '@initial': 'large',
+            '@initial': 'small',
             '@bp1': 'small',
             '@bp2': 'large',
           }}
@@ -353,7 +353,7 @@ const GameBoard: React.FC<Props> = ({
           ...shakeStyles,
         }}
         size={{
-          '@initial': 'large',
+          '@initial': 'small',
           '@bp1': 'small',
           '@bp3': 'large',
         }}
