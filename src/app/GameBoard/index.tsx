@@ -20,9 +20,12 @@ const BoardContainer = styled('div', {
   variants: {
     size: {
       small: {
-        width: '400px',
+        position: 'fixed',
+        inset: '84px 16px 16px',
       },
       large: {
+        position: 'relative',
+        inset: '0px',
         height: '560px',
         width: '1000px',
       },
@@ -49,10 +52,33 @@ const BoardWrapper = styled('div', {
 });
 
 const WordsGridContainer = styled('div', {
-  width: '324px',
-  height: '324px',
   display: 'flex',
   flexDirection: 'column',
+  variants: {
+    size: {
+      small: {
+        width: '256px',
+      },
+      large: {
+        width: '324px',
+        height: '324px',
+      },
+    },
+  },
+});
+
+const StatsDisplayContainer = styled('div', {
+  display: 'flex',
+  fontSize: '18px',
+  justifyContent: 'center',
+  variants: {
+    size: {
+      large: {
+        margin: '8px 100px 0px',
+        justifyContent: 'flex-end',
+      },
+    },
+  },
 });
 
 const SpringCaddy = styled(animated.div, {
@@ -272,12 +298,11 @@ const GameBoard: React.FC<Props> = ({
         '@bp3': 'large',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          fontSize: '18px',
-          margin: '8px 100px 0px',
+      <StatsDisplayContainer
+        className="statsDisplayContainer"
+        size={{
+          '@initial': 'large',
+          '@bp3': 'large',
         }}
       >
         <StatsDisplay
@@ -293,7 +318,7 @@ const GameBoard: React.FC<Props> = ({
           setStatsModalOpen={setStatsModalOpen}
           setHTPModalOpen={setHTPModalOpen}
         />
-      </div>
+      </StatsDisplayContainer>
       <BoardWrapper
         className="boardWrapper"
         size={{
@@ -302,7 +327,13 @@ const GameBoard: React.FC<Props> = ({
           '@bp2': 'large',
         }}
       >
-        <WordsGridContainer>
+        <WordsGridContainer
+          size={{
+            '@initial': 'large',
+            '@bp1': 'small',
+            '@bp2': 'large',
+          }}
+        >
           <WordsGrid playedWords={playedWords} solutionSets={solutionSets} />
         </WordsGridContainer>
         <div
