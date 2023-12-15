@@ -1,21 +1,39 @@
-import { styled } from '@stitches/react';
+import { styled } from '../../styles';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 
 const ModalHeader = styled('h3', {
   display: 'flex',
   margin: '16px',
-  fontSize: '20px',
-  fontWeight: 800,
+  variants: {
+    size: {
+      small: {
+        margin: '8px 0px',
+      },
+      medium: {
+        margin: '16px',
+      },
+    },
+  },
 });
 
 const ModalSubHeader = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  margin: '16px 16px 0px',
   color: '#217C7E',
-  fontSize: '18px',
   fontWeight: 600,
+  variants: {
+    size: {
+      small: {
+        margin: '4px 8px 0px',
+        fontSize: '15px',
+      },
+      medium: {
+        margin: '16px 16px 0px',
+        fontSize: '18px',
+      },
+    },
+  },
 });
 
 const ModalContent = styled('div', {
@@ -37,11 +55,24 @@ const ModalTile = styled('div', {
   border: 'solid 1px',
   borderColor: '#9A3334 #751213 #751213 #9A3334',
   color: '#fafafa',
-  width: '28px',
-  height: '36px',
-  margin: '4px 2px',
-  // fontSize: '20px',
   backgroundColor: '#9A3334',
+  variants: {
+    size: {
+      small: {
+        width: '16px',
+        height: '24px',
+        margin: '4px 2px',
+        fontWeight: 600,
+        fontSize: '15px',
+      },
+      medium: {
+        width: '32px',
+        height: '40px',
+        margin: '4px 2px',
+        fontSize: '20px',
+      },
+    },
+  },
 });
 
 export type GameStats = {
@@ -67,7 +98,7 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
       aria-describedby="modal-indicating-game-over"
       styles={{
         modal: {
-          width: '44%',
+          width: '66%',
           borderRadius: '3px',
           backgroundColor: '#F3EFE0',
           fontFamily: 'Helvetica',
@@ -76,12 +107,35 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
       }}
       focusTrapped={false}
     >
-      <ModalHeader>
+      <ModalHeader
+        size={{
+          '@initial': 'small',
+          '@bp1': 'small',
+          '@bp2': 'medium',
+        }}
+      >
         {'HOW TO PLAY'.split('').map((letter, idx) => (
-          <ModalTile key={`${letter}-${idx}`}>{letter}</ModalTile>
+          <ModalTile
+            key={`${letter}-${idx}`}
+            size={{
+              '@initial': 'small',
+              '@bp1': 'small',
+              '@bp2': 'medium',
+            }}
+          >
+            {letter}
+          </ModalTile>
         ))}
       </ModalHeader>
-      <ModalSubHeader>Complete the WordSalad in four words</ModalSubHeader>
+      <ModalSubHeader
+        size={{
+          '@initial': 'small',
+          '@bp1': 'small',
+          '@bp2': 'medium',
+        }}
+      >
+        Complete the WordSalad in four words
+      </ModalSubHeader>
       <ModalContent>
         <ul style={{ padding: '0px 0px 0px 16px', margin: '0px' }}>
           <li style={{ margin: '8px' }}>
@@ -103,7 +157,15 @@ const HowToPlayModal: React.FC<Props> = ({ open, onClose }) => {
           </li>
         </ul>
       </ModalContent>
-      <ModalSubHeader>Examples</ModalSubHeader>
+      <ModalSubHeader
+        size={{
+          '@initial': 'small',
+          '@bp1': 'small',
+          '@bp2': 'medium',
+        }}
+      >
+        Examples
+      </ModalSubHeader>
       <ModalContent>
         <ul style={{ padding: '0px 0px 0px 16px', margin: '0px' }}>
           <li
