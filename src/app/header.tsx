@@ -7,7 +7,6 @@ const HeaderContainer = styled(animated.div, {
   display: 'flex',
   padding: '8px 0px',
   justifyContent: 'space-evenly',
-  width: '316px',
 });
 
 const Chip = styled('div', {
