@@ -23,11 +23,11 @@ const BoardContainer = styled('div', {
         position: 'fixed',
         inset: '64px 16px 16px',
       },
-      large: {
+      medium: {
         position: 'relative',
         inset: '0px',
         height: '560px',
-        width: '1000px',
+        width: '768px',
       },
     },
   },
@@ -309,7 +309,7 @@ const GameBoard: React.FC<Props> = ({
       size={{
         '@initial': 'small',
         '@bp1': 'small',
-        '@bp3': 'large',
+        '@bp2': 'medium',
       }}
     >
       <StatsDisplayContainer
