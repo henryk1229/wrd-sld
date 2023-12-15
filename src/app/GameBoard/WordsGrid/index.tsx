@@ -1,4 +1,4 @@
-import { styled } from '@stitches/react';
+import { styled } from '../../../styles';
 import Tile from './Tile';
 import GuideLine from './GuideLine';
 import {
@@ -21,11 +21,22 @@ const Badge = styled(animated.div, {
   justifyContent: 'center',
   alignItems: 'center',
   color: 'black',
-  height: '32px',
-  width: '32px',
-  marginLeft: '12px',
   border: '2px solid black',
   borderRadius: '50%',
+  variants: {
+    size: {
+      small: {
+        height: '24px',
+        width: '24px',
+        marginLeft: '4px',
+      },
+      medium: {
+        height: '32px',
+        width: '32px',
+        marginLeft: '12px',
+      },
+    },
+  },
 });
 
 const BadgeContents = styled(animated.div, {
@@ -33,8 +44,8 @@ const BadgeContents = styled(animated.div, {
   justifyContent: 'center',
   alignItems: 'center',
   fontFamily: 'Helvetica',
-  fontSize: '12px',
   color: 'black',
+  fontSize: '12px',
 });
 
 interface Props {
@@ -123,7 +134,14 @@ const WordsGrid: React.FC<Props> = ({ playedWords, solutionSets }) => {
                 />
               ))}
               {isPendingWord && (
-                <Badge style={{ ...spring }}>
+                <Badge
+                  style={{ ...spring }}
+                  size={{
+                    '@initial': 'small',
+                    '@bp1': 'small',
+                    '@bp2': 'medium',
+                  }}
+                >
                   <BadgeContents>{solutionSets[0].size ?? '0'}</BadgeContents>
                 </Badge>
               )}
