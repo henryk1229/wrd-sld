@@ -18,7 +18,7 @@ const Chip = styled('div', {
   variants: {
     size: {
       small: {
-        padding: '4px',
+        padding: '0px',
         margin: '0px 4px',
       },
       medium: {
@@ -49,7 +49,7 @@ const HeaderTile = styled(animated.div, {
         height: '32px',
         margin: '4px 2px',
       },
-      large: {
+      medium: {
         width: '56px',
         height: '64px',
         margin: '6px',
@@ -61,20 +61,23 @@ const HeaderTile = styled(animated.div, {
 const Header: React.FC = () => (
   <HeaderContainer className="header">
     {APP_NAME.map((letter, idx) => (
-      <HeaderTile
-        key={`${letter}-${idx}`}
-        size={{
-          '@initial': 'small',
-          '@bp1': 'small',
-          '@bp3': 'large',
-        }}
-      >
-        {letter.toUpperCase()}
-      </HeaderTile>
+      <div style={{ display: 'flex' }}>
+        <HeaderTile
+          key={`${letter}-${idx}`}
+          size={{
+            '@initial': 'small',
+            '@bp1': 'small',
+            '@bp2': 'medium',
+          }}
+        >
+          {letter.toUpperCase()}
+        </HeaderTile>
+      </div>
     ))}
     <Chip
       size={{
         '@initial': 'small',
+        '@bp1': 'small',
         '@bp2': 'medium',
       }}
     >
