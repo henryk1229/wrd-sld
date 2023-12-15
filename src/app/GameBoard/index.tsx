@@ -21,7 +21,7 @@ const BoardContainer = styled('div', {
     size: {
       small: {
         position: 'fixed',
-        inset: '72px 16px 16px',
+        inset: '64px 16px 16px',
       },
       large: {
         position: 'relative',
@@ -81,19 +81,33 @@ const StatsDisplayContainer = styled('div', {
   },
 });
 
-const SpringCaddy = styled(animated.div, {
+const LettersBankContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'space-evenly',
   variants: {
     size: {
       small: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '16px',
+        marginTop: '4px',
+      },
+      medium: {
+        marginTop: '20px',
+      },
+    },
+  },
+});
+
+const SpringCaddy = styled(animated.div, {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  variants: {
+    size: {
+      small: {
+        marginTop: '0px',
       },
       large: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         marginTop: '16px',
       },
     },
@@ -336,17 +350,15 @@ const GameBoard: React.FC<Props> = ({
         >
           <WordsGrid playedWords={playedWords} solutionSets={solutionSets} />
         </WordsGridContainer>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-            marginTop: '20px',
+        <LettersBankContainer
+          size={{
+            '@initial': 'small',
+            '@bp1': 'small',
+            '@bp2': 'medium',
           }}
         >
           <LettersBank usedLetters={usedLetters} onClick={handleClick} />
-        </div>
+        </LettersBankContainer>
       </BoardWrapper>
       <SpringCaddy
         style={{

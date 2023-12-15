@@ -1,5 +1,5 @@
 import { SpringValue } from '@react-spring/web';
-import { styled } from '@stitches/react';
+import { styled } from '../../../styles';
 import React from 'react';
 
 const AvailableLetterTile = styled('div', {
@@ -14,13 +14,25 @@ const AvailableLetterTile = styled('div', {
   border: 'solid 1px #751213',
   borderColor: '#9A3334 #751213 #751213 #9A3334',
   color: '#fafafa',
-  width: '32px',
-  height: '40px',
   margin: '4px 2px',
   backgroundColor: '#9A3334',
   '&:hover': {
     opacity: 0.75,
     cursor: 'pointer',
+  },
+  variants: {
+    size: {
+      small: {
+        width: '24px',
+        height: '32px',
+        margin: '4px 2px',
+      },
+      medium: {
+        width: '32px',
+        height: '40px',
+        margin: '6px',
+      },
+    },
   },
 });
 
@@ -38,9 +50,25 @@ interface Props {
 
 const LettersBankTile: React.FC<Props> = ({ letter, isUsedLetter }) => {
   return !isUsedLetter ? (
-    <AvailableLetterTile>{letter.toUpperCase()}</AvailableLetterTile>
+    <AvailableLetterTile
+      size={{
+        '@initial': 'small',
+        '@bp1': 'small',
+        '@bp2': 'medium',
+      }}
+    >
+      {letter.toUpperCase()}
+    </AvailableLetterTile>
   ) : (
-    <UsedLetterTile>{letter.toUpperCase()}</UsedLetterTile>
+    <UsedLetterTile
+      size={{
+        '@initial': 'small',
+        '@bp1': 'small',
+        '@bp2': 'medium',
+      }}
+    >
+      {letter.toUpperCase()}
+    </UsedLetterTile>
   );
 };
 
