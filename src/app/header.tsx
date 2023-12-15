@@ -60,8 +60,8 @@ const HeaderTile = styled(animated.div, {
 
 const Header: React.FC = () => (
   <HeaderContainer className="header">
-    {APP_NAME.map((letter, idx) => (
-      <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex' }}>
+      {APP_NAME.map((letter, idx) => (
         <HeaderTile
           key={`${letter}-${idx}`}
           size={{
@@ -72,8 +72,8 @@ const Header: React.FC = () => (
         >
           {letter.toUpperCase()}
         </HeaderTile>
-      </div>
-    ))}
+      ))}
+    </div>
     <Chip
       size={{
         '@initial': 'small',
