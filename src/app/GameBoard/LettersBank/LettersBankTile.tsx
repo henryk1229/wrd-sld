@@ -25,12 +25,10 @@ const AvailableLetterTile = styled('div', {
       small: {
         width: '24px',
         height: '32px',
-        margin: '4px 2px',
       },
       medium: {
         width: '32px',
         height: '40px',
-        margin: '6px',
       },
     },
   },
