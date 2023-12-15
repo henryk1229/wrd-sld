@@ -1,12 +1,21 @@
-import { styled } from '@stitches/react';
+import { styled } from '../../styles';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 
 const ModalHeader = styled('h3', {
   display: 'flex',
-  margin: '16px',
   fontSize: '20px',
   fontWeight: 800,
+  variants: {
+    size: {
+      small: {
+        margin: '8px 0px',
+      },
+      medium: {
+        margin: '16px',
+      },
+    },
+  },
 });
 
 const ModalContent = styled('div', {
@@ -14,6 +23,16 @@ const ModalContent = styled('div', {
   flexDirection: 'column',
   margin: '8px',
   fontSize: '16px',
+  variants: {
+    size: {
+      small: {
+        margin: '0px',
+      },
+      medium: {
+        margin: '8px',
+      },
+    },
+  },
 });
 
 const ModalTile = styled('div', {
@@ -28,11 +47,22 @@ const ModalTile = styled('div', {
   border: 'solid 1px',
   borderColor: '#9A3334 #751213 #751213 #9A3334',
   color: '#fafafa',
-  width: '28px',
-  height: '36px',
   margin: '4px 2px',
-  // fontSize: '20px',
   backgroundColor: '#9A3334',
+  variants: {
+    size: {
+      small: {
+        width: '16px',
+        height: '24px',
+        fontWeight: 600,
+        fontSize: '15px',
+      },
+      medium: {
+        width: '32px',
+        height: '40px',
+      },
+    },
+  },
 });
 
 const AttemptBadge = styled('div', {
@@ -72,7 +102,7 @@ const RankingsModal: React.FC<Props> = ({
       aria-describedby="modal-displaying-stats"
       styles={{
         modal: {
-          width: '32%',
+          width: '66%',
           borderRadius: '3px',
           backgroundColor: '#F3EFE0',
           fontFamily: 'Helvetica',
@@ -81,12 +111,33 @@ const RankingsModal: React.FC<Props> = ({
       }}
       focusTrapped={false}
     >
-      <ModalHeader>
+      <ModalHeader
+        size={{
+          '@initial': 'small',
+          '@bp1': 'small',
+          '@bp2': 'medium',
+        }}
+      >
         {'RANKINGS'.split('').map((letter, idx) => (
-          <ModalTile key={`${letter}-${idx}`}>{letter}</ModalTile>
+          <ModalTile
+            key={`${letter}-${idx}`}
+            size={{
+              '@initial': 'small',
+              '@bp1': 'small',
+              '@bp2': 'medium',
+            }}
+          >
+            {letter}
+          </ModalTile>
         ))}
       </ModalHeader>
-      <ModalContent>
+      <ModalContent
+        size={{
+          '@initial': 'small',
+          '@bp1': 'small',
+          '@bp2': 'medium',
+        }}
+      >
         <div style={{ margin: '4px 12px' }}>
           Ranking is based on number of attempts
         </div>
