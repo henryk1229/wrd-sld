@@ -1,4 +1,4 @@
-import { styled } from '@stitches/react';
+// import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
 import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from './CurrentWord';
@@ -12,26 +12,106 @@ import DeleteButton from '../buttons/DeleteButton';
 import EnterButton from '../buttons/EnterButton';
 import RestartButton from '../buttons/RestartButton';
 import { useWatchGameFlow } from '../../hooks/useWatchGameFlow';
+import { styled } from '../../styles';
 
 const URL = 'http://localhost:3000/spellcheck';
 
 const BoardContainer = styled('div', {
-  height: '560px',
-  width: '1000px',
+  variants: {
+    size: {
+      small: {
+        position: 'fixed',
+        inset: '64px 16px 16px',
+      },
+      medium: {
+        position: 'relative',
+        inset: '0px',
+        height: '560px',
+        width: '768px',
+      },
+    },
+  },
+});
+
+const BoardWrapper = styled('div', {
+  variants: {
+    size: {
+      small: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      medium: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+      },
+    },
+  },
 });
 
 const WordsGridContainer = styled('div', {
-  width: '324px',
-  height: '324px',
   display: 'flex',
   flexDirection: 'column',
+  variants: {
+    size: {
+      small: {
+        width: '256px',
+      },
+      large: {
+        width: '324px',
+        height: '324px',
+      },
+    },
+  },
+});
+
+const StatsDisplayContainer = styled('div', {
+  display: 'flex',
+  fontSize: '18px',
+  justifyContent: 'center',
+  variants: {
+    size: {
+      medium: {
+        margin: '8px 100px 0px',
+        justifyContent: 'flex-end',
+      },
+    },
+  },
+});
+
+const LettersBankContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'space-evenly',
+  variants: {
+    size: {
+      small: {
+        marginTop: '4px',
+      },
+      medium: {
+        marginTop: '20px',
+      },
+    },
+  },
 });
 
 const SpringCaddy = styled(animated.div, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: '16px',
+  variants: {
+    size: {
+      small: {
+        marginTop: '0px',
+      },
+      large: {
+        marginTop: '16px',
+      },
+    },
+  },
 });
 
 const spellCheckWord = async (wordArray: string[]): Promise<boolean> => {
@@ -224,13 +304,19 @@ const GameBoard: React.FC<Props> = ({
   );
 
   return (
-    <BoardContainer className="boardContainer">
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          fontSize: '18px',
-          margin: '8px 100px 0px',
+    <BoardContainer
+      className="boardContainer"
+      size={{
+        '@initial': 'small',
+        '@bp1': 'small',
+        '@bp2': 'medium',
+      }}
+    >
+      <StatsDisplayContainer
+        className="statsDisplayContainer"
+        size={{
+          '@initial': 'medium',
+          '@bp2': 'medium',
         }}
       >
         <StatsDisplay
@@ -246,31 +332,42 @@ const GameBoard: React.FC<Props> = ({
           setStatsModalOpen={setStatsModalOpen}
           setHTPModalOpen={setHTPModalOpen}
         />
-      </div>
-      <div
+      </StatsDisplayContainer>
+      <BoardWrapper
         className="boardWrapper"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-evenly',
+        size={{
+          '@initial': 'small',
+          '@bp1': 'small',
+          '@bp2': 'medium',
         }}
       >
-        <WordsGridContainer>
+        <WordsGridContainer
+          size={{
+            '@initial': 'small',
+            '@bp1': 'small',
+            '@bp2': 'large',
+          }}
+        >
           <WordsGrid playedWords={playedWords} solutionSets={solutionSets} />
         </WordsGridContainer>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
+        <LettersBankContainer
+          size={{
+            '@initial': 'small',
+            '@bp1': 'small',
+            '@bp2': 'medium',
           }}
         >
           <LettersBank usedLetters={usedLetters} onClick={handleClick} />
-        </div>
-      </div>
+        </LettersBankContainer>
+      </BoardWrapper>
       <SpringCaddy
         style={{
           ...shakeStyles,
+        }}
+        size={{
+          '@initial': 'small',
+          '@bp1': 'small',
+          '@bp3': 'large',
         }}
       >
         {/* TODO - rm empty div for spacing  */}
