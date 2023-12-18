@@ -4,7 +4,6 @@ import { Modal } from 'react-responsive-modal';
 
 const ModalHeader = styled('h3', {
   display: 'flex',
-  margin: '16px',
   variants: {
     size: {
       small: {

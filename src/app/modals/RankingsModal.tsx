@@ -18,6 +18,25 @@ const ModalHeader = styled('h3', {
   },
 });
 
+const ModalSubHeader = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  color: '#217C7E',
+  fontWeight: 600,
+  variants: {
+    size: {
+      small: {
+        margin: '4px 8px 0px',
+        fontSize: '14px',
+      },
+      medium: {
+        margin: '8px 16px 0px',
+        fontSize: '16px',
+      },
+    },
+  },
+});
+
 const ModalContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
@@ -60,6 +79,7 @@ const ModalTile = styled('div', {
       medium: {
         width: '32px',
         height: '40px',
+        fontSize: '20px',
       },
     },
   },
@@ -138,9 +158,15 @@ const RankingsModal: React.FC<Props> = ({
           '@bp2': 'medium',
         }}
       >
-        <div style={{ margin: '4px 12px' }}>
+        <ModalSubHeader
+          size={{
+            '@initial': 'small',
+            '@bp1': 'small',
+            '@bp2': 'medium',
+          }}
+        >
           Ranking is based on number of attempts
-        </div>
+        </ModalSubHeader>
         <AttemptsDisplay attempts={attempts} />
         {!isLostGame && (
           <div style={{ margin: '4px 12px' }}>
