@@ -1,4 +1,3 @@
-// import { styled } from '@stitches/react';
 import { animated } from '@react-spring/web';
 import { BaseSyntheticEvent, useCallback, useState } from 'react';
 import CurrentWord from './CurrentWord';
