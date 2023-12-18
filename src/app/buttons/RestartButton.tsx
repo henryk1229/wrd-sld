@@ -35,8 +35,8 @@ const RestartButton: React.FC<Props> = ({ disabled, restartGame }) => (
 const RestartIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={32}
-    height={32}
+    width={26}
+    height={26}
     viewBox="0 0 24 24"
     fill="none"
     stroke="#9A3334"
